@@ -1,0 +1,543 @@
+<?php
+/**
+ * Phlexible
+ *
+ * PHP Version 5
+ *
+ * @category    Makeweb
+ * @package     Makeweb_IndexerElements
+ * @copyright   2010 brainbits GmbH (http://www.brainbits.net)
+ */
+
+/**
+ * Elements Indexer
+ *
+ * @category    Makeweb
+ * @package     Makeweb_IndexerElements
+ * @author      Marco Fischer <mf@brainbits.net>
+ * @copyright   2010 brainbits GmbH (http://www.brainbits.net)
+ */
+class Makeweb_IndexerElements_Indexer extends MWF_Core_Indexer_Indexer_Abstract
+{
+    /**
+     * @var string
+     */
+    const DOCUMENT_TYPE = 'elements';
+
+    /**
+     * @var Brainbits_Event_Dispatcher
+     */
+    protected $dispatcher = null;
+
+    /**
+     * @var MWF_Core_Indexer_Document_Factory
+     */
+    protected $documentFactory = null;
+
+    /**
+     * @var Makeweb_Siteroots_Siteroot_Manager
+     */
+    protected $siterootManager = null;
+
+    /**
+     * @var Makeweb_Elements_Tree_Manager
+     */
+    protected $treeManager = null;
+
+    /**
+     * @var Makeweb_Elements_Element_Manager
+     */
+    protected $elementManager;
+
+    /**
+     * @var Makeweb_Elements_Element_Version_Manager
+     */
+    protected $elementVersionManager = null;
+
+    /**
+     * @var Makeweb_Elements_Context_Manager
+     */
+    protected $contextManager;
+
+    /**
+     * @var string
+     */
+    protected $_label = 'Indexer for Elements';
+
+    /**
+     * @var string
+     */
+    protected $requestHandler;
+
+    /**
+     * Constructor
+     *
+     * @param Brainbits_Event_Dispatcher               $dispatcher
+     * @param MWF_Core_Indexer_Document_Factory        $documentFactory
+     * @param Makeweb_Siteroots_Siteroot_Manager       $siterootManager
+     * @param Makeweb_Elements_Tree_Manager            $treeManager
+     * @param Makeweb_Elements_Element_Manager         $elementManager
+     * @param Makeweb_Elements_Element_Version_Manager $elementVersionManager
+     * @param Makeweb_Elements_Context_Manager         $contextManager
+     * @param string                                   $requestHandler
+     */
+    public function __construct(Brainbits_Event_Dispatcher               $dispatcher,
+                                MWF_Core_Indexer_Document_Factory        $documentFactory,
+                                Makeweb_Siteroots_Siteroot_Manager       $siterootManager,
+                                Makeweb_Elements_Tree_Manager            $treeManager,
+                                Makeweb_Elements_Element_Manager         $elementManager,
+                                Makeweb_Elements_Element_Version_Manager $elementVersionManager,
+                                Makeweb_Elements_Context_Manager         $contextManager,
+                                $requestHandler)
+    {
+        $this->dispatcher            = $dispatcher;
+        $this->documentFactory       = $documentFactory;
+        $this->siterootManager       = $siterootManager;
+        $this->treeManager           = $treeManager;
+        $this->elementManager        = $elementManager;
+        $this->elementVersionManager = $elementVersionManager;
+        $this->contextManager        = $contextManager;
+        $this->requestHandler        = $requestHandler;
+    }
+
+    /**
+     * Return document class
+     *
+     * @return string
+     */
+    public function getDocumentClass()
+    {
+        return 'MWF_Core_Indexer_Document';
+    }
+
+    /**
+     * Return document type
+     *
+     * @return string
+     */
+    public function getDocumentType()
+    {
+        return self::DOCUMENT_TYPE;
+    }
+
+    /**
+     * Return all identifiers
+     *
+     * @return array
+     */
+    public function getAllIdentifiers()
+    {
+        $indexIdentifiers = array();
+
+        foreach ($this->siterootManager->getAllSiteRoots() as $siteroot)
+        {
+            /* @var $siteroot Makeweb_Siteroots_Siteroot */
+
+            // get siteroot properties
+            $isSiterootEnabled = '1' == $siteroot->getProperty('indexer.elements.enabled');
+            $skipRestricted    = '1' == $siteroot->getProperty('indexer.elements.skip.restricted');
+            $skipTids          = explode(';', $siteroot->getProperty('indexer.elements.skip.tids'));
+            $skipElementTypes
+                = explode(';', $siteroot->getProperty('indexer.elements.skip.elementtypeids'));
+
+            if (!$isSiterootEnabled)
+            {
+                continue;
+            }
+
+            $siterootId = $siteroot->getId();
+            $tree       = $this->treeManager->getBySiteRootId($siterootId);
+
+            $rii = new RecursiveIteratorIterator(
+                $tree->getIterator(),
+                RecursiveIteratorIterator::SELF_FIRST
+            );
+
+            foreach ($rii as $treeNode) /* @var $treeNode Makeweb_Elements_Tree_Node */
+            {
+                if ($treeNode->isInstance() && !$treeNode->isInstanceMaster())
+                {
+                    continue;
+                }
+
+                /**
+                 * skip specific tids
+                 */
+                if (in_array($treeNode->getId(), $skipTids))
+                {
+                    continue;
+                }
+
+                foreach ($treeNode->getOnlineLanguages() as $language)
+                {
+                    $onlineVersion = $treeNode->getOnlineVersion($language);
+                    $eid           = $treeNode->getEid();
+
+                    /**
+                     * skip restricted, if not globally allowed
+                     */
+                    if ($skipRestricted && $treeNode->isRestricted($onlineVersion))
+                    {
+                        continue;
+                    }
+
+                    $elementVersion = $this->elementVersionManager->get($eid, $onlineVersion);
+
+                    /**
+                     * skip specific element types
+                     */
+                    if (in_array($elementVersion->getElementTypeID(), $skipElementTypes))
+                    {
+                        continue;
+                    }
+
+                    $elementTypeVersion = $elementVersion->getElementTypeVersionObj();
+                    $elementType        = $elementTypeVersion->getElementType();
+                    $elementTypeName    = $elementType->getType();
+                    if (Makeweb_Elementtypes_Elementtype_Version::TYPE_FULL !== $elementTypeName)
+                    {
+                        continue;
+                    }
+
+                    $id = 'treenode_' . $treeNode->getId() . '_' . $language;
+                    $indexIdentifiers[$id] = $id;
+                }
+            }
+        }
+
+        return $indexIdentifiers;
+    }
+
+    /**
+     * Get document by identifier
+     *
+     * @return MWF_Core_Indexer_Document
+     */
+    public function getDocumentByIdentifier($id)
+    {
+        list($prefix, $tid, $language) = explode('_', $id);
+
+        $treeNode       = $this->treeManager->getNodeByNodeId($tid);
+        $eid            = $treeNode->getEid();
+        $onlineVersion  = $treeNode->getOnlineVersion($language);
+        $elementVersion = $this->elementVersionManager->get($eid, $onlineVersion);
+
+        if (!$this->isIndexibleNode($treeNode, $language))
+        {
+            return null;
+        }
+
+        return $this->_mapElementToDocument($treeNode, $elementVersion, $language, $id);
+    }
+
+    /**
+     * Get document
+     *
+     * @param Makeweb_Elements_Tree_Node       $treeNode
+     * @param Makeweb_Elements_Element_Version $elementVersion
+     * @param string                           $language
+     * @param integer                          $id
+     * @return MWF_Core_Indexer_Document|false
+     * @throws Exception
+     */
+    protected function _mapElementToDocument(Makeweb_Elements_Tree_Node $treeNode,
+                                             Makeweb_Elements_Element_Version $elementVersion,
+                                             $language,
+                                             $id)
+    {
+        try
+        {
+            ob_start();
+
+            $document = $this->createDocument();
+            $document->setIdentifier($id);
+
+            $this->_handleBoost($document, $treeNode, $elementVersion);
+            $result = $this->_loadTreeNode($document, $treeNode, $elementVersion, $language);
+
+            while (ob_get_level() > 0)
+            {
+                ob_end_clean();
+            }
+
+            if (!$result)
+            {
+                MWF_Log::warn('Create document failed.');
+                return false;
+            }
+        }
+        catch (exception $e)
+        {
+            while (ob_get_level() > 0)
+            {
+                ob_end_clean();
+            }
+
+            throw $e;
+        }
+
+        $event = new Makeweb_IndexerElements_Event_MapDocument($document, $treeNode, $elementVersion, $language);
+        $this->dispatcher->postNotification($event);
+
+        return $document;
+    }
+
+    /**
+     * Parse a multivalue property 123:2;17:3
+     *
+     * @param string $property
+     *
+     * @return array
+     */
+    protected function _getKeyValueProperty($property)
+    {
+        $result = array();
+
+        // extract key/value pairs
+        $valuePairs = explode(';', $property);
+        foreach ($valuePairs as $valuePair)
+        {
+            // extract key/value of a single value
+            $keyValue = explode(':', $valuePair);
+
+            // key and value must be present
+            if (!isset($keyValue[1]) || !isset($keyValue[0]))
+            {
+                continue;
+            }
+
+            $key   = trim($keyValue[0]);
+            $value = trim($keyValue[1]);
+
+            // key and value must be present
+            if (!strlen($key) || !strlen($value))
+            {
+                continue;
+            }
+
+            $result[$key] = $value;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Handle document boost
+     *
+     * @param MWF_Core_Indexer_Document_Interface $document
+     * @param Makeweb_Elements_Tree_Node          $treeNode
+     * @param Makeweb_Elements_Element_Version    $versionObj
+     */
+    protected function _handleBoost(MWF_Core_Indexer_Document_Interface $document,
+                                   Makeweb_Elements_Tree_Node $treeNode,
+                                   Makeweb_Elements_Element_Version $elementVersion)
+    {
+        $siteroot = $this->siterootManager->getById($treeNode->getSiteRootId());
+
+        $boostProperty = $siteroot->getProperty('indexer.elements.boost.tids');
+        $boostTids     = $this->_getKeyValueProperty($boostProperty);
+        $tid           = $treeNode->getId();
+
+        // 1. try boosting by tid
+        if (isset($boostTids[$tid]))
+        {
+            $document->setBoost($boostTids[$tid]);
+            return;
+        }
+
+        $boostProperty     = $siteroot->getProperty('indexer.elements.boost.elementtypeids');
+        $boostElementtypes = $this->_getKeyValueProperty($boostProperty);
+        $elementTypeId     = $elementVersion->getElementTypeID();
+
+        // 2. try boosting by element type id
+        if (isset($boostElementtypes[$elementTypeId]))
+        {
+            $document->setBoost($boostElementtypes[$elementTypeId]);
+            return;
+        }
+    }
+
+    /**
+     * Load a html representation of an element.
+     *
+     * @param MWF_Core_Indexer_Document_Interface $document
+     * @param Makeweb_Elements_Tree_Node          $treeNode
+     * @param Makeweb_Elements_Element_Version    $versionObj
+     * @param string                              $language
+     */
+    protected function _loadTreeNode(MWF_Core_Indexer_Document_Interface $document,
+                                     Makeweb_Elements_Tree_Node $treeNode,
+                                     Makeweb_Elements_Element_Version $elementVersion,
+                                     $language)
+    {
+        $response = new Zend_Controller_Response_Http();
+        $request = new Makeweb_Frontend_Request($response, false, false);
+        $request->setVersionOnline();
+
+        $requestHandlerClass = $this->requestHandler;
+
+        if ($requestHandlerClass)
+        {
+            $request->setHandler(new $requestHandlerClass());
+        }
+
+        $tid = $treeNode->getId();
+
+        $request->setLanguage($language);
+        $request->setTid($tid);
+        $request->setSiteRootId($treeNode->getSiteRootId());
+
+        $useContext = $this->contextManager->useContext();
+
+        if ($useContext)
+        {
+            $countries = $request->getContext()->getCountriesForTidAndLanguage($tid, $language);
+            if (!count($countries))
+            {
+                $countries[] = 'global';
+            }
+
+            if ($useContext)
+            {
+                $request->getContext()->setCountry($countries[0]);
+            }
+        }
+
+        /* @var $renderer Makeweb_Renderers_Html */
+        $renderer = $request->getContentChannel()->getRenderer();
+        $renderer->setRequest($request);
+
+        $renderer->setResponse(new Zend_Controller_Response_Cli());
+        $renderer->render();
+
+        $html = $renderer->getOutput();
+
+        // Remove Content between udmComments
+        $html = preg_replace("|<!--\s*UdmComment\s*-->(.*)<!--\s*/UdmComment\s*-->|Umsu", '', $html);
+        $html = preg_replace("|<!--\s*NoIndex\s*-->(.*)<!--\s*/NoIndex\s*-->|Umsu", '', $html);
+
+        // strip_tags may concatenate word which are logically separated
+        // <ul><li>one</li><li>two</li></ul> -> onetwo
+        $html = str_replace('<', ' <', $html);
+
+        // Remove NL, CR, TABs
+        $html = str_replace(array("\r", "\n", "\t"), array(' ',' ',' '), $html);
+
+        // Remove multiple whitespaces
+        $html = preg_replace('|\s+|u', ' ', $html);
+
+        // Convert special chars to HTML-readable stuff
+        $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
+
+        // Find Title
+        $title = '';
+        $match = array();
+        preg_match('#<h1.*?\>(.*?)\</h1\>#u', $html, $match);
+
+        if (!isset($match[1]) || !trim(strip_tags($match[1])))
+        {
+            preg_match('#<h2.*?\>(.*?)\</h2\>#u', $html, $match);
+        }
+
+        if (!isset($match[1]) || !trim(strip_tags($match[1])))
+        {
+            preg_match('#<title.*?\>(.*?)\</title\>#u', $html, $match);
+        }
+
+        if (isset($match[1]) || !trim(strip_tags($match[1])))
+        {
+            $title = trim(strip_tags($match[1]));
+        }
+        else
+        {
+            $title = $elementVersion->getPageTitle($language);
+        }
+
+        $doc = Zend_Search_Lucene_Document_Html::loadHTML($html, false, 'UTF-8');
+
+        $content = $doc->getFieldUtf8Value('body');
+
+        $content = html_entity_decode($content, ENT_QUOTES, 'UTF-8');
+        $title   = html_entity_decode($title, ENT_QUOTES, 'UTF-8');
+
+        // Remove multiple whitespaces
+        $content = preg_replace('|\s+|u', ' ', $content);
+        $title   = preg_replace('|\s+|u', ' ', $title);
+
+        $url     = Makeweb_Navigations_Link::createFromTid($tid, $language, false);
+        $version = $elementVersion->getVersion();
+
+        $elementTypeVersionObj = $elementVersion->getElementTypeVersionObj();
+        $elementType           = $elementTypeVersionObj->getElementType();
+        $elementTypeUniqueId   = $elementType->getUniqueId();
+
+        $document->setValue('language', $language);
+        $document->setValue('context', $useContext ? $countries : array());
+
+        $document->setValue('title', $title);
+        $document->setValue('content', $content);
+        $document->setValue('url', $url);
+        $document->setValue('tid', $tid);
+        $document->setValue('eid', $treeNode->getEid());
+        $document->setValue('elementtype', $elementTypeUniqueId);
+        $document->setValue('siteroot', $treeNode->getSiteRootId());
+        $document->setValue('restricted', $treeNode->isRestricted($version) ? '1' : '0');
+
+        return true;
+    }
+
+    public function isIndexibleNode(Makeweb_Elements_Tree_Node $node, $language)
+    {
+        $tid        = $node->getId();
+        $siterootId = $node->getSiteRootId();
+
+        $siteroot           = $this->siterootManager->getById($siterootId);
+        $isSiterootEnabled  = '1' == $siteroot->getProperty('indexer.elements.enabled');
+        $skipRestricted     = '1' == $siteroot->getProperty('indexer.elements.skip.restricted');
+        $skipTids           = explode(';', $siteroot->getProperty('indexer.elements.skip.tids'));
+        $skipElementTypeIds = explode(';', $siteroot->getProperty('indexer.elements.skip.elementtypeids'));
+
+        // skip siteroot?
+        if (!$isSiterootEnabled)
+        {
+            return false;
+        }
+
+        // skip tid?
+        if (in_array($tid, $skipTids))
+        {
+            return false;
+        }
+
+        // skip restricted?
+        if ($skipRestricted)
+        {
+            $version      = $node->getOnlineVersion($language);
+            $isRestricted = $node->isRestricted($version);
+
+            if ($isRestricted)
+            {
+                return false;
+            }
+        }
+
+        // skip elementtype?
+        $eid           = $node->getEid();
+        $element       = $this->elementManager->getByEID($eid);
+        $elementTypeId = $element->getElementTypeId();
+        if (in_array($elementTypeId, $skipElementTypeIds))
+        {
+            return false;
+        }
+
+        // skip non full elements
+        $elementType     = $element->getElementType();
+        $elementTypeType = $elementType->getType();
+        if (Makeweb_Elementtypes_Elementtype_Version::TYPE_FULL !== $elementTypeType)
+        {
+            return false;
+        }
+
+        return true;
+    }
+}

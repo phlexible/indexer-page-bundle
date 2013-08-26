@@ -1,0 +1,22 @@
+{
+    "name": "phlexible/indexer-elements-component",
+    "description": "phlexible.cms indexer elements component",
+    "license": "proprietary",
+    "autoload": {
+        "psr-0": { 
+            "Makeweb_IndexerElements_": ""
+        }
+    },
+    "target-dir": "Makeweb/IndexerElements",
+    "require": {
+        "php": ">=5.3.0",
+        "phlexible/indexer-component": "*@dev"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.phlexible.net/v1/"
+        }
+    ],
+    "minimum-stability": "stable"
+}
