@@ -25,10 +25,11 @@ class Makeweb_IndexerElements_Component extends MWF_Component_Abstract
      */
     public function __construct()
     {
-        $this->setVersion('0.7.1');
-        $this->setId('indexerelements');
-        $this->setFile(__FILE__);
-        $this->setPackage('makeweb');
+        $this
+            ->setVersion('0.7.1')
+            ->setId('indexerelements')
+            ->setFile(__FILE__)
+            ->setPackage('makeweb');
     }
 
     public function initContainer(MWF_Container_ContainerBuilder $container)
@@ -48,6 +49,7 @@ class Makeweb_IndexerElements_Component extends MWF_Component_Abstract
                         ':frontend.request.handler'
                     ),
                     'scope' => 'singleton',
+                    'tag'   => 'indexer.indexer',
                 ),
                 'indexerElementsTools' => array(
                     'class' => 'Makeweb_IndexerElements_Tools',
@@ -62,6 +64,7 @@ class Makeweb_IndexerElements_Component extends MWF_Component_Abstract
                     'class'     => 'Makeweb_IndexerElements_Query_Eid',
                     'arguments' => array('indexerQueryParser'),
                     'scope'     => 'prototype',
+                    'tag'       => 'indexer.search',
                 ),
                 // listener
                 'indexerElementsListenerCreateDocument' => array(
@@ -108,16 +111,6 @@ class Makeweb_IndexerElements_Component extends MWF_Component_Abstract
                 ),
             )
         );
-    }
-
-    public function getIndexerSearches()
-    {
-        return array('indexer-elements-query-eid' => 'indexerElementsQueryEid');
-    }
-
-    public function getIndexers()
-    {
-        return array('elements' => 'indexerElementsIndexer');
     }
 
     public function getSiterootProperties()
