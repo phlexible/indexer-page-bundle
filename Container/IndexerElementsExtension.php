@@ -20,6 +20,9 @@ use Symfony\Component\Config\FileLocator;
  */
 class IndexerElementsExtension extends Extension
 {
+    /**
+     * {@inheritdoc}
+     */
     public function load(ContainerBuilder $container, array $configs)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../_config'));
