@@ -11,14 +11,14 @@
  */
 
 /**
- * Indexer Element Tools
+ * Elements indexer tools
  *
  * @category    Makeweb
  * @package     Makeweb_IndexerElements
  * @author      Phillip Look <pl@brainbits.net>
  * @copyright   2010 brainbits GmbH (http://www.brainbits.net)
  */
-class Makeweb_IndexerElements_Tools
+class Tools
 {
     /**
      * @var MWF_Core_Queue_Manager

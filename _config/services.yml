@@ -1,0 +1,38 @@
+services:
+    indexerElementsIndexer:
+        class: Phlexible\IndexerElementsComponent\Indexer\ElementsIndexer
+        arguments:
+            - "@dispatcher"
+            - "@indexerDocumentFactory"
+            - "@siterootManager"
+            - "@elementsTreeManager"
+            - "@elementsManager"
+            - "@elementsVersionManager"
+            - "@elementsContextmanager"
+            - "%frontend.request.handler"
+        tags:
+            - ["indexer.indexer"]
+
+    indexerElementsTools:
+        class: Phlexible\IndexerElementsComponent\Indexer\Tools
+        arguments: ["@queueManager", "@indexerTools", "@indexerElementsIndexer"]
+
+    indexerElementsQueryEid:
+        class: Phlexible\IndexerElementsComponent\Query\EidQuery
+        arguments: ["@indexerQueryParser"]
+        tags:
+            - ["indexer.search"]
+
+    # listeners
+    indexerElementsListenerCreateDocument:
+        class: Phlexible\IndexerElementsComponent\CreateDocumentListener
+        tags:
+            - ["event.listener", {event: indexer.create_document, method: onCreateDocument}]
+
+    indexerElementsListenerPublishNode:
+        class: Phlexible\IndexerElementsComponent\ElementListener
+        tags:
+            - ["event.listener", {event: element.create_node, method: onPublishNode}]
+            - ["event.listener", {event: element.update_node, method: onUpdateNode}]
+            - ["event.listener", {event: element.set_node_offline, method: onMoveNode}]
+            - ["event.listener", {event: element.delete_node, method: onDeleteNode}]

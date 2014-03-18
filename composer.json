@@ -3,14 +3,13 @@
     "description": "phlexible.cms indexer elements component",
     "license": "proprietary",
     "autoload": {
-        "psr-0": { 
-            "Makeweb_IndexerElements_": ""
+        "psr-4": { 
+            "Phlexible\\IndexerElementsComponent\\": ""
         }
     },
-    "target-dir": "Makeweb/IndexerElements",
     "require": {
         "php": ">=5.3.0",
-        "phlexible/indexer-component": "1.0.*"
+        "phlexible/indexer-component": "*"
     },
     "repositories": [
         {

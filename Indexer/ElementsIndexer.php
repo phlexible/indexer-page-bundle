@@ -1,23 +1,23 @@
 <?php
 /**
- * Phlexible
+ * phlexible
  *
- * PHP Version 5
- *
- * @category    Makeweb
- * @package     Makeweb_IndexerElements
- * @copyright   2010 brainbits GmbH (http://www.brainbits.net)
+ * @copyright 2007-2013 brainbits GmbH (http://www.brainbits.net)
+ * @license   proprietary
  */
 
+namespace Phlexible\IndexerElementsComponent\Indexer;
+
+use Phlexible\Event\EventDispatcher;
+use Phlexible\IndexerComponent\Indexer\AbstractIndexer;
+use Phlexible\IndexerComponent\Storage\StorageInterface;
+
 /**
- * Elements Indexer
+ * Elements indexer
  *
- * @category    Makeweb
- * @package     Makeweb_IndexerElements
- * @author      Marco Fischer <mf@brainbits.net>
- * @copyright   2010 brainbits GmbH (http://www.brainbits.net)
+ * @author Marco Fischer <mf@brainbits.net>
  */
-class Makeweb_IndexerElements_Indexer extends MWF_Core_Indexer_Indexer_Abstract
+class ElementsIndexer extends AbstractIndexer
 {
     /**
      * @var string
@@ -25,12 +25,17 @@ class Makeweb_IndexerElements_Indexer extends MWF_Core_Indexer_Indexer_Abstract
     const DOCUMENT_TYPE = 'elements';
 
     /**
-     * @var Brainbits_Event_Dispatcher
+     * @var EventDispatcher
      */
     protected $dispatcher = null;
 
     /**
-     * @var MWF_Core_Indexer_Document_Factory
+     * @var StorageInterface
+     */
+    protected $storage = null;
+
+    /**
+     * @var DocumentFactory
      */
     protected $documentFactory = null;
 
@@ -62,17 +67,11 @@ class Makeweb_IndexerElements_Indexer extends MWF_Core_Indexer_Indexer_Abstract
     /**
      * @var string
      */
-    protected $_label = 'Indexer for Elements';
-
-    /**
-     * @var string
-     */
     protected $requestHandler;
 
     /**
-     * Constructor
-     *
-     * @param Brainbits_Event_Dispatcher               $dispatcher
+     * @param EventDispatcher  $dispatcher
+     * @param StorageInterface $storage,
      * @param MWF_Core_Indexer_Document_Factory        $documentFactory
      * @param Makeweb_Siteroots_Siteroot_Manager       $siterootManager
      * @param Makeweb_Elements_Tree_Manager            $treeManager
@@ -81,7 +80,8 @@ class Makeweb_IndexerElements_Indexer extends MWF_Core_Indexer_Indexer_Abstract
      * @param Makeweb_Elements_Context_Manager         $contextManager
      * @param string                                   $requestHandler
      */
-    public function __construct(Brainbits_Event_Dispatcher               $dispatcher,
+    public function __construct(EventDispatcher $dispatcher,
+                                StorageInterface $storage,
                                 MWF_Core_Indexer_Document_Factory        $documentFactory,
                                 Makeweb_Siteroots_Siteroot_Manager       $siterootManager,
                                 Makeweb_Elements_Tree_Manager            $treeManager,
@@ -91,6 +91,7 @@ class Makeweb_IndexerElements_Indexer extends MWF_Core_Indexer_Indexer_Abstract
                                 $requestHandler)
     {
         $this->dispatcher            = $dispatcher;
+        $this->storage               = $storage;
         $this->documentFactory       = $documentFactory;
         $this->siterootManager       = $siterootManager;
         $this->treeManager           = $treeManager;
@@ -98,6 +99,30 @@ class Makeweb_IndexerElements_Indexer extends MWF_Core_Indexer_Indexer_Abstract
         $this->elementVersionManager = $elementVersionManager;
         $this->contextManager        = $contextManager;
         $this->requestHandler        = $requestHandler;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLabel()
+    {
+        return 'Elements indexer';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getStorage()
+    {
+        return $this->storage;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDocumentFactory()
+    {
+        return $this->documentFactory;
     }
 
     /**
