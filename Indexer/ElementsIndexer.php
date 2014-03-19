@@ -11,6 +11,8 @@ namespace Phlexible\IndexerElementsComponent\Indexer;
 use Phlexible\Event\EventDispatcher;
 use Phlexible\IndexerComponent\Indexer\AbstractIndexer;
 use Phlexible\IndexerComponent\Storage\StorageInterface;
+use Phlexible\SiterootsComponent\Siteroot\SiterootRepository;
+use Phlexible\TreeComponent\TreeManager;
 
 /**
  * Elements indexer
@@ -35,32 +37,27 @@ class ElementsIndexer extends AbstractIndexer
     protected $storage = null;
 
     /**
-     * @var DocumentFactory
+     * @var SiterootRepository
      */
-    protected $documentFactory = null;
+    protected $siterootRepository = null;
 
     /**
-     * @var Makeweb_Siteroots_Siteroot_Manager
-     */
-    protected $siterootManager = null;
-
-    /**
-     * @var Makeweb_Elements_Tree_Manager
+     * @var TreeManager
      */
     protected $treeManager = null;
 
     /**
-     * @var Makeweb_Elements_Element_Manager
+     * @var ElementManager
      */
     protected $elementManager;
 
     /**
-     * @var Makeweb_Elements_Element_Version_Manager
+     * @var ElementVersionManager
      */
     protected $elementVersionManager = null;
 
     /**
-     * @var Makeweb_Elements_Context_Manager
+     * @var ContextManager
      */
     protected $contextManager;
 
@@ -70,30 +67,27 @@ class ElementsIndexer extends AbstractIndexer
     protected $requestHandler;
 
     /**
-     * @param EventDispatcher  $dispatcher
-     * @param StorageInterface $storage,
-     * @param MWF_Core_Indexer_Document_Factory        $documentFactory
-     * @param Makeweb_Siteroots_Siteroot_Manager       $siterootManager
-     * @param Makeweb_Elements_Tree_Manager            $treeManager
-     * @param Makeweb_Elements_Element_Manager         $elementManager
-     * @param Makeweb_Elements_Element_Version_Manager $elementVersionManager
-     * @param Makeweb_Elements_Context_Manager         $contextManager
-     * @param string                                   $requestHandler
+     * @param EventDispatcher       $dispatcher
+     * @param StorageInterface      $storage
+     * @param SiterootRepository    $siterootRepository
+     * @param TreeManager           $treeManager
+     * @param ElementManager        $elementManager
+     * @param ElementVersionManager $elementVersionManager
+     * @param ContextManager        $contextManager
+     * @param string                $requestHandler
      */
     public function __construct(EventDispatcher $dispatcher,
                                 StorageInterface $storage,
-                                MWF_Core_Indexer_Document_Factory        $documentFactory,
-                                Makeweb_Siteroots_Siteroot_Manager       $siterootManager,
-                                Makeweb_Elements_Tree_Manager            $treeManager,
-                                Makeweb_Elements_Element_Manager         $elementManager,
-                                Makeweb_Elements_Element_Version_Manager $elementVersionManager,
-                                Makeweb_Elements_Context_Manager         $contextManager,
+                                SiterootRepository $siterootRepository,
+                                TreeManager $treeManager,
+                                ElementManager $elementManager,
+                                ElementVersionManager $elementVersionManager,
+                                ContextManager $contextManager,
                                 $requestHandler)
     {
         $this->dispatcher            = $dispatcher;
         $this->storage               = $storage;
-        $this->documentFactory       = $documentFactory;
-        $this->siterootManager       = $siterootManager;
+        $this->siterootRepository       = $siterootRepository;
         $this->treeManager           = $treeManager;
         $this->elementManager        = $elementManager;
         $this->elementVersionManager = $elementVersionManager;
@@ -154,9 +148,9 @@ class ElementsIndexer extends AbstractIndexer
     {
         $indexIdentifiers = array();
 
-        foreach ($this->siterootManager->getAllSiteRoots() as $siteroot)
+        foreach ($this->siterootRepository->getAllSiteRoots() as $siteroot)
         {
-            /* @var $siteroot Makeweb_Siteroots_Siteroot */
+            /* @var $siteroot Siteroot */
 
             // get siteroot properties
             $isSiterootEnabled = '1' == $siteroot->getProperty('indexer.elements.enabled');
@@ -173,9 +167,9 @@ class ElementsIndexer extends AbstractIndexer
             $siterootId = $siteroot->getId();
             $tree       = $this->treeManager->getBySiteRootId($siterootId);
 
-            $rii = new RecursiveIteratorIterator(
+            $rii = new \RecursiveIteratorIterator(
                 $tree->getIterator(),
-                RecursiveIteratorIterator::SELF_FIRST
+                \RecursiveIteratorIterator::SELF_FIRST
             );
 
             foreach ($rii as $treeNode) /* @var $treeNode Makeweb_Elements_Tree_Node */
@@ -354,10 +348,10 @@ class ElementsIndexer extends AbstractIndexer
      * @param Makeweb_Elements_Element_Version    $versionObj
      */
     protected function _handleBoost(MWF_Core_Indexer_Document_Interface $document,
-                                   Makeweb_Elements_Tree_Node $treeNode,
-                                   Makeweb_Elements_Element_Version $elementVersion)
+                                    Makeweb_Elements_Tree_Node $treeNode,
+                                    Makeweb_Elements_Element_Version $elementVersion)
     {
-        $siteroot = $this->siterootManager->getById($treeNode->getSiteRootId());
+        $siteroot = $this->siterootRepository->getById($treeNode->getSiteRootId());
 
         $boostProperty = $siteroot->getProperty('indexer.elements.boost.tids');
         $boostTids     = $this->_getKeyValueProperty($boostProperty);
@@ -516,7 +510,7 @@ class ElementsIndexer extends AbstractIndexer
         $tid        = $node->getId();
         $siterootId = $node->getSiteRootId();
 
-        $siteroot           = $this->siterootManager->getById($siterootId);
+        $siteroot           = $this->siterootRepository->getById($siterootId);
         $isSiterootEnabled  = '1' == $siteroot->getProperty('indexer.elements.enabled');
         $skipRestricted     = '1' == $siteroot->getProperty('indexer.elements.skip.restricted');
         $skipTids           = explode(';', $siteroot->getProperty('indexer.elements.skip.tids'));

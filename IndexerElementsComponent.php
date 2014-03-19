@@ -8,14 +8,14 @@
 
 namespace Phlexible\IndexerElementsComponent;
 
-use Phlexible\Component\AbstractComponent;
+use Phlexible\Component\Component;
 
 /**
  * Elements indexer component
  *
  * @author Marco Fischer <mf@brainbits.net>
  */
-class IndexerElementsComponent extends AbstractComponent
+class IndexerElementsComponent extends Component
 {
     public function __construct()
     {

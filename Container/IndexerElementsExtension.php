@@ -27,5 +27,7 @@ class IndexerElementsExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../_config'));
         $loader->load(__DIR__ . '/../_config/services.yml');
+
+        $container->setAlias('indexerElementsStorage', 'indexerStorageDefault');
     }
 }

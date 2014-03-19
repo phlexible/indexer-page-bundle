@@ -3,9 +3,9 @@ services:
         class: Phlexible\IndexerElementsComponent\Indexer\ElementsIndexer
         arguments:
             - "@dispatcher"
-            - "@indexerDocumentFactory"
-            - "@siterootManager"
-            - "@elementsTreeManager"
+            - "@indexerElementsStorage"
+            - "@siterootsRepository"
+            - "@treeManager"
             - "@elementsManager"
             - "@elementsVersionManager"
             - "@elementsContextmanager"
