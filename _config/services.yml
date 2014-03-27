@@ -6,16 +6,11 @@ services:
             - "@indexerElementsStorage"
             - "@siterootsRepository"
             - "@treeManager"
-            - "@elementsManager"
-            - "@elementsVersionManager"
-            - "@elementsContextmanager"
+            - "@elementsService"
+            - "@elementsContextManager"
             - "%frontend.request.handler"
         tags:
             - ["indexer.indexer"]
-
-    indexerElementsTools:
-        class: Phlexible\IndexerElementsComponent\Indexer\Tools
-        arguments: ["@queueManager", "@indexerTools", "@indexerElementsIndexer"]
 
     indexerElementsQueryEid:
         class: Phlexible\IndexerElementsComponent\Query\EidQuery
@@ -24,13 +19,13 @@ services:
             - ["indexer.search"]
 
     # listeners
-    indexerElementsListenerCreateDocument:
-        class: Phlexible\IndexerElementsComponent\CreateDocumentListener
+    indexerElementsListenerDocument:
+        class: Phlexible\IndexerElementsComponent\Listener\DocumentListener
         tags:
             - ["event.listener", {event: indexer.create_document, method: onCreateDocument}]
 
-    indexerElementsListenerPublishNode:
-        class: Phlexible\IndexerElementsComponent\ElementListener
+    indexerElementsListenerNode:
+        class: Phlexible\IndexerElementsComponent\Listener\NodeListener
         tags:
             - ["event.listener", {event: element.create_node, method: onPublishNode}]
             - ["event.listener", {event: element.update_node, method: onUpdateNode}]

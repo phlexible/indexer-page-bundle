@@ -9,11 +9,11 @@
 namespace Phlexible\IndexerElementsComponent\Listener;
 
 /**
- * Create document listener
+ * Document listener
  *
  * @author Marco Fischer <mf@brainbits.net>
  */
-class CreateDocumentListener
+class DocumentListener
 {
     public function onCreateDocument(CreateDocumentListener $event)
     {

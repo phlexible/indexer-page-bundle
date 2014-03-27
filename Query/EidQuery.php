@@ -1,23 +1,21 @@
 <?php
 /**
- * Phlexible
+ * phlexible
  *
- * PHP Version 5
- *
- * @category    Makeweb
- * @package     Makeweb_IndexerElements
- * @copyright   2010 brainbits GmbH (http://www.brainbits.net)
+ * @copyright 2007-2013 brainbits GmbH (http://www.brainbits.net)
+ * @license   proprietary
  */
 
+namespace Phlexible\IndexerElementsComponent\Query;
+
+use Phlexible\IndexerComponent\Query\AbstractQuery;
+
 /**
- * EID Query
+ * EID query
  *
- * @category    Makeweb
- * @package     Makeweb_IndexerElements
- * @author      Phillip Look <pl@brainbits.net>
- * @copyright   2010 brainbits GmbH (http://www.brainbits.net)
+ * @author Phillip Look <pl@brainbits.net>
  */
-class Makeweb_IndexerElements_Query_Eid extends MWF_Core_Indexer_Query_Abstract
+class EidQuery extends AbstractQuery
 {
     /**
      * @var array
