@@ -8,11 +8,13 @@
 
 namespace Phlexible\IndexerElementsComponent\Indexer;
 
-use Phlexible\Event\EventDispatcher;
 use Phlexible\IndexerComponent\Indexer\AbstractIndexer;
 use Phlexible\IndexerComponent\Storage\StorageInterface;
+use Phlexible\IndexerElementsComponent\Event\MapDocumentEvent;
+use Phlexible\IndexerElementsComponent\Events;
 use Phlexible\SiterootsComponent\Siteroot\SiterootRepository;
 use Phlexible\TreeComponent\TreeManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Elements indexer
@@ -27,7 +29,7 @@ class ElementsIndexer extends AbstractIndexer
     const DOCUMENT_TYPE = 'elements';
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     protected $dispatcher = null;
 
@@ -67,16 +69,16 @@ class ElementsIndexer extends AbstractIndexer
     protected $requestHandler;
 
     /**
-     * @param EventDispatcher       $dispatcher
-     * @param StorageInterface      $storage
-     * @param SiterootRepository    $siterootRepository
-     * @param TreeManager           $treeManager
-     * @param ElementManager        $elementManager
-     * @param ElementVersionManager $elementVersionManager
-     * @param ContextManager        $contextManager
-     * @param string                $requestHandler
+     * @param EventDispatcherInterface $dispatcher
+     * @param StorageInterface         $storage
+     * @param SiterootRepository       $siterootRepository
+     * @param TreeManager              $treeManager
+     * @param ElementManager           $elementManager
+     * @param ElementVersionManager    $elementVersionManager
+     * @param ContextManager           $contextManager
+     * @param string                   $requestHandler
      */
-    public function __construct(EventDispatcher $dispatcher,
+    public function __construct(EventDispatcherInterface $dispatcher,
                                 StorageInterface $storage,
                                 SiterootRepository $siterootRepository,
                                 TreeManager $treeManager,
@@ -285,7 +287,7 @@ class ElementsIndexer extends AbstractIndexer
                 return false;
             }
         }
-        catch (exception $e)
+        catch (\Exception $e)
         {
             while (ob_get_level() > 0)
             {
@@ -295,8 +297,8 @@ class ElementsIndexer extends AbstractIndexer
             throw $e;
         }
 
-        $event = new Makeweb_IndexerElements_Event_MapDocument($document, $treeNode, $elementVersion, $language);
-        $this->dispatcher->postNotification($event);
+        $event = new MapDocumentEvent($document, $treeNode, $elementVersion, $language);
+        $this->dispatcher->dispatch(Events::MAP_DOCUMENT, $event);
 
         return $document;
     }

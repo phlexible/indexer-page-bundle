@@ -8,9 +8,10 @@
 
 namespace Phlexible\IndexerElementsComponent\Event;
 
-use Phlexible\Event\Event;
+use Phlexible\ElementsComponent\ElementVersion\ElementVersion;
 use Phlexible\IndexerComponent\Document\DocumentInterface;
-use Phlexible\IndexerElementsComponent\Events;
+use Phlexible\TreeComponent\Tree\Node\TreeNodeInterface;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Elements indexer event
@@ -20,39 +21,34 @@ use Phlexible\IndexerElementsComponent\Events;
 class MapDocumentEvent extends Event
 {
     /**
-     * @var string
-     */
-    protected $eventName = Events::MAP_DOCUMENT;
-
-    /**
      * @var DocumentInterface
      */
-    protected $document = null;
+    private $document = null;
 
     /**
-     * @var Makeweb_Elements_Tree_Node
+     * @var TreeNodeInterface
      */
-    protected $node = null;
+    private $node = null;
 
     /**
-     * @var Makeweb_Elements_Element_Version
+     * @var ElementVersion
      */
-    protected $elementVersion = null;
+    private $elementVersion = null;
 
     /**
      * @var string
      */
-    protected $language = null;
+    private $language = null;
 
     /**
      * @param DocumentInterface $document
-     * @param Makeweb_Elements_Tree_Node         $node
-     * @param Makeweb_Elements_Element_Version   $elementVersion
-     * @param string                             $language
+     * @param TreeNodeInterface $node
+     * @param ElementVersion    $elementVersion
+     * @param string            $language
      */
     public function __construct(DocumentInterface $document,
-                                Makeweb_Elements_Tree_Node $node,
-                                Makeweb_Elements_Element_Version $elementVersion,
+                                TreeNodeInterface $node,
+                                ElementVersion $elementVersion,
                                 $language)
     {
         $this->document       = $document;
@@ -70,7 +66,7 @@ class MapDocumentEvent extends Event
     }
 
     /**
-     * @return Makeweb_Elements_Tree_Node
+     * @return TreeNodeInterface
      */
     public function getNode()
     {
@@ -78,7 +74,7 @@ class MapDocumentEvent extends Event
     }
 
     /**
-     * @return Makeweb_Elements_Element_Version
+     * @return ElementVersion
      */
     public function getElementVersion()
     {
