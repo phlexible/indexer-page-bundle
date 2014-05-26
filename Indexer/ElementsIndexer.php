@@ -98,7 +98,7 @@ class ElementsIndexer extends AbstractIndexer
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getLabel()
     {
@@ -106,7 +106,7 @@ class ElementsIndexer extends AbstractIndexer
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getStorage()
     {
@@ -114,7 +114,7 @@ class ElementsIndexer extends AbstractIndexer
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getDocumentFactory()
     {
