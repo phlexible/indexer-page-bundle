@@ -11,11 +11,11 @@ namespace Phlexible\IndexerElementsComponent;
 use Phlexible\Component\Component;
 
 /**
- * Elements indexer component
+ * Elements indexer bundle
  *
  * @author Marco Fischer <mf@brainbits.net>
  */
-class IndexerElementsComponent extends Component
+class IndexerElementsBundle extends Component
 {
     public function __construct()
     {

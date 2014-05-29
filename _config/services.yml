@@ -1,33 +1,33 @@
 services:
-    indexerElementsIndexer:
+    indexerelements.indexer:
         class: Phlexible\IndexerElementsComponent\Indexer\ElementsIndexer
         arguments:
             - "@dispatcher"
-            - "@indexerElementsStorage"
-            - "@siterootsRepository"
-            - "@treeManager"
-            - "@elementsService"
-            - "@elementsContextManager"
+            - "@indexerelements.storage"
+            - "@siteroots.repository"
+            - "@tree.manager"
+            - "@elements.service"
+            - "@elements.context.manager"
             - "%frontend.request.handler"
         tags:
-            - ["indexer.indexer"]
+            - {name: "indexer.indexer"}
 
-    indexerElementsQueryEid:
+    indexer.elements.query.eid:
         class: Phlexible\IndexerElementsComponent\Query\EidQuery
-        arguments: ["@indexerQueryParser"]
+        arguments: ["@indexer.query.parser"]
         tags:
-            - ["indexer.search"]
+            - {name: "indexer.search"}
 
     # listeners
-    indexerElementsListenerDocument:
+    indexerelements.listener.document:
         class: Phlexible\IndexerElementsComponent\Listener\DocumentListener
         tags:
-            - ["event.listener", {event: indexer.create_document, method: onCreateDocument}]
+            - {name: "event.listener", event: indexer.create_document, method: onCreateDocument}
 
-    indexerElementsListenerNode:
+    indexerelements.listener.Node:
         class: Phlexible\IndexerElementsComponent\Listener\NodeListener
         tags:
-            - ["event.listener", {event: element.create_node, method: onPublishNode}]
-            - ["event.listener", {event: element.update_node, method: onUpdateNode}]
-            - ["event.listener", {event: element.set_node_offline, method: onMoveNode}]
-            - ["event.listener", {event: element.delete_node, method: onDeleteNode}]
+            - {name: "event.listener", event: element.create_node, method: onPublishNode}
+            - {name: "event.listener", event: element.update_node, method: onUpdateNode}
+            - {name: "event.listener", event: element.set_node_offline, method: onMoveNode}
+            - {name: "event.listener", event: element.delete_node, method: onDeleteNode}

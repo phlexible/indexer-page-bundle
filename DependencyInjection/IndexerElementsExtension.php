@@ -6,12 +6,12 @@
  * @license   proprietary
  */
 
-namespace Phlexible\IndexerElementsComponent\Container;
+namespace Phlexible\IndexerElementsComponent\DependencyInjection;
 
-use Phlexible\Container\ContainerBuilder;
-use Phlexible\Container\Extension\Extension;
-use Phlexible\Container\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * Elements indexer extension
@@ -23,11 +23,11 @@ class IndexerElementsExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function load(ContainerBuilder $container, array $configs)
+    public function load(array $config, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../_config'));
         $loader->load(__DIR__ . '/../_config/services.yml');
 
-        $container->setAlias('indexerElementsStorage', 'indexerStorageDefault');
+        $container->setAlias('indexerelements.storage', 'indexer.storage.default');
     }
 }
