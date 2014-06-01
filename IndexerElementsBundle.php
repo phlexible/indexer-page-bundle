@@ -8,23 +8,15 @@
 
 namespace Phlexible\IndexerElementsComponent;
 
-use Phlexible\Component\Component;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Elements indexer bundle
  *
  * @author Marco Fischer <mf@brainbits.net>
  */
-class IndexerElementsBundle extends Component
+class IndexerElementsBundle extends Bundle
 {
-    public function __construct()
-    {
-        $this
-            ->setVersion('0.7.1')
-            ->setId('indexerelements')
-            ->setPackage('phlexible');
-    }
-
     public function getSiterootProperties()
     {
         // @TODO: implement skip/boost for unique IDs
