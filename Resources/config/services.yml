@@ -2,7 +2,7 @@ services:
     indexerelements.indexer:
         class: Phlexible\IndexerElementsComponent\Indexer\ElementsIndexer
         arguments:
-            - "@dispatcher"
+            - "@event_dispatcher"
             - "@indexerelements.storage"
             - "@siteroots.repository"
             - "@tree.manager"
@@ -22,12 +22,12 @@ services:
     indexerelements.listener.document:
         class: Phlexible\IndexerElementsComponent\Listener\DocumentListener
         tags:
-            - {name: "event.listener", event: indexer.create_document, method: onCreateDocument}
+            - {name: "kernel.event_listener", event: indexer.create_document, method: onCreateDocument}
 
     indexerelements.listener.Node:
         class: Phlexible\IndexerElementsComponent\Listener\NodeListener
         tags:
-            - {name: "event.listener", event: element.create_node, method: onPublishNode}
-            - {name: "event.listener", event: element.update_node, method: onUpdateNode}
-            - {name: "event.listener", event: element.set_node_offline, method: onMoveNode}
-            - {name: "event.listener", event: element.delete_node, method: onDeleteNode}
+            - {name: "kernel.event_listener", event: element.create_node, method: onPublishNode}
+            - {name: "kernel.event_listener", event: element.update_node, method: onUpdateNode}
+            - {name: "kernel.event_listener", event: element.set_node_offline, method: onMoveNode}
+            - {name: "kernel.event_listener", event: element.delete_node, method: onDeleteNode}
