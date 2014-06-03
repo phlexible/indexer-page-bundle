@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Marco Fischer <mf@brainbits.net>
  */
-class IndexerElementsBundle extends Bundle
+class PhlexibleIndexerElementsBundle extends Bundle
 {
     public function getSiterootProperties()
     {

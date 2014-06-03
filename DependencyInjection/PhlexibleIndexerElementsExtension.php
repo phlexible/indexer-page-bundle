@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class IndexerElementsExtension extends Extension
+class PhlexibleIndexerElementsExtension extends Extension
 {
     /**
      * {@inheritdoc}
