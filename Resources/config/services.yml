@@ -4,7 +4,7 @@ services:
         arguments:
             - "@event_dispatcher"
             - "@indexerelements.storage"
-            - "@siteroots.repository"
+            - "@doctrine.orm.entity_manager"
             - "@tree.manager"
             - "@elements.service"
             - "@elements.context.manager"

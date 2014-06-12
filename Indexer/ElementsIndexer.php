@@ -8,11 +8,11 @@
 
 namespace Phlexible\IndexerElementsComponent\Indexer;
 
+use Doctrine\ORM\EntityManager;
 use Phlexible\IndexerComponent\Indexer\AbstractIndexer;
 use Phlexible\IndexerComponent\Storage\StorageInterface;
 use Phlexible\IndexerElementsComponent\Event\MapDocumentEvent;
 use Phlexible\IndexerElementsComponent\Events;
-use Phlexible\SiterootsComponent\Siteroot\SiterootRepository;
 use Phlexible\TreeComponent\TreeManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -31,47 +31,47 @@ class ElementsIndexer extends AbstractIndexer
     /**
      * @var EventDispatcherInterface
      */
-    protected $dispatcher = null;
+    private $dispatcher;
 
     /**
      * @var StorageInterface
      */
-    protected $storage = null;
+    private $storage;
 
     /**
-     * @var SiterootRepository
+     * @var EntityManager
      */
-    protected $siterootRepository = null;
+    private $entityManager;
 
     /**
      * @var TreeManager
      */
-    protected $treeManager = null;
+    private $treeManager;
 
     /**
      * @var ElementManager
      */
-    protected $elementManager;
+    private $elementManager;
 
     /**
      * @var ElementVersionManager
      */
-    protected $elementVersionManager = null;
+    private $elementVersionManager;
 
     /**
      * @var ContextManager
      */
-    protected $contextManager;
+    private $contextManager;
 
     /**
      * @var string
      */
-    protected $requestHandler;
+    private $requestHandler;
 
     /**
      * @param EventDispatcherInterface $dispatcher
      * @param StorageInterface         $storage
-     * @param SiterootRepository       $siterootRepository
+     * @param EntityManager            $entityManager
      * @param TreeManager              $treeManager
      * @param ElementManager           $elementManager
      * @param ElementVersionManager    $elementVersionManager
@@ -80,7 +80,7 @@ class ElementsIndexer extends AbstractIndexer
      */
     public function __construct(EventDispatcherInterface $dispatcher,
                                 StorageInterface $storage,
-                                SiterootRepository $siterootRepository,
+                                EntityManager $entityManager,
                                 TreeManager $treeManager,
                                 ElementManager $elementManager,
                                 ElementVersionManager $elementVersionManager,
@@ -89,7 +89,7 @@ class ElementsIndexer extends AbstractIndexer
     {
         $this->dispatcher            = $dispatcher;
         $this->storage               = $storage;
-        $this->siterootRepository       = $siterootRepository;
+        $this->entityManager         = $entityManager;
         $this->treeManager           = $treeManager;
         $this->elementManager        = $elementManager;
         $this->elementVersionManager = $elementVersionManager;
