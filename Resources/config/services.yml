@@ -18,14 +18,14 @@ services:
         tags:
             - {name: "indexer.search"}
 
-    # listeners
+    # event listeners
     indexerelements.listener.document:
-        class: Phlexible\IndexerElementsComponent\Listener\DocumentListener
+        class: Phlexible\IndexerElementsComponent\EventListener\DocumentListener
         tags:
             - {name: "kernel.event_listener", event: indexer.create_document, method: onCreateDocument}
 
     indexerelements.listener.Node:
-        class: Phlexible\IndexerElementsComponent\Listener\NodeListener
+        class: Phlexible\IndexerElementsComponent\EventListener\NodeListener
         tags:
             - {name: "kernel.event_listener", event: element.create_node, method: onPublishNode}
             - {name: "kernel.event_listener", event: element.update_node, method: onUpdateNode}
