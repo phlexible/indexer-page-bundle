@@ -1,6 +1,6 @@
 {
     "name": "phlexible/indexer-element-bundle",
-    "description": "phlexible.cms indexer elements bundle",
+    "description": "phlexible.cms indexer element bundle",
     "license": "proprietary",
 	"type": "symfony-bundle",
 	"keywords": ["indexer", "search"],
