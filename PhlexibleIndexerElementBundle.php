@@ -6,16 +6,16 @@
  * @license   proprietary
  */
 
-namespace Phlexible\IndexerElementsComponent;
+namespace Phlexible\IndexerElementBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Elements indexer bundle
+ * Element indexer bundle
  *
  * @author Marco Fischer <mf@brainbits.net>
  */
-class PhlexibleIndexerElementsBundle extends Bundle
+class PhlexibleIndexerElementBundle extends Bundle
 {
     public function getSiterootProperties()
     {

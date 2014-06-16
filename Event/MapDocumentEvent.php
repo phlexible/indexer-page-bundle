@@ -6,11 +6,11 @@
  * @license   proprietary
  */
 
-namespace Phlexible\IndexerElementsComponent\Event;
+namespace Phlexible\IndexerElementBundle\Event;
 
-use Phlexible\ElementsComponent\ElementVersion\ElementVersion;
-use Phlexible\IndexerComponent\Document\DocumentInterface;
-use Phlexible\TreeComponent\Tree\Node\TreeNodeInterface;
+use Phlexible\ElementBundle\ElementVersion\ElementVersion;
+use Phlexible\IndexerBundle\Document\DocumentInterface;
+use Phlexible\TreeBundle\Tree\Node\TreeNodeInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

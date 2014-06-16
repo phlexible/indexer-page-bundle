@@ -6,7 +6,7 @@
  * @license   proprietary
  */
 
-namespace Phlexible\IndexerElementsComponent\EventListener;
+namespace Phlexible\IndexerElementBundle\EventListener;
 
 /**
  * Node listener

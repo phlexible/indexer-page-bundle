@@ -1,15 +1,17 @@
 {
-    "name": "phlexible/indexer-elements-component",
-    "description": "phlexible.cms indexer elements component",
+    "name": "phlexible/indexer-element-bundle",
+    "description": "phlexible.cms indexer elements bundle",
     "license": "proprietary",
+	"type": "symfony-bundle",
+	"keywords": ["indexer", "search"],
     "autoload": {
-        "psr-4": { 
-            "Phlexible\\IndexerElementsComponent\\": ""
+        "psr-4": {
+            "Phlexible\\IndexerElementBundle\\": ""
         }
     },
     "require": {
         "php": ">=5.3.0",
-        "phlexible/indexer-component": "*"
+        "phlexible/indexer-bundle": "*"
     },
     "repositories": [
         {

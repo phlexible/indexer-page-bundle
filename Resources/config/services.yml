@@ -1,6 +1,6 @@
 services:
     indexerelements.indexer:
-        class: Phlexible\IndexerElementsComponent\Indexer\ElementsIndexer
+        class: Phlexible\IndexerElementBundle\Indexer\ElementsIndexer
         arguments:
             - "@event_dispatcher"
             - "@indexerelements.storage"
@@ -13,19 +13,19 @@ services:
             - {name: "indexer.indexer"}
 
     indexer.elements.query.eid:
-        class: Phlexible\IndexerElementsComponent\Query\EidQuery
+        class: Phlexible\IndexerElementBundle\Query\EidQuery
         arguments: ["@indexer.query.parser"]
         tags:
             - {name: "indexer.search"}
 
     # event listeners
     indexerelements.listener.document:
-        class: Phlexible\IndexerElementsComponent\EventListener\DocumentListener
+        class: Phlexible\IndexerElementBundle\EventListener\DocumentListener
         tags:
             - {name: "kernel.event_listener", event: indexer.create_document, method: onCreateDocument}
 
     indexerelements.listener.Node:
-        class: Phlexible\IndexerElementsComponent\EventListener\NodeListener
+        class: Phlexible\IndexerElementBundle\EventListener\NodeListener
         tags:
             - {name: "kernel.event_listener", event: element.create_node, method: onPublishNode}
             - {name: "kernel.event_listener", event: element.update_node, method: onUpdateNode}

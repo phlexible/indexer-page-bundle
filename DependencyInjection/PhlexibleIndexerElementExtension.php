@@ -6,7 +6,7 @@
  * @license   proprietary
  */
 
-namespace Phlexible\IndexerElementsComponent\DependencyInjection;
+namespace Phlexible\IndexerElementBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -14,11 +14,11 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Elements indexer extension
+ * Element indexer extension
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class PhlexibleIndexerElementsExtension extends Extension
+class PhlexibleIndexerElementExtension extends Extension
 {
     /**
      * {@inheritdoc}

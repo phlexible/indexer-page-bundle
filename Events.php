@@ -6,7 +6,7 @@
  * @license   proprietary
  */
 
-namespace Phlexible\IndexerElementsComponent;
+namespace Phlexible\IndexerElementBundle;
 
 /**
  * Elements indexer events
