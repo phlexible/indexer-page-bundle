@@ -1,33 +1,32 @@
 services:
-    indexerelements.indexer:
-        class: Phlexible\IndexerElementBundle\Indexer\ElementsIndexer
+    phlexible_indexer_element.indexer:
+        class: Phlexible\IndexerElementBundle\Indexer\ElementIndexer
         arguments:
-            - "@event_dispatcher"
-            - "@indexerelements.storage"
-            - "@doctrine.orm.entity_manager"
-            - "@tree.manager"
-            - "@elements.service"
-            - "@elements.context.manager"
-            - "%frontend.request.handler"
+            - @event_dispatcher
+            - @phlexible_indexer_element.storage
+            - @doctrine.orm.entity_manager
+            - @phlexible_tree.manager
+            - @phlexible_element.service
+            - @phlexible_element.context.manager
         tags:
-            - {name: "indexer.indexer"}
+            - {name: phlexible_indexer.indexer}
 
-    indexer.elements.query.eid:
+    phlexible_indexer_element.query.eid:
         class: Phlexible\IndexerElementBundle\Query\EidQuery
-        arguments: ["@indexer.query.parser"]
+        arguments: [@phlexible_indexer.query.parser]
         tags:
-            - {name: "indexer.search"}
+            - {name: phlexible_indexer.search}
 
     # event listeners
-    indexerelements.listener.document:
+    phlexible_indexer_element.listener.document:
         class: Phlexible\IndexerElementBundle\EventListener\DocumentListener
         tags:
-            - {name: "kernel.event_listener", event: indexer.create_document, method: onCreateDocument}
+            - {name: kernel.event_listener, event: phlexible_indexer.create_document, method: onCreateDocument}
 
-    indexerelements.listener.Node:
+    phlexible_indexer_element.listener.Node:
         class: Phlexible\IndexerElementBundle\EventListener\NodeListener
         tags:
-            - {name: "kernel.event_listener", event: element.create_node, method: onPublishNode}
-            - {name: "kernel.event_listener", event: element.update_node, method: onUpdateNode}
-            - {name: "kernel.event_listener", event: element.set_node_offline, method: onMoveNode}
-            - {name: "kernel.event_listener", event: element.delete_node, method: onDeleteNode}
+            - {name: kernel.event_listener, event: phlexible_element.create_node, method: onPublishNode}
+            - {name: kernel.event_listener, event: phlexible_element.update_node, method: onUpdateNode}
+            - {name: kernel.event_listener, event: phlexible_element.set_node_offline, method: onMoveNode}
+            - {name: kernel.event_listener, event: phlexible_element.delete_node, method: onDeleteNode}

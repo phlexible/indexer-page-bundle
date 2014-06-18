@@ -25,12 +25,12 @@ class EidQuery extends AbstractQuery
     /**
      * @var array
      */
-    protected $_documentTypes = array('elements');
+    protected $documentTypes = array('elements');
 
     /**
      * @var string
      */
-    protected $_label = 'EID search';
+    protected $label = 'EID search';
 
     public function parseInput($input)
     {

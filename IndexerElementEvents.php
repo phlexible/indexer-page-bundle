@@ -13,11 +13,11 @@ namespace Phlexible\IndexerElementBundle;
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-interface Events
+interface IndexerElementEvents
 {
     /**
      * Map Document Event
      * Fired when a document is mapped
      */
-    const MAP_DOCUMENT = 'indexerelements.map_document';
+    const MAP_DOCUMENT = 'phlexible_indexer_element.map_document';
 }

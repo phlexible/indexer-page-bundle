@@ -28,6 +28,9 @@ class PhlexibleIndexerElementExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setAlias('indexerelements.storage', 'indexer.storage.default');
+        $configuration = $this->getConfiguration($config, $container);
+        $config = $this->processConfiguration($configuration, $config);
+
+        $container->setAlias('phlexible_indexer_element.storage', $config['storage']);
     }
 }

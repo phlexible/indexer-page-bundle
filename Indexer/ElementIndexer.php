@@ -12,16 +12,16 @@ use Doctrine\ORM\EntityManager;
 use Phlexible\IndexerBundle\Indexer\AbstractIndexer;
 use Phlexible\IndexerBundle\Storage\StorageInterface;
 use Phlexible\IndexerElementBundle\Event\MapDocumentEvent;
-use Phlexible\IndexerElementBundle\Events;
+use Phlexible\IndexerElementBundle\IndexerElementEvents;
 use Phlexible\TreeBundle\TreeManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Elements indexer
+ * Element indexer
  *
  * @author Marco Fischer <mf@brainbits.net>
  */
-class ElementsIndexer extends AbstractIndexer
+class ElementIndexer extends AbstractIndexer
 {
     /**
      * @var string
@@ -298,7 +298,7 @@ class ElementsIndexer extends AbstractIndexer
         }
 
         $event = new MapDocumentEvent($document, $treeNode, $elementVersion, $language);
-        $this->dispatcher->dispatch(Events::MAP_DOCUMENT, $event);
+        $this->dispatcher->dispatch(IndexerElementEvents::MAP_DOCUMENT, $event);
 
         return $document;
     }

@@ -8,6 +8,9 @@
 
 namespace Phlexible\IndexerElementBundle\EventListener;
 
+use Phlexible\IndexerBundle\Document\DocumentInterface;
+use Phlexible\IndexerBundle\Event\DocumentEvent;
+
 /**
  * Document listener
  *
@@ -15,32 +18,34 @@ namespace Phlexible\IndexerElementBundle\EventListener;
  */
 class DocumentListener
 {
-    public function onCreateDocument(CreateDocumentListener $event)
+    /**
+     * @param DocumentEvent $event
+     */
+    public function onCreateDocument(DocumentEvent $event)
     {
         $document = $event->getDocument();
 
-        if ('elements' !== $document->getDocumentType())
-        {
+        if ('elements' !== $document->getDocumentType()) {
             return;
         }
 
         $document->setFields(
             array(
                 'title'           => array(),
-                'highlight_title' => array(MWF_Core_Indexer_Document_Interface::CONFIG_READONLY),
-                'tags'            => array(MWF_Core_Indexer_Document_Interface::CONFIG_READONLY, MWF_Core_Indexer_Document_Interface::CONFIG_MULTIVALUE),
-                'copy'            => array(MWF_Core_Indexer_Document_Interface::CONFIG_READONLY, MWF_Core_Indexer_Document_Interface::CONFIG_MULTIVALUE),
+                'highlight_title' => array(DocumentInterface::CONFIG_READONLY),
+                'tags'            => array(DocumentInterface::CONFIG_READONLY, DocumentInterface::CONFIG_MULTIVALUE),
+                'copy'            => array(DocumentInterface::CONFIG_READONLY, DocumentInterface::CONFIG_MULTIVALUE),
 
                 'language'        => array(),
-                'context'         => array(MWF_Core_Indexer_Document_Interface::CONFIG_MULTIVALUE),
-                'cleantitle'      => array(MWF_Core_Indexer_Document_Interface::CONFIG_READONLY),
+                'context'         => array(DocumentInterface::CONFIG_MULTIVALUE),
+                'cleantitle'      => array(DocumentInterface::CONFIG_READONLY),
                 'tid'             => array(),
                 'eid'             => array(),
                 'elementtype'     => array(),
                 'url'             => array(),
                 'siteroot'        => array(),
                 'restricted'      => array(),
-                'content'         => array(MWF_Core_Indexer_Document_Interface::CONFIG_COPY),
+                'content'         => array(DocumentInterface::CONFIG_COPY),
             )
         );
     }
