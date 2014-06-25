@@ -6,7 +6,7 @@
  * @license   proprietary
  */
 
-namespace Phlexible\IndexerElementBundle;
+namespace Phlexible\Bundle\IndexerElementBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

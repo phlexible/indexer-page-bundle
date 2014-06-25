@@ -6,7 +6,7 @@
  * @license   proprietary
  */
 
-namespace Phlexible\IndexerElementBundle\DependencyInjection;
+namespace Phlexible\Bundle\IndexerElementBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

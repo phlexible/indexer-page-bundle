@@ -6,9 +6,9 @@
  * @license   proprietary
  */
 
-namespace Phlexible\IndexerElementBundle\Query;
+namespace Phlexible\Bundle\IndexerElementBundle\Query;
 
-use Phlexible\IndexerBundle\Query\AbstractQuery;
+use Phlexible\Bundle\IndexerBundle\Query\AbstractQuery;
 
 /**
  * EID query

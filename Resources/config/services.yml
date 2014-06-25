@@ -1,6 +1,6 @@
 services:
     phlexible_indexer_element.indexer:
-        class: Phlexible\IndexerElementBundle\Indexer\ElementIndexer
+        class: Phlexible\Bundle\IndexerElementBundle\Indexer\ElementIndexer
         arguments:
             - @event_dispatcher
             - @phlexible_indexer_element.storage
@@ -12,19 +12,19 @@ services:
             - {name: phlexible_indexer.indexer}
 
     phlexible_indexer_element.query.eid:
-        class: Phlexible\IndexerElementBundle\Query\EidQuery
+        class: Phlexible\Bundle\IndexerElementBundle\Query\EidQuery
         arguments: [@phlexible_indexer.query.parser]
         tags:
             - {name: phlexible_indexer.search}
 
     # event listeners
     phlexible_indexer_element.listener.document:
-        class: Phlexible\IndexerElementBundle\EventListener\DocumentListener
+        class: Phlexible\Bundle\IndexerElementBundle\EventListener\DocumentListener
         tags:
             - {name: kernel.event_listener, event: phlexible_indexer.create_document, method: onCreateDocument}
 
     phlexible_indexer_element.listener.Node:
-        class: Phlexible\IndexerElementBundle\EventListener\NodeListener
+        class: Phlexible\Bundle\IndexerElementBundle\EventListener\NodeListener
         tags:
             - {name: kernel.event_listener, event: phlexible_element.create_node, method: onPublishNode}
             - {name: kernel.event_listener, event: phlexible_element.update_node, method: onUpdateNode}

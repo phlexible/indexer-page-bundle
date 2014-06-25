@@ -6,10 +6,10 @@
  * @license   proprietary
  */
 
-namespace Phlexible\IndexerElementBundle\EventListener;
+namespace Phlexible\Bundle\IndexerElementBundle\EventListener;
 
-use Phlexible\IndexerBundle\Document\DocumentInterface;
-use Phlexible\IndexerBundle\Event\DocumentEvent;
+use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
+use Phlexible\Bundle\IndexerBundle\Event\DocumentEvent;
 
 /**
  * Document listener

@@ -6,14 +6,14 @@
  * @license   proprietary
  */
 
-namespace Phlexible\IndexerElementBundle\Indexer;
+namespace Phlexible\Bundle\IndexerElementBundle\Indexer;
 
 use Doctrine\ORM\EntityManager;
-use Phlexible\IndexerBundle\Indexer\AbstractIndexer;
-use Phlexible\IndexerBundle\Storage\StorageInterface;
-use Phlexible\IndexerElementBundle\Event\MapDocumentEvent;
-use Phlexible\IndexerElementBundle\IndexerElementEvents;
-use Phlexible\TreeBundle\TreeManager;
+use Phlexible\Bundle\IndexerBundle\Indexer\AbstractIndexer;
+use Phlexible\Bundle\IndexerBundle\Storage\StorageInterface;
+use Phlexible\Bundle\IndexerElementBundle\Event\MapDocumentEvent;
+use Phlexible\Bundle\IndexerElementBundle\IndexerElementEvents;
+use Phlexible\Bundle\TreeBundle\TreeManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
