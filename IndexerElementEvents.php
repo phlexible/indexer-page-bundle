@@ -13,7 +13,7 @@ namespace Phlexible\Bundle\IndexerElementBundle;
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-interface IndexerElementEvents
+class IndexerElementEvents
 {
     /**
      * Map Document Event
