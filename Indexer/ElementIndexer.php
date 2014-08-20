@@ -13,7 +13,7 @@ use Phlexible\Bundle\IndexerBundle\Indexer\AbstractIndexer;
 use Phlexible\Bundle\IndexerBundle\Storage\StorageInterface;
 use Phlexible\Bundle\IndexerElementBundle\Event\MapDocumentEvent;
 use Phlexible\Bundle\IndexerElementBundle\IndexerElementEvents;
-use Phlexible\Bundle\TreeBundle\TreeManager;
+use Phlexible\Bundle\TreeBundle\Tree\TreeManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -72,7 +72,7 @@ class ElementIndexer extends AbstractIndexer
      * @param EventDispatcherInterface $dispatcher
      * @param StorageInterface         $storage
      * @param EntityManager            $entityManager
-     * @param TreeManager              $treeManager
+     * @param \Phlexible\Bundle\TreeBundle\Tree\TreeManager              $treeManager
      * @param ElementManager           $elementManager
      * @param ElementVersionManager    $elementVersionManager
      * @param ContextManager           $contextManager

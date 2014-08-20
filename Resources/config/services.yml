@@ -5,8 +5,8 @@ services:
             - @event_dispatcher
             - @phlexible_indexer_element.storage
             - @doctrine.orm.entity_manager
-            - @phlexible_tree.manager
-            - @phlexible_element.service
+            - @phlexible_tree.tree_manager
+            - @phlexible_element.element_service
             - @phlexible_element.context.manager
         tags:
             - {name: phlexible_indexer.indexer}

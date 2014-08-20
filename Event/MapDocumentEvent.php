@@ -10,7 +10,7 @@ namespace Phlexible\Bundle\IndexerElementBundle\Event;
 
 use Phlexible\Bundle\ElementBundle\ElementVersion\ElementVersion;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
-use Phlexible\Bundle\TreeBundle\Tree\Node\TreeNodeInterface;
+use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -42,7 +42,7 @@ class MapDocumentEvent extends Event
 
     /**
      * @param DocumentInterface $document
-     * @param TreeNodeInterface $node
+     * @param \Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface $node
      * @param ElementVersion    $elementVersion
      * @param string            $language
      */
