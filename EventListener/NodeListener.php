@@ -8,17 +8,39 @@
 
 namespace Phlexible\Bundle\IndexerElementBundle\EventListener;
 
+use Phlexible\Bundle\TreeBundle\Event\MoveNodeEvent;
+use Phlexible\Bundle\TreeBundle\Event\NodeEvent;
+use Phlexible\Bundle\TreeBundle\Event\PublishNodeEvent;
+use Phlexible\Bundle\TreeBundle\Event\SetNodeOfflineEvent;
+use Phlexible\Bundle\TreeBundle\TreeEvents;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 /**
  * Node listener
  *
  * @author Marco Fischer <mf@brainbits.net>
  */
-class NodeListener
+class NodeListener implements EventSubscriberInterface
 {
-    public function onPublishNode(PublishNodeEvent $event, array $params)
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
     {
-        /* @var $container MWF_Container_ContainerInterface */
-        $container            = $params['container'];
+        return array(
+            TreeEvents::PUBLISH_NODE     => 'onPublishNode',
+            TreeEvents::UPDATE_NODE      => 'onUpdateNode',
+            TreeEvents::MOVE_NODE        => 'onMoveNode',
+            TreeEvents::SET_NODE_OFFLINE => 'onSetNodeOffline',
+            TreeEvents::DELETE_NODE      => 'onDeleteNode',
+        );
+    }
+
+    /**
+     * @param PublishNodeEvent $event
+     */
+    public function onPublishNode(PublishNodeEvent $event)
+    {
         $indexerElementsTools = $container->indexerElementsTools;
 
         $language   = $event->getLanguage();
@@ -27,10 +49,11 @@ class NodeListener
         $indexerElementsTools->queueUpdate($node, array($language));
     }
 
-    public function onUpdateNode(UpdateNodeEvent $event, array $params)
+    /**
+     * @param NodeEvent $event
+     */
+    public function onUpdateNode(NodeEvent $event)
     {
-        /* @var $container MWF_Container_ContainerInterface */
-        $container            = $params['container'];
         $indexerElementsTools = $container->indexerElementsTools;
 
         $node = $event->getNode();
@@ -40,20 +63,22 @@ class NodeListener
         $indexerElementsTools->queueUpdate($node);
     }
 
-    public function onMoveNode(MoveNodeEvent $event, array $params)
+    /**
+     * @param MoveNodeEvent $event
+     */
+    public function onMoveNode(MoveNodeEvent $event)
     {
-        /* @var $container MWF_Container_ContainerInterface */
-        $container            = $params['container'];
         $indexerElementsTools = $container->indexerElementsTools;
 
         $node = $event->getNode();
         $indexerElementsTools->queueUpdate($node);
     }
 
-    public function onSetNodeOffline(SetNodeOfflineEvent $event, array $params)
+    /**
+     * @param SetNodeOfflineEvent $event
+     */
+    public function onSetNodeOffline(SetNodeOfflineEvent $event)
     {
-        /* @var $container MWF_Container_ContainerInterface */
-        $container            = $params['container'];
         $indexerElementsTools = $container->indexerElementsTools;
 
         $language   = $event->getLanguage();
@@ -62,11 +87,11 @@ class NodeListener
         $indexerElementsTools->remove($node, array($language));
     }
 
-    public function onDeleteNode(DeleteNodeEvent $event,
-                                        array $params)
+    /**
+     * @param NodeEvent $event
+     */
+    public function onDeleteNode(NodeEvent $event)
     {
-        /* @var $container MWF_Container_ContainerInterface */
-        $container            = $params['container'];
         $indexerElementsTools = $container->indexerElementsTools;
 
         $node = $event->getNode();
