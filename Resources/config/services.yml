@@ -27,7 +27,4 @@ services:
     phlexible_indexer_element.listener.Node:
         class: Phlexible\Bundle\IndexerElementBundle\EventListener\NodeListener
         tags:
-            - {name: kernel.event_listener, event: phlexible_element.create_node, method: onPublishNode}
-            - {name: kernel.event_listener, event: phlexible_element.update_node, method: onUpdateNode}
-            - {name: kernel.event_listener, event: phlexible_element.set_node_offline, method: onMoveNode}
-            - {name: kernel.event_listener, event: phlexible_element.delete_node, method: onDeleteNode}
+            - {name: kernel.event_subscriber}

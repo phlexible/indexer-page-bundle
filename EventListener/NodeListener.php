@@ -8,10 +8,13 @@
 
 namespace Phlexible\Bundle\IndexerElementBundle\EventListener;
 
+use Phlexible\Bundle\QueueBundle\Entity\Job;
+use Phlexible\Bundle\QueueBundle\Model\JobManagerInterface;
 use Phlexible\Bundle\TreeBundle\Event\MoveNodeEvent;
 use Phlexible\Bundle\TreeBundle\Event\NodeEvent;
 use Phlexible\Bundle\TreeBundle\Event\PublishNodeEvent;
 use Phlexible\Bundle\TreeBundle\Event\SetNodeOfflineEvent;
+use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 use Phlexible\Bundle\TreeBundle\TreeEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -22,6 +25,19 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class NodeListener implements EventSubscriberInterface
 {
+    /**
+     * @var JobManagerInterface
+     */
+    private $jobManager;
+
+    /**
+     * @param JobManagerInterface $jobManager
+     */
+    public function __construct(JobManagerInterface $jobManager)
+    {
+        $this->jobManager = $jobManager;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -41,12 +57,10 @@ class NodeListener implements EventSubscriberInterface
      */
     public function onPublishNode(PublishNodeEvent $event)
     {
-        $indexerElementsTools = $container->indexerElementsTools;
-
         $language   = $event->getLanguage();
         $node       = $event->getNode();
 
-        $indexerElementsTools->queueUpdate($node, array($language));
+        $this->queueJob($node, $language);
     }
 
     /**
@@ -54,13 +68,13 @@ class NodeListener implements EventSubscriberInterface
      */
     public function onUpdateNode(NodeEvent $event)
     {
-        $indexerElementsTools = $container->indexerElementsTools;
-
         $node = $event->getNode();
 
         // global values (context, restricted) may be changed
         // -> reindex all languages
-        $indexerElementsTools->queueUpdate($node);
+        foreach ($node->getOnlineLanguage() as $language) {
+            $this->queueJob($node, $language);
+        }
     }
 
     /**
@@ -68,10 +82,11 @@ class NodeListener implements EventSubscriberInterface
      */
     public function onMoveNode(MoveNodeEvent $event)
     {
-        $indexerElementsTools = $container->indexerElementsTools;
-
         $node = $event->getNode();
-        $indexerElementsTools->queueUpdate($node);
+
+        foreach ($node->getOnlineLanguage() as $language) {
+            $this->queueJob($node, $language);
+        }
     }
 
     /**
@@ -79,12 +94,10 @@ class NodeListener implements EventSubscriberInterface
      */
     public function onSetNodeOffline(SetNodeOfflineEvent $event)
     {
-        $indexerElementsTools = $container->indexerElementsTools;
-
         $language   = $event->getLanguage();
         $node       = $event->getNode();
 
-        $indexerElementsTools->remove($node, array($language));
+        $this->remove($node, $language);
     }
 
     /**
@@ -92,10 +105,20 @@ class NodeListener implements EventSubscriberInterface
      */
     public function onDeleteNode(NodeEvent $event)
     {
-        $indexerElementsTools = $container->indexerElementsTools;
-
         $node = $event->getNode();
 
-        $indexerElementsTools->remove($node);
+        $this->remove($node);
+    }
+
+    /**
+     * @param TreeNodeInterface $node
+     * @param string            $language
+     */
+    private function queueJob(TreeNodeInterface $node, $language)
+    {
+        $identifier = 'element_' . $node->getId() . '_' . $language;
+
+        $job = new Job('indexer-element', array('--documentId', $identifier));
+        $this->jobManager->addUniqueJob($job);
     }
 }
