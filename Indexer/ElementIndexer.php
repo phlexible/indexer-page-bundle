@@ -20,8 +20,10 @@ use Phlexible\Bundle\IndexerElementBundle\IndexerElementEvents;
 use Phlexible\Bundle\SiterootBundle\Model\SiterootManagerInterface;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeManagerInterface;
 use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Templating\EngineInterface;
 
@@ -82,6 +84,9 @@ class ElementIndexer extends AbstractIndexer
      */
     private $dispatcher;
 
+    /**
+     * @var ContainerInterface
+     */
     private $container;
 
     /**
@@ -94,7 +99,7 @@ class ElementIndexer extends AbstractIndexer
      * @param RouterInterface             $router
      * @param EngineInterface             $templating
      * @param EventDispatcherInterface    $dispatcher
-     * @param $container
+     * @param ContainerInterface          $container
      */
     public function __construct(
         StorageInterface $storage,
@@ -106,7 +111,7 @@ class ElementIndexer extends AbstractIndexer
         RouterInterface $router,
         EngineInterface $templating,
         EventDispatcherInterface $dispatcher,
-        $container)
+        ContainerInterface $container)
     {
         $this->storage = $storage;
         $this->documentFactory = $documentFactory;
@@ -419,7 +424,10 @@ class ElementIndexer extends AbstractIndexer
         $request->attributes->set('preview', true);
 
         $data = $this->dataProvider->provide($request);
-        $content = $this->templating->render($data['template'], (array) $data);
+        //$content = $this->templating->render($data['template'], (array) $data);
+        $content = $this->templating->render('test.html.twig', (array) $data);
+
+        $this->container->leaveScope('request');
 
         // Remove Content between NoIndex tags
         $content = preg_replace("|<!--\s*NoIndex\s*-->(.*)<!--\s*/NoIndex\s*-->|Umsu", '', $content);
@@ -450,7 +458,7 @@ class ElementIndexer extends AbstractIndexer
             preg_match('#<title.*?\>(.*?)\</title\>#u', $content, $match);
         }
 
-        if (isset($match[1]) || !trim(strip_tags($match[1]))) {
+        if (isset($match[1]) && trim(strip_tags($match[1]))) {
             $title = trim(strip_tags($match[1]));
         } else {
             $title = $elementVersion->getPageTitle($language);
