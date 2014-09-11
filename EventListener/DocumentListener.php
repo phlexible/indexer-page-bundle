@@ -45,7 +45,7 @@ class DocumentListener
                 'url'             => array(),
                 'siteroot'        => array(),
                 'restricted'      => array(),
-                'content'         => array(DocumentInterface::CONFIG_COPY),
+                'content'         => array(),//DocumentInterface::CONFIG_COPY),
             )
         );
     }
