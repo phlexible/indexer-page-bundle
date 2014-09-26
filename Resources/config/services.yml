@@ -22,11 +22,6 @@ services:
             - {name: phlexible_indexer.search}
 
     # event listeners
-    phlexible_indexer_element.listener.document:
-        class: Phlexible\Bundle\IndexerElementBundle\EventListener\DocumentListener
-        tags:
-            - {name: kernel.event_listener, event: phlexible_indexer.create_document, method: onCreateDocument}
-
     phlexible_indexer_element.listener.Node:
         class: Phlexible\Bundle\IndexerElementBundle\EventListener\NodeListener
         tags:

@@ -46,6 +46,8 @@ class IndexAllCommand extends ContainerAwareCommand
         $container = $this->getContainer();
 
         $indexer = $container->get('phlexible_indexer_element.indexer');
+        $logger = $container->get('logger');
+
         $storage = $indexer->getStorage();
 
         $output->writeln('Indexer: ' . $indexer->getLabel());
@@ -55,6 +57,12 @@ class IndexAllCommand extends ContainerAwareCommand
 
         $documentIds = $indexer->getAllIdentifiers();
 
+        if (!count($documentIds)) {
+            $output->writeln('Nothing to index.');
+
+            return 0;
+        }
+
         $progress = new ProgressBar($output, count($documentIds));
         $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s% %message%');
         $progress->start();
@@ -62,7 +70,12 @@ class IndexAllCommand extends ContainerAwareCommand
         foreach ($documentIds as $documentId) {
             $document = $indexer->getDocumentByIdentifier($documentId);
 
+            if (!$document) {
+                $logger->error("Document $documentId could not be loaded.");
+                continue;
+            }
             //$output->writeln('Document: ' . $document->getDocumentType() . ' ' . $document->getDocumentClass() . ' ' . $document->getIdentifier());
+
 
             if ($queue) {
                 $job = new Job('indexer-element:index', array('--documentId', $document->getIdentifier()));

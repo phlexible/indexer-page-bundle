@@ -23,7 +23,6 @@ use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Templating\EngineInterface;
 
@@ -34,11 +33,6 @@ use Symfony\Component\Templating\EngineInterface;
  */
 class ElementIndexer extends AbstractIndexer
 {
-    /**
-     * @var string
-     */
-    const DOCUMENT_TYPE = 'elements';
-
     /**
      * @var StorageInterface
      */
@@ -156,17 +150,7 @@ class ElementIndexer extends AbstractIndexer
      */
     public function getDocumentClass()
     {
-        return 'Phlexible\Bundle\IndexerBundle\Document\Document';
-    }
-
-    /**
-     * Return document type
-     *
-     * @return string
-     */
-    public function getDocumentType()
-    {
-        return self::DOCUMENT_TYPE;
+        return 'Phlexible\Bundle\IndexerElementBundle\Document\ElementDocument';
     }
 
     /**
@@ -188,10 +172,9 @@ class ElementIndexer extends AbstractIndexer
                 = explode(';', $siteroot->getProperty('indexer.elements.skip.elementtypeids'));
 
             if (!$isSiterootEnabled) {
-                continue;
+                // TODO: enable
+                //continue;
             }
-
-            $siterootId = $siteroot->getId();
 
             $rii = new \RecursiveIteratorIterator(
                 $tree->getIterator(),
@@ -410,6 +393,9 @@ class ElementIndexer extends AbstractIndexer
     {
         $request = new Request();
 
+        $requestStack = $this->container->get('request_stack');
+        $requestStack->push($request);
+
         $this->container->enterScope('request');
         $this->container->set('request', new Request(), 'request');
 
@@ -424,29 +410,11 @@ class ElementIndexer extends AbstractIndexer
         $request->attributes->set('preview', true);
 
         $data = $this->dataProvider->provide($request);
-        //$content = $this->templating->render($data['template'], (array) $data);
-        $content = $this->templating->render('test.html.twig', (array) $data);
+        $content = $this->templating->render($data['template'], (array) $data);
 
         $this->container->leaveScope('request');
 
-        // Remove Content between NoIndex tags
-        $content = preg_replace("|<!--\s*NoIndex\s*-->(.*)<!--\s*/NoIndex\s*-->|Umsu", '', $content);
-
-        // strip_tags may concatenate word which are logically separated
-        // <ul><li>one</li><li>two</li></ul> -> onetwo
-        $content = str_replace('<', ' <', $content);
-
-        // Remove NL, CR, TABs
-        $content = str_replace(array("\r", "\n", "\t"), array(' ',' ',' '), $content);
-
-        // Remove multiple whitespaces
-        $content = preg_replace('|\s+|u', ' ', $content);
-
-        // Convert special chars to HTML-readable stuff
-        $content = mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8');
-
         // Find Title
-        $title = '';
         $match = array();
         preg_match('#<h1.*?\>(.*?)\</h1\>#u', $content, $match);
 
@@ -464,16 +432,8 @@ class ElementIndexer extends AbstractIndexer
             $title = $elementVersion->getPageTitle($language);
         }
 
-        $doc = \Zend_Search_Lucene_Document_Html::loadHTML($content, false, 'UTF-8');
-
-        $content = $doc->getFieldUtf8Value('body');
-
-        $content = html_entity_decode($content, ENT_QUOTES, 'UTF-8');
-        $title   = html_entity_decode($title, ENT_QUOTES, 'UTF-8');
-
-        // Remove multiple whitespaces
-        $content = preg_replace('|\s+|u', ' ', $content);
-        $title   = preg_replace('|\s+|u', ' ', $title);
+        $contentCleaner = new ContentCleaner();
+        $content = $contentCleaner->clean($content);
 
         $url     = $this->router->generate($treeNode, array('language' => $language, 'preview' => true));
         $version = $elementVersion->getVersion();
@@ -489,6 +449,7 @@ class ElementIndexer extends AbstractIndexer
         $document->setValue('eid', $treeNode->getTypeId());
         $document->setValue('elementtype', $elementtypeUniqueId);
         $document->setValue('siteroot', $treeNode->getTree()->getSiterootId());
+        $document->setValue('navigation', $treeNode->getInNavigation() ? '1' : '0');
         $document->setValue('restricted', $treeNode->getNeedAuthentication() ? '1' : '0');
 
         return true;
@@ -512,7 +473,8 @@ class ElementIndexer extends AbstractIndexer
 
         // skip siteroot?
         if (!$isSiterootEnabled) {
-            return false;
+            // TODO: enable
+            //return false;
         }
 
         // skip tid?
