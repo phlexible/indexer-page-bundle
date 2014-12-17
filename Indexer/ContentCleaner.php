@@ -20,8 +20,12 @@ class ContentCleaner implements ContentCleanerInterface
      */
     public function clean($content)
     {
+        if (substr_count($content, 'noindex') % 2) {
+            throw new \Exception("Found odd number of noindex directives. Seems like an opening or closing noindex is missing.");
+        }
+
         // Remove Content between NoIndex tags
-        $content = preg_replace("|<!--\s*NoIndex\s*-->(.*)<!--\s*/NoIndex\s*-->|Umsu", '', $content);
+        $content = preg_replace("|<!--\s*noindex\s*-->(.*)<!--\s*/noindex\s*-->|Umsu", '', $content);
 
         // strip_tags may concatenate word which are logically separated
         // <ul><li>one</li><li>two</li></ul> -> onetwo
