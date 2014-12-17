@@ -53,9 +53,9 @@ class IndexCommand extends ContainerAwareCommand
         $update = $storage->createUpdate();
         $document = $indexer->getDocumentByIdentifier($documentId);
 
-        $output->writeln('Document: ' . $document->getDocumentType() . ' ' . $document->getDocumentClass() . ' ' . $document->getIdentifier());
+        $output->writeln('Document: ' . $document->getDocumentClass() . ' ' . $document->getIdentifier());
 
-        $update->addUpdate($document);
+        $update->add($document);
         $update->addCommit();
 
         $storage->update($update);

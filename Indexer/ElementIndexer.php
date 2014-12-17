@@ -10,7 +10,8 @@ namespace Phlexible\Bundle\IndexerElementBundle\Indexer;
 
 use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\ElementBundle\Entity\ElementVersion;
-use Phlexible\Bundle\ElementRendererBundle\DataProvider\DataProvider;
+use Phlexible\Bundle\ElementRendererBundle\Configurator\Configuration;
+use Phlexible\Bundle\ElementRendererBundle\Configurator\ConfiguratorInterface;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentFactory;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
 use Phlexible\Bundle\IndexerBundle\Indexer\AbstractIndexer;
@@ -20,6 +21,7 @@ use Phlexible\Bundle\IndexerElementBundle\IndexerElementEvents;
 use Phlexible\Bundle\SiterootBundle\Model\SiterootManagerInterface;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeManagerInterface;
 use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,9 +61,9 @@ class ElementIndexer extends AbstractIndexer
     private $elementService;
 
     /**
-     * @var DataProvider
+     * @var ConfiguratorInterface
      */
-    private $dataProvider;
+    private $configurator;
 
     /**
      * @var RouterInterface
@@ -79,6 +81,11 @@ class ElementIndexer extends AbstractIndexer
     private $dispatcher;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @var ContainerInterface
      */
     private $container;
@@ -89,7 +96,7 @@ class ElementIndexer extends AbstractIndexer
      * @param SiterootManagerInterface    $siterootManager
      * @param ContentTreeManagerInterface $treeManager
      * @param ElementService              $elementService
-     * @param DataProvider                $dataProvider
+     * @param ConfiguratorInterface       $configurator
      * @param RouterInterface             $router
      * @param EngineInterface             $templating
      * @param EventDispatcherInterface    $dispatcher
@@ -101,10 +108,11 @@ class ElementIndexer extends AbstractIndexer
         SiterootManagerInterface $siterootManager,
         ContentTreeManagerInterface $treeManager,
         ElementService $elementService,
-        DataProvider $dataProvider,
+        ConfiguratorInterface $configurator,
         RouterInterface $router,
         EngineInterface $templating,
         EventDispatcherInterface $dispatcher,
+        LoggerInterface $logger,
         ContainerInterface $container)
     {
         $this->storage = $storage;
@@ -112,10 +120,11 @@ class ElementIndexer extends AbstractIndexer
         $this->siterootManager = $siterootManager;
         $this->treeManager = $treeManager;
         $this->elementService = $elementService;
-        $this->dataProvider = $dataProvider;
+        $this->configurator = $configurator;
         $this->router = $router;
         $this->templating = $templating;
         $this->dispatcher = $dispatcher;
+        $this->logger = $logger;
         $this->container = $container;
     }
 
@@ -196,13 +205,10 @@ class ElementIndexer extends AbstractIndexer
                 }
 
                 foreach ($tree->getPublishedVersions($treeNode) as $language => $onlineVersion) {
-                    $eid = $treeNode->getTypeId();
-
                     /**
                      * skip restricted, if not globally allowed
                      */
-                    if ($skipRestricted && $treeNode->getNeedAuthentication())
-                    {
+                    if ($skipRestricted && $treeNode->getNeedAuthentication()) {
                         continue;
                     }
 
@@ -216,7 +222,8 @@ class ElementIndexer extends AbstractIndexer
                     }
 
                     $elementtype = $this->elementService->findElementtype($element);
-                    if ('full' !== $elementtype->getType()) { // ElementtypeVersion::TYPE_FULL
+                    if ('full' !== $elementtype->getType()) {
+                        // ElementtypeVersion::TYPE_FULL
                         continue;
                     }
 
@@ -265,6 +272,7 @@ class ElementIndexer extends AbstractIndexer
      * @param ElementVersion    $elementVersion
      * @param string            $language
      * @param integer           $id
+     *
      * @return DocumentInterface|false
      * @throws \Exception
      */
@@ -288,11 +296,12 @@ class ElementIndexer extends AbstractIndexer
             }
 
             if (!$result) {
+                $this->logger->info("TreeNode {$treeNode->getId()} not indexed, no result from loadTreeNode()");
+
                 return false;
             }
         } catch (\Exception $e) {
-            while (ob_get_level() > 0)
-            {
+            while (ob_get_level() > 0) {
                 ob_end_clean();
             }
 
@@ -359,9 +368,9 @@ class ElementIndexer extends AbstractIndexer
         $tid           = $treeNode->getId();
 
         // 1. try boosting by tid
-        if (isset($boostTids[$tid]))
-        {
+        if (isset($boostTids[$tid])) {
             $document->setBoost($boostTids[$tid]);
+
             return;
         }
 
@@ -372,7 +381,6 @@ class ElementIndexer extends AbstractIndexer
         // 2. try boosting by element type id
         if (isset($boostElementtypes[$elementTypeId])) {
             $document->setBoost($boostElementtypes[$elementTypeId]);
-            return;
         }
     }
 
@@ -403,14 +411,26 @@ class ElementIndexer extends AbstractIndexer
         $siteroot->setContentChannels(array(1 => 1));
         $siterootUrl = $siteroot->getDefaultUrl();
 
+        $request->setLocale($language);
+        $request->setDefaultLocale($language);
+        //$request->attributes->set('_locale', $language);
         $request->attributes->set('language', $language);
         $request->attributes->set('routeDocument', $treeNode);
         $request->attributes->set('contentDocument', $treeNode);
         $request->attributes->set('siterootUrl', $siterootUrl);
         $request->attributes->set('preview', true);
 
-        $data = $this->dataProvider->provide($request);
-        $content = $this->templating->render($data['template'], (array) $data);
+        try {
+            /* @var $configuration Configuration */
+            $configuration = $this->configurator->configure($request, null);
+            $data = $configuration->getVariables();
+
+            $content = $this->templating->render($data['template'], (array) $data);
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+
+            return null;
+        }
 
         $this->container->leaveScope('request');
 
@@ -447,10 +467,12 @@ class ElementIndexer extends AbstractIndexer
         $document->setValue('url', $url);
         $document->setValue('tid', $treeNode->getId());
         $document->setValue('eid', $treeNode->getTypeId());
+        $document->setValue('elementtypeId', $elementtype->getId());
         $document->setValue('elementtype', $elementtypeUniqueId);
-        $document->setValue('siteroot', $treeNode->getTree()->getSiterootId());
-        $document->setValue('navigation', $treeNode->getInNavigation() ? '1' : '0');
-        $document->setValue('restricted', $treeNode->getNeedAuthentication() ? '1' : '0');
+        $document->setValue('siterootId', $treeNode->getTree()->getSiterootId());
+        $document->setValue('siteroot', $configuration->get('siteroot')->getTitle($language));
+        $document->setValue('navigation', $treeNode->getInNavigation() ? true : false);
+        $document->setValue('restricted', $treeNode->getNeedAuthentication() ? true : false);
 
         return true;
     }
@@ -471,36 +493,51 @@ class ElementIndexer extends AbstractIndexer
         $skipRestricted = '1' == $siteroot->getProperty('indexer.elements.skip.restricted');
         $skipElementTypeIds = explode(';', $siteroot->getProperty('indexer.elements.skip.elementtypeids'));
 
+        // TODO: remove
+        $isSiterootEnabled = true;
+
         // skip siteroot?
         if (!$isSiterootEnabled) {
-            // TODO: enable
-            //return false;
+            $this->logger->info("TreeNode {$treeNode->getId()} not indexed, siteroot disabled");
+
+            return false;
         }
 
         // skip tid?
         if ($treeNode->getAttribute('searchNoIndex', false)) {
+            $this->logger->info("TreeNode {$treeNode->getId()} not indexed, treeNode is marked with no-index");
+
             return false;
         }
 
         // skip restricted?
-        if ($skipRestricted) {
-            $isRestricted = $treeNode->getNeedAuthentication();
+        if ($skipRestricted && $treeNode->getNeedAuthentication()) {
+            $this->logger->info("TreeNode {$treeNode->getId()} not indexed, treeNode needs authentication");
 
-            if ($isRestricted) {
-                return false;
-            }
+            return false;
         }
 
         // skip elementtype?
         $element       = $this->elementService->findElement($treeNode->getTypeId());
         $elementtypeId = $element->getElementtypeId();
         if (in_array($elementtypeId, $skipElementTypeIds)) {
+            $this->logger->info("TreeNode {$treeNode->getId()} not indexed, elementtype id is on skip list");
+
+            return false;
+        }
+
+        if ($elementtypeId === 'ca14d613-7f4b-225c-7973-a18a7098cbe7') {
+            $this->logger->info("TreeNode {$treeNode->getId()} not indexed, elementtype id is on skip list");
+
             return false;
         }
 
         // skip non full elements
         $elementtype     = $this->elementService->findElementtype($element);
-        if ('full' !== $elementtype->getType()) { // ElementtypeVersion::TYPE_FULL
+        if ('full' !== $elementtype->getType()) {
+            // ElementtypeVersion::TYPE_FULL
+            $this->logger->info("TreeNode {$treeNode->getId()} not indexed, not a full element");
+
             return false;
         }
 

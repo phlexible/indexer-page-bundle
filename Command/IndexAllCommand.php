@@ -81,7 +81,7 @@ class IndexAllCommand extends ContainerAwareCommand
                 $job = new Job('indexer-element:index', array('--documentId', $document->getIdentifier()));
                 $this->getContainer()->get('phlexible_queue.job_manager')->addJob($job);
             } else {
-                $update->addUpdate($document);
+                $update->add($document);
             }
 
             $progress->setMessage($document->getIdentifier());

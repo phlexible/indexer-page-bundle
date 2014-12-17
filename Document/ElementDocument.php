@@ -17,6 +17,9 @@ use Phlexible\Bundle\IndexerBundle\Document\Document;
  */
 class ElementDocument extends Document
 {
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->setFields(
@@ -28,16 +31,25 @@ class ElementDocument extends Document
                 'content'         => array('type' => self::TYPE_STRING, 'copyFields' => array('copy')),
 
                 'language'        => array('type' => self::TYPE_STRING),
-                'context'         => array('type' => self::TYPE_STRING, 'array' => true),
                 'cleantitle'      => array('type' => self::TYPE_STRING, 'readonly' => true),
                 'tid'             => array('type' => self::TYPE_INTEGER),
                 'eid'             => array('type' => self::TYPE_INTEGER),
+                'elementtypeId'   => array('type' => self::TYPE_STRING),
                 'elementtype'     => array('type' => self::TYPE_STRING),
                 'url'             => array('type' => self::TYPE_STRING),
+                'siterootId'      => array('type' => self::TYPE_STRING),
                 'siteroot'        => array('type' => self::TYPE_STRING),
                 'navigation'      => array('type' => self::TYPE_BOOLEAN),
                 'restricted'      => array('type' => self::TYPE_BOOLEAN),
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'element';
     }
 }
