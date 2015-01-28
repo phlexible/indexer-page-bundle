@@ -60,7 +60,7 @@ class NodeListener implements EventSubscriberInterface
         $language   = $event->getLanguage();
         $node       = $event->getNode();
 
-        $this->queueJob($node, $language);
+        $this->queueUpdate($node, $language);
     }
 
     /**
@@ -73,7 +73,7 @@ class NodeListener implements EventSubscriberInterface
         // global values (context, restricted) may be changed
         // -> reindex all languages
         foreach ($node->getOnlineLanguage() as $language) {
-            $this->queueJob($node, $language);
+            $this->queueUpdate($node, $language);
         }
     }
 
@@ -84,8 +84,8 @@ class NodeListener implements EventSubscriberInterface
     {
         $node = $event->getNode();
 
-        foreach ($node->getOnlineLanguage() as $language) {
-            $this->queueJob($node, $language);
+        foreach ($node->getTree()->findOnlineByTreeNode($node) as $treeOnline) {
+            $this->queueUpdate($node, $treeOnline->getLanguage());
         }
     }
 
@@ -97,7 +97,7 @@ class NodeListener implements EventSubscriberInterface
         $language   = $event->getLanguage();
         $node       = $event->getNode();
 
-        $this->remove($node, $language);
+        $this->queueRemove($node, $language);
     }
 
     /**
@@ -107,14 +107,23 @@ class NodeListener implements EventSubscriberInterface
     {
         $node = $event->getNode();
 
-        $this->remove($node);
+        $this->queueRemove($node);
     }
 
     /**
      * @param TreeNodeInterface $node
      * @param string            $language
      */
-    private function queueJob(TreeNodeInterface $node, $language)
+    private function queueRemove(TreeNodeInterface $node, $language = null)
+    {
+
+    }
+
+    /**
+     * @param TreeNodeInterface $node
+     * @param string            $language
+     */
+    private function queueUpdate(TreeNodeInterface $node, $language)
     {
         $identifier = 'element_' . $node->getId() . '_' . $language;
 
