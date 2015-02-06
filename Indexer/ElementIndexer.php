@@ -11,14 +11,13 @@ namespace Phlexible\Bundle\IndexerElementBundle\Indexer;
 use Phlexible\Bundle\IndexerBundle\Indexer\IndexerInterface;
 use Phlexible\Bundle\IndexerBundle\Storage\StorageInterface;
 use Phlexible\Bundle\IndexerElementBundle\Document\ElementDocument;
-use Phlexible\Bundle\QueueBundle\Entity\Job;
 use Phlexible\Bundle\QueueBundle\Model\JobManagerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
  * Element indexer
  *
- * @author Marco Fischer <mf@brainbits.net>
+ * @author Stephan Wentz <sw@brainbits.net>
  */
 class ElementIndexer implements IndexerInterface
 {
@@ -68,9 +67,6 @@ class ElementIndexer implements IndexerInterface
         return 'Elements indexer';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return 'element';
