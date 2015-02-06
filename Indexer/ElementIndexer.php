@@ -534,9 +534,9 @@ class ElementIndexer extends AbstractIndexer
         }
 
         $skipElementtypeIds = array(
-            'ca14d613-7f4b-225c-7973-a18a7098cbe7',
-            'f70c47e1-137e-465a-ac24-92c285619f29',
-            'ca14d613-7f4b-225c-7973-a18a7098cbe7'
+            //'ca14d613-7f4b-225c-7973-a18a7098cbe7',
+            //'f70c47e1-137e-465a-ac24-92c285619f29',
+            //'ca14d613-7f4b-225c-7973-a18a7098cbe7'
         );
         if (in_array($elementtypeId, $skipElementtypeIds)) {
             $this->logger->info("TreeNode {$treeNode->getId()} not indexed, elementtype id is on skip list");
