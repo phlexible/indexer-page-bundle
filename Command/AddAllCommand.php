@@ -8,19 +8,17 @@
 
 namespace Phlexible\Bundle\IndexerElementBundle\Command;
 
-use Phlexible\Bundle\QueueBundle\Entity\Job;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Delete all command
+ * Add all command
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class DeleteAllCommand extends ContainerAwareCommand
+class AddAllCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -28,8 +26,9 @@ class DeleteAllCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('indexer-element:delete-all')
-            ->setDescription('Delete all element documents.')
+            ->setName('indexer-element:add-all')
+            ->setDescription('Index all element documents.')
+            ->addOption('queue', null, InputOption::VALUE_NONE, 'Queue updates instead of immediate run.')
         ;
     }
 
@@ -38,21 +37,30 @@ class DeleteAllCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $queue = $input->getOption('queue');
+
         ini_set('memory_limit', -1);
 
-        $container = $this->getContainer();
-
-        $indexer = $container->get('phlexible_indexer_element.indexer');
+        $indexer = $this->getContainer()->get('phlexible_indexer_element.element_indexer');
         $storage = $indexer->getStorage();
 
         $output->writeln('Indexer: ' . $indexer->getName());
         $output->writeln('  Storage: ' . get_class($storage));
         $output->writeln('    DSN: ' . $storage->getConnectionString());
 
-        $update = $storage->createUpdate()
-            ->deleteType('element');
+        $viaQueue = $input->getOption('queue');
 
-        $storage->execute($update);
+        $result = $indexer->indexAll($viaQueue);
+
+        if (!$result) {
+            $output->writeln('Nothing to index.');
+        } else {
+            if ($viaQueue) {
+                $output->writeln("Queued $result document-adds.");
+            } else {
+                $output->writeln("Added $result documents to index.");
+            }
+        }
 
         return 0;
     }

@@ -14,11 +14,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Index command
+ * Add command
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class IndexCommand extends ContainerAwareCommand
+class AddCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -26,9 +26,10 @@ class IndexCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('indexer-element:index')
+            ->setName('indexer-element:add')
             ->setDescription('Index element document.')
-            ->addArgument('documentId', InputArgument::REQUIRED, 'Document ID')
+            ->addArgument('treeId', InputArgument::REQUIRED, 'Tree node ID')
+            ->addArgument('language', InputArgument::REQUIRED, 'Language')
         ;
     }
 
@@ -37,34 +38,27 @@ class IndexCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $documentId = $input->getArgument('documentId');
-
         ini_set('memory_limit', -1);
 
-        $container = $this->getContainer();
+        $treeId = $input->getArgument('treeId');
+        $language = $input->getArgument('language');
 
-        $indexer = $container->get('phlexible_indexer_element.indexer');
+        $indexer = $this->getContainer()->get('phlexible_indexer_element.element_indexer');
         $storage = $indexer->getStorage();
 
         $output->writeln('Indexer: ' . $indexer->getName());
         $output->writeln('  Storage: ' . get_class($storage));
         $output->writeln('    DSN: ' . $storage->getConnectionString());
 
-        $document = $indexer->buildDocument($documentId);
+        $identifier = "treenode_{$treeId}_{$language}";
 
-        if (!$document) {
-            $output->writeln("<error>Document $documentId could not be loaded.</error>");
+        if (!$indexer->add($identifier)) {
+            $output->writeln("<error>Document $identifier could not be loaded.</error>");
 
             return 1;
         }
 
-        $output->writeln('Document: ' . get_class($document) . ' ' . $document->getIdentifier());
-
-        $update = $storage->createUpdate()
-            ->addDocument($document)
-            ->commit();
-
-        $storage->execute($update);
+        $output->writeln("$identifier index done.");
 
         return 0;
     }

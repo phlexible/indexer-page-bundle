@@ -28,7 +28,8 @@ class DeleteCommand extends ContainerAwareCommand
         $this
             ->setName('indexer-element:delete')
             ->setDescription('Delete element document.')
-            ->addArgument('documentId', InputArgument::REQUIRED, 'Document ID')
+            ->addArgument('treeId', InputArgument::REQUIRED, 'Tree node ID')
+            ->addArgument('language', InputArgument::REQUIRED, 'Language')
         ;
     }
 
@@ -37,24 +38,24 @@ class DeleteCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $documentId = $input->getArgument('documentId');
-
         ini_set('memory_limit', -1);
 
-        $container = $this->getContainer();
+        $treeId = $input->getArgument('treeId');
+        $language = $input->getArgument('language');
 
-        $indexer = $container->get('phlexible_indexer_element.indexer');
+        $indexer = $this->getContainer()->get('phlexible_indexer_element.element_indexer');
         $storage = $indexer->getStorage();
 
         $output->writeln('Indexer: ' . $indexer->getName());
         $output->writeln('  Storage: ' . get_class($storage));
         $output->writeln('    DSN: ' . $storage->getConnectionString());
 
-        $update = $storage->createUpdate()
-            ->delete($documentId)
-            ->commit();
+        $identifier = "treenode_{$treeId}_{$language}";
 
-        $storage->execute($update);
+        $commands = $storage->createCommands();
+        $commands->delete($identifier);
+
+        $storage->runCommands($commands);
 
         return 0;
     }

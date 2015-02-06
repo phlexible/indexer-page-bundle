@@ -1,8 +1,18 @@
 services:
-    phlexible_indexer_element.indexer:
+    phlexible_indexer_element.element_indexer:
         class: Phlexible\Bundle\IndexerElementBundle\Indexer\ElementIndexer
         arguments:
             - @phlexible_indexer_element.storage
+            - @phlexible_indexer_element.element_document_mapper
+            - @phlexible_queue.job_manager
+            - @logger
+        tags:
+            - {name: phlexible_indexer.indexer}
+            - {name: monolog.logger, channel: indexer}
+
+    phlexible_indexer_element.element_document_mapper:
+        class: Phlexible\Bundle\IndexerElementBundle\Indexer\ElementDocumentMapper
+        arguments:
             - @phlexible_indexer.document_factory
             - @phlexible_siteroot.siteroot_manager
             - @phlexible_tree.content_tree_manager.delegating
@@ -14,7 +24,6 @@ services:
             - @logger
             - @service_container
         tags:
-            - {name: phlexible_indexer.indexer}
             - {name: monolog.logger, channel: indexer}
 
     # event listeners
