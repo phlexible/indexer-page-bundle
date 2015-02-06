@@ -8,17 +8,19 @@
 
 namespace Phlexible\Bundle\IndexerElementBundle\Command;
 
-use Phlexible\Bundle\IndexerElementBundle\Indexer\ElementIndexer;
+use Phlexible\Bundle\QueueBundle\Entity\Job;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Flush command
+ * Delete all command
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class FlushCommand extends ContainerAwareCommand
+class DeleteAllCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -26,8 +28,8 @@ class FlushCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('indexer-element:flush')
-            ->setDescription('Flush all element documents.')
+            ->setName('indexer-element:delete-all')
+            ->setDescription('Delete all element documents.')
         ;
     }
 
@@ -41,15 +43,16 @@ class FlushCommand extends ContainerAwareCommand
         $container = $this->getContainer();
 
         $indexer = $container->get('phlexible_indexer_element.indexer');
-
-        $output->writeln('Indexer: ' . $indexer->getLabel());
-
         $storage = $indexer->getStorage();
-        $update = $storage->createUpdate();
 
-        $update->addDeleteByType(ElementIndexer::DOCUMENT_TYPE);
+        $output->writeln('Indexer: ' . $indexer->getName());
+        $output->writeln('  Storage: ' . get_class($storage));
+        $output->writeln('    DSN: ' . $storage->getConnectionString());
 
-        $storage->update($update);
+        $update = $storage->createUpdate()
+            ->deleteType('element');
+
+        $storage->execute($update);
 
         return 0;
     }

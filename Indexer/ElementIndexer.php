@@ -131,7 +131,7 @@ class ElementIndexer extends AbstractIndexer
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getName()
     {
         return 'Elements indexer';
     }
@@ -167,7 +167,7 @@ class ElementIndexer extends AbstractIndexer
      *
      * @return array
      */
-    public function getAllIdentifiers()
+    public function findIdentifiers()
     {
         $indexIdentifiers = array();
 
@@ -243,13 +243,21 @@ class ElementIndexer extends AbstractIndexer
      *
      * @return DocumentInterface
      */
-    public function getDocumentByIdentifier($id)
+    public function buildDocument($id)
     {
         list($prefix, $tid, $language) = explode('_', $id);
 
-        $tree           = $this->treeManager->findByTreeId($tid);
-        $treeNode       = $tree->get($tid);
-        $onlineVersion  = $tree->getPublishedVersion($treeNode, $language);
+        $tree = $this->treeManager->findByTreeId($tid);
+        if (!$tree) {
+            return null;
+        }
+
+        $treeNode = $tree->get($tid);
+        if (!$treeNode) {
+            return null;
+        }
+
+        $onlineVersion = $tree->getPublishedVersion($treeNode, $language);
         if (!$onlineVersion) {
             return null;
         }

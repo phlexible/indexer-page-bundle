@@ -14,11 +14,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Index command
+ * Delete command
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class IndexCommand extends ContainerAwareCommand
+class DeleteCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -26,8 +26,8 @@ class IndexCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('indexer-element:index')
-            ->setDescription('Index element document.')
+            ->setName('indexer-element:delete')
+            ->setDescription('Delete element document.')
             ->addArgument('documentId', InputArgument::REQUIRED, 'Document ID')
         ;
     }
@@ -50,18 +50,8 @@ class IndexCommand extends ContainerAwareCommand
         $output->writeln('  Storage: ' . get_class($storage));
         $output->writeln('    DSN: ' . $storage->getConnectionString());
 
-        $document = $indexer->buildDocument($documentId);
-
-        if (!$document) {
-            $output->writeln("<error>Document $documentId could not be loaded.</error>");
-
-            return 1;
-        }
-
-        $output->writeln('Document: ' . get_class($document) . ' ' . $document->getIdentifier());
-
         $update = $storage->createUpdate()
-            ->addDocument($document)
+            ->delete($documentId)
             ->commit();
 
         $storage->execute($update);

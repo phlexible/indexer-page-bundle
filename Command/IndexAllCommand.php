@@ -45,17 +45,15 @@ class IndexAllCommand extends ContainerAwareCommand
 
         $container = $this->getContainer();
 
-        $indexer = $container->get('phlexible_indexer_element.indexer');
         $logger = $container->get('logger');
-
+        $indexer = $container->get('phlexible_indexer_element.indexer');
         $storage = $indexer->getStorage();
 
-        $output->writeln('Indexer: ' . $indexer->getLabel());
-        $output->writeln('Storage: ' . $storage->getLabel());
+        $output->writeln('Indexer: ' . $indexer->getName());
+        $output->writeln('  Storage: ' . get_class($storage));
+        $output->writeln('    DSN: ' . $storage->getConnectionString());
 
-        $update = $storage->createUpdate();
-
-        $documentIds = $indexer->getAllIdentifiers();
+        $documentIds = $indexer->findIdentifiers();
 
         if (!count($documentIds)) {
             $output->writeln('Nothing to index.');
@@ -63,41 +61,49 @@ class IndexAllCommand extends ContainerAwareCommand
             return 0;
         }
 
-        $progress = new ProgressBar($output, count($documentIds));
-        $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s% %message%');
-        $progress->start();
+        $progress = null;
+        if ($output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
+            $progress = new ProgressBar($output, count($documentIds));
+            $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s% %message%');
+            $progress->start();
+        }
+
+        $update = null;
+        if (!$queue) {
+            $update = $storage->createUpdate();
+        }
 
         foreach ($documentIds as $documentId) {
-            $document = $indexer->getDocumentByIdentifier($documentId);
+            $document = $indexer->buildDocument($documentId);
 
             if (!$document) {
                 $logger->error("Document $documentId could not be loaded.");
                 continue;
             }
-            //$output->writeln('Document: ' . $document->getDocumentType() . ' ' . $document->getDocumentClass() . ' ' . $document->getIdentifier());
-
 
             if ($queue) {
                 $job = new Job('indexer-element:index', array('--documentId', $document->getIdentifier()));
                 $this->getContainer()->get('phlexible_queue.job_manager')->addJob($job);
             } else {
-                $update->add($document);
+                $update->addDocument($document);
             }
 
-            $progress->setMessage($document->getIdentifier());
-            $progress->advance();
+            if ($output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
+                $progress->setMessage($document->getIdentifier());
+                $progress->advance();
+            }
         }
 
-        if ($queue) {
-
-        } else {
-            $update->addCommit();
+        if (!$queue) {
+            $update->commit();
         }
 
-        $progress->finish();
+        if ($output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
+            $progress->finish();
+        }
         $output->writeln('');
 
-        $storage->update($update);
+        $storage->execute($update);
 
         return 0;
     }
