@@ -67,6 +67,9 @@ class ElementIndexer implements IndexerInterface
         return 'Elements indexer';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getType()
     {
         return 'element';
@@ -91,7 +94,7 @@ class ElementIndexer implements IndexerInterface
     /**
      * {@inheritdoc}
      */
-    public function add($identifier)
+    public function add($identifier, $viaQueue = false)
     {
         $document = $this->mapper->map($identifier);
 
@@ -103,7 +106,11 @@ class ElementIndexer implements IndexerInterface
             ->addDocument($document)
             ->commit();
 
-        $this->storage->runCommands($commands);
+        if (!$viaQueue) {
+            $this->storage->runCommands($commands);
+        } else {
+            $this->storage->queueCommands($commands);
+        }
 
         return true;
     }
@@ -111,7 +118,7 @@ class ElementIndexer implements IndexerInterface
     /**
      * {@inheritdoc}
      */
-    public function update($identifier)
+    public function update($identifier, $viaQueue = false)
     {
         $document = $this->mapper->map($identifier);
 
@@ -123,7 +130,35 @@ class ElementIndexer implements IndexerInterface
             ->updateDocument($document)
             ->commit();
 
-        $this->storage->runCommands($commands);
+        if (!$viaQueue) {
+            $this->storage->runCommands($commands);
+        } else {
+            $this->storage->queueCommands($commands);
+        }
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete($identifier, $viaQueue = false)
+    {
+        $document = $this->mapper->map($identifier);
+
+        if (!$document) {
+            return false;
+        }
+
+        $commands = $this->storage->createCommands()
+            ->deleteDocument($document)
+            ->commit();
+
+        if (!$viaQueue) {
+            $this->storage->runCommands($commands);
+        } else {
+            $this->storage->queueCommands($commands);
+        }
 
         return true;
     }

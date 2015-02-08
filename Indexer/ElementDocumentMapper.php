@@ -269,7 +269,7 @@ class ElementDocumentMapper
         try {
             ob_start();
 
-            $document = $this->documentFactory->factory('Phlexible\Bundle\IndexerElementBundle\Document\ElementDocument');
+            $document = $this->documentFactory->factory($this->getDocumentClass());
             $document->setIdentifier($id);
 
             $this->handleBoost($document, $treeNode, $elementVersion);

@@ -8,6 +8,7 @@
 
 namespace Phlexible\Bundle\IndexerElementBundle\EventListener;
 
+use Phlexible\Bundle\IndexerElementBundle\Indexer\ElementIndexer;
 use Phlexible\Bundle\QueueBundle\Entity\Job;
 use Phlexible\Bundle\QueueBundle\Model\JobManagerInterface;
 use Phlexible\Bundle\TreeBundle\Event\MoveNodeEvent;
@@ -26,16 +27,16 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class NodeListener implements EventSubscriberInterface
 {
     /**
-     * @var JobManagerInterface
+     * @var ElementIndexer
      */
-    private $jobManager;
+    private $indexer;
 
     /**
-     * @param JobManagerInterface $jobManager
+     * @param ElementIndexer $indexer
      */
-    public function __construct(JobManagerInterface $jobManager)
+    public function __construct(ElementIndexer $indexer)
     {
-        $this->jobManager = $jobManager;
+        $this->indexer = $indexer;
     }
 
     /**
@@ -60,7 +61,7 @@ class NodeListener implements EventSubscriberInterface
         $language   = $event->getLanguage();
         $node       = $event->getNode();
 
-        $this->queueUpdate($node, $language);
+        $this->indexer->add("treenode_{$node->getId()}_{$language}", true);
     }
 
     /**
@@ -72,8 +73,8 @@ class NodeListener implements EventSubscriberInterface
 
         // global values (context, restricted) may be changed
         // -> reindex all languages
-        foreach ($node->getOnlineLanguage() as $language) {
-            $this->queueUpdate($node, $language);
+        foreach ($node->getTree()->getPublishedLanguages($node) as $language) {
+            $this->indexer->add("treenode_{$node->getId()}_{$language}", true);
         }
     }
 
@@ -84,8 +85,8 @@ class NodeListener implements EventSubscriberInterface
     {
         $node = $event->getNode();
 
-        foreach ($node->getTree()->findOnlineByTreeNode($node) as $treeOnline) {
-            $this->queueUpdate($node, $treeOnline->getLanguage());
+        foreach ($node->getTree()->getPublishedLanguages($node) as $language) {
+            $this->indexer->add("treenode_{$node->getId()}_{$language}", true);
         }
     }
 
@@ -97,7 +98,7 @@ class NodeListener implements EventSubscriberInterface
         $language   = $event->getLanguage();
         $node       = $event->getNode();
 
-        $this->queueRemove($node, $language);
+        $this->indexer->add("treenode_{$node->getId()}_{$language}", true);
     }
 
     /**
@@ -107,27 +108,8 @@ class NodeListener implements EventSubscriberInterface
     {
         $node = $event->getNode();
 
-        $this->queueRemove($node);
-    }
-
-    /**
-     * @param TreeNodeInterface $node
-     * @param string            $language
-     */
-    private function queueRemove(TreeNodeInterface $node, $language = null)
-    {
-
-    }
-
-    /**
-     * @param TreeNodeInterface $node
-     * @param string            $language
-     */
-    private function queueUpdate(TreeNodeInterface $node, $language)
-    {
-        $identifier = 'element_' . $node->getId() . '_' . $language;
-
-        $job = new Job('indexer-element', array('--documentId', $identifier));
-        $this->jobManager->addUniqueJob($job);
+        foreach ($node->getTree()->getPublishedLanguages($node) as $language) {
+            $this->indexer->add("treenode_{$node->getId()}_{$language}", true);
+        }
     }
 }
