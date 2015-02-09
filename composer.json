@@ -14,6 +14,9 @@
         "phlexible/indexer-bundle": "~1.0",
         "zf1/zend-search-lucene": "~1.12"
     },
+    "suggest": {
+        "phlexible/frontend-search-bundle": "Default frontend search for elements"
+    },
     "repositories": [
         {
             "type": "composer",
