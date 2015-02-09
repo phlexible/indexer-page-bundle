@@ -26,8 +26,13 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testSupports()
+    public function testSupportedIdentifier()
     {
-        $this->indexer->supports('test');
+        $this->assertTrue($this->indexer->supports('test'));
+    }
+
+    public function testUnsupportedIdentifier()
+    {
+        $this->assertFalse($this->indexer->supports('test'));
     }
 }
