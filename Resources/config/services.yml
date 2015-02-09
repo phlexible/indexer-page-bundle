@@ -30,6 +30,6 @@ services:
     phlexible_indexer_element.listener.Node:
         class: Phlexible\Bundle\IndexerElementBundle\EventListener\NodeListener
         arguments:
-            - @phlexible_queue.job_manager
+            - @phlexible_indexer_element.element_indexer
         tags:
             - {name: kernel.event_subscriber}
