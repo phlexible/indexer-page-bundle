@@ -392,7 +392,6 @@ class ElementDocumentMapper
         $this->container->set('request', new Request(), 'request');
 
         $siteroot = $this->siterootManager->find($treeNode->getTree()->getSiterootId());
-        $siteroot->setContentChannels(array(1 => 1));
         $siterootUrl = $siteroot->getDefaultUrl();
 
         $request->setLocale($language);
