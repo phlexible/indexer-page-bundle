@@ -203,8 +203,8 @@ class ElementDocumentMapper
                         continue;
                     }
 
-                    $id = sprintf('%s_%s_%s', 'treenode', $treeNode->getId(), $language);
-                    $indexIdentifiers[$id] = $id;
+                    $identifier = sprintf('%s_%s_%s', 'element', $treeNode->getId(), $language);
+                    $indexIdentifiers[] = $identifier;
                 }
             }
         }

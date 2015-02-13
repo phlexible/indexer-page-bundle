@@ -88,7 +88,7 @@ class ElementIndexer implements IndexerInterface
      */
     public function supports($identifier)
     {
-        return $identifier instanceof ElementDocument || preg_match('/^treenode_\d+_\w+$/', $identifier);
+        return $identifier instanceof ElementDocument || preg_match('/^element_\d+_\w+$/', $identifier);
     }
 
     /**
