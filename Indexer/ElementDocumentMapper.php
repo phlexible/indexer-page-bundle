@@ -443,18 +443,18 @@ class ElementDocumentMapper
         $elementtype = $this->elementService->findElementtype($elementVersion->getElement());
         $elementtypeUniqueId = $elementtype->getUniqueId();
 
-        $document->setValue('language', $language);
-        $document->setValue('title', $title);
-        $document->setValue('content', $content);
-        $document->setValue('url', $url);
-        $document->setValue('tid', $treeNode->getId());
-        $document->setValue('eid', $treeNode->getTypeId());
-        $document->setValue('elementtypeId', $elementtype->getId());
-        $document->setValue('elementtype', $elementtypeUniqueId);
-        $document->setValue('siterootId', $treeNode->getTree()->getSiterootId());
-        $document->setValue('siteroot', $configuration->get('siteroot')->getTitle($language));
-        $document->setValue('navigation', $treeNode->getInNavigation() ? true : false);
-        $document->setValue('restricted', $treeNode->getNeedAuthentication() ? true : false);
+        $document->set('language', $language);
+        $document->set('title', $title);
+        $document->set('content', $content);
+        $document->set('url', $url);
+        $document->set('tid', $treeNode->getId());
+        $document->set('eid', $treeNode->getTypeId());
+        $document->set('elementtypeId', $elementtype->getId());
+        $document->set('elementtype', $elementtypeUniqueId);
+        $document->set('siterootId', $treeNode->getTree()->getSiterootId());
+        $document->set('siteroot', $configuration->get('siteroot')->getTitle($language));
+        $document->set('navigation', $treeNode->getInNavigation() ? true : false);
+        $document->set('restricted', $treeNode->getNeedAuthentication() ? true : false);
 
         return true;
     }

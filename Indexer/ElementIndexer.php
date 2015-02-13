@@ -86,6 +86,14 @@ class ElementIndexer implements IndexerInterface
     /**
      * {@inheritdoc}
      */
+    public function getDocumentClass()
+    {
+        return $this->mapper->getDocumentClass();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function supports($identifier)
     {
         return $identifier instanceof ElementDocument || preg_match('/^element_\d+_\w+$/', $identifier);

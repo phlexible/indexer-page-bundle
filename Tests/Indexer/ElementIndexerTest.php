@@ -59,7 +59,7 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 
     public function testSupportedIdentifier()
     {
-        $this->assertTrue($this->indexer->supports('treenode_74_de'));
+        $this->assertTrue($this->indexer->supports('element_74_de'));
     }
 
     public function testUnsupportedIdentifier()
