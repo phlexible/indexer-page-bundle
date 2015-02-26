@@ -50,7 +50,7 @@ class AddCommand extends ContainerAwareCommand
         $output->writeln('  Storage: ' . get_class($storage));
         $output->writeln('    DSN: ' . $storage->getConnectionString());
 
-        $identifier = "treenode_{$treeId}_{$language}";
+        $identifier = "element_{$treeId}_{$language}";
 
         if (!$indexer->add($identifier)) {
             $output->writeln("<error>Document $identifier could not be loaded.</error>");

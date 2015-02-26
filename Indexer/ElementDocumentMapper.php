@@ -14,7 +14,6 @@ use Phlexible\Bundle\ElementRendererBundle\Configurator\Configuration;
 use Phlexible\Bundle\ElementRendererBundle\Configurator\ConfiguratorInterface;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentFactory;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
-use Phlexible\Bundle\IndexerBundle\Storage\StorageInterface;
 use Phlexible\Bundle\IndexerElementBundle\Event\MapDocumentEvent;
 use Phlexible\Bundle\IndexerElementBundle\IndexerElementEvents;
 use Phlexible\Bundle\SiterootBundle\Model\SiterootManagerInterface;
@@ -203,7 +202,7 @@ class ElementDocumentMapper
                         continue;
                     }
 
-                    $identifier = sprintf('%s_%s_%s', 'element', $treeNode->getId(), $language);
+                    $identifier = $this->createIdentifier($treeNode, $language);
                     $indexIdentifiers[] = $identifier;
                 }
             }
@@ -213,40 +212,86 @@ class ElementDocumentMapper
     }
 
     /**
-     * Map document
+     * Map node to document
+     *
+     * @param TreeNodeInterface $node
+     * @param string            $language
+     *
+     * @return DocumentInterface
+     */
+    public function mapNode(TreeNodeInterface $node, $language)
+    {
+        $tree = $node->getTree();
+
+        $onlineVersion = $tree->getPublishedVersion($node, $language);
+        if (!$onlineVersion) {
+            return null;
+        }
+
+        $element        = $this->elementService->findElement($node->getTypeId());
+        //$elementVersion = $this->elementService->findElementVersion($element, $onlineVersion);
+        $elementVersion = $this->elementService->findLatestElementVersion($element);
+
+        if (!$this->isNodeIndexible($node, $language)) {
+            return null;
+        }
+
+        $identifier = $this->createIdentifier($node, $language);
+
+        return $this->mapElementToDocument($node, $elementVersion, $language, $identifier);
+    }
+
+    /**
+     * @param TreeNodeInterface $node
+     * @param string            $language
+     *
+     * @return string
+     */
+    public function createIdentifier(TreeNodeInterface $node, $language)
+    {
+        return "element_{$node->getId()}_$language";
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return array|null
+     */
+    public function matchIdentifier($identifier)
+    {
+        if (!preg_match('/^element_(\d+)_(\w\w)$/', $identifier, $match)) {
+            return null;
+        }
+
+        return array($match[1], $match[2]);
+    }
+
+    /**
+     * Map identifier to document
      *
      * @param string $identifier
      *
      * @return DocumentInterface
      */
-    public function map($identifier)
+    public function mapIdentifier($identifier)
     {
-        list($prefix, $tid, $language) = explode('_', $identifier);
+        $match = $this->matchIdentifier($identifier);
+        if (!$match) {
+            return null;
+        }
+        list($nodeId, $language) = $match;
 
-        $tree = $this->treeManager->findByTreeId($tid);
+        $tree = $this->treeManager->findByTreeId($nodeId);
         if (!$tree) {
             return null;
         }
 
-        $treeNode = $tree->get($tid);
-        if (!$treeNode) {
+        $node = $tree->get($nodeId);
+        if (!$node) {
             return null;
         }
 
-        $onlineVersion = $tree->getPublishedVersion($treeNode, $language);
-        if (!$onlineVersion) {
-            return null;
-        }
-
-        $element        = $this->elementService->findElement($treeNode->getTypeId());
-        //$elementVersion = $this->elementService->findElementVersion($element, $onlineVersion);
-        $elementVersion = $this->elementService->findLatestElementVersion($element);
-
-        if (!$this->isNodeIndexible($treeNode, $language)) {
-            return null;
-        }
-
-        return $this->mapElementToDocument($treeNode, $elementVersion, $language, $identifier);
+        return $this->mapNode($node, $language);
     }
 
     /**

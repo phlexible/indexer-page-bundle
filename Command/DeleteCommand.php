@@ -50,12 +50,11 @@ class DeleteCommand extends ContainerAwareCommand
         $output->writeln('  Storage: ' . get_class($storage));
         $output->writeln('    DSN: ' . $storage->getConnectionString());
 
-        $identifier = "treenode_{$treeId}_{$language}";
+        $identifier = "element_{$treeId}_{$language}";
 
-        $commands = $storage->createCommands();
-        $commands->delete($identifier);
+        $cnt = $storage->delete($identifier);
 
-        $storage->runCommands($commands);
+        $output->writeln("Deleted $cnt documents.");
 
         return 0;
     }

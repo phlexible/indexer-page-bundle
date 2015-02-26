@@ -58,11 +58,10 @@ class NodeListener implements EventSubscriberInterface
      */
     public function onPublishNode(PublishNodeEvent $event)
     {
-        $language   = $event->getLanguage();
         $node       = $event->getNode();
+        $language   = $event->getLanguage();
 
-        return;
-        $this->indexer->add("treenode_{$node->getId()}_{$language}", true);
+        $this->indexer->addNode($node, $language, true);
     }
 
     /**
@@ -72,10 +71,8 @@ class NodeListener implements EventSubscriberInterface
     {
         $node = $event->getNode();
 
-        // global values (context, restricted) may be changed
-        // -> reindex all languages
         foreach ($node->getTree()->getPublishedLanguages($node) as $language) {
-            $this->indexer->add("treenode_{$node->getId()}_{$language}", true);
+            $this->indexer->addNode($node, $language, true);
         }
     }
 
@@ -87,7 +84,7 @@ class NodeListener implements EventSubscriberInterface
         $node = $event->getNode();
 
         foreach ($node->getTree()->getPublishedLanguages($node) as $language) {
-            $this->indexer->add("treenode_{$node->getId()}_{$language}", true);
+            $this->indexer->addNode($node, $language, true);
         }
     }
 
@@ -99,7 +96,7 @@ class NodeListener implements EventSubscriberInterface
         $language   = $event->getLanguage();
         $node       = $event->getNode();
 
-        $this->indexer->add("treenode_{$node->getId()}_{$language}", true);
+        $this->indexer->deleteNode($node, $language, true);
     }
 
     /**
@@ -110,7 +107,7 @@ class NodeListener implements EventSubscriberInterface
         $node = $event->getNode();
 
         foreach ($node->getTree()->getPublishedLanguages($node) as $language) {
-            $this->indexer->add("treenode_{$node->getId()}_{$language}", true);
+            $this->indexer->deleteNode($node, $language, true);
         }
     }
 }

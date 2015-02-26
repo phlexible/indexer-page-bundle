@@ -8,10 +8,12 @@
 
 namespace Phlexible\Bundle\IndexerElementBundle\Indexer;
 
+use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
 use Phlexible\Bundle\IndexerBundle\Indexer\IndexerInterface;
 use Phlexible\Bundle\IndexerBundle\Storage\StorageInterface;
 use Phlexible\Bundle\IndexerElementBundle\Document\ElementDocument;
 use Phlexible\Bundle\QueueBundle\Model\JobManagerInterface;
+use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -96,7 +98,106 @@ class ElementIndexer implements IndexerInterface
      */
     public function supports($identifier)
     {
-        return $identifier instanceof ElementDocument || preg_match('/^element_\d+_\w+$/', $identifier);
+        return $identifier instanceof ElementDocument || $this->mapper->matchIdentifier($identifier);
+    }
+
+    /**
+     * @param string $method
+     * @param string $identifier
+     */
+    private function queueOperation($method, $identifier)
+    {
+        $method .= 'Identifier';
+
+        $operations = $this->storage->createOperations()
+            ->$method($identifier)
+            ->commit();
+
+        $this->storage->queue($operations);
+    }
+
+    /**
+     * @param string            $method
+     * @param DocumentInterface $document
+     */
+    private function executeOperation($method, DocumentInterface $document)
+    {
+        $method .= 'Document';
+
+        $operations = $this->storage->createOperations()
+            ->$method($document)
+            ->commit();
+
+        $this->storage->execute($operations);
+    }
+
+    /**
+     * @param TreeNodeInterface $node
+     * @param string            $language
+     * @param bool              $viaQueue
+     *
+     * @return bool
+     */
+    public function addNode(TreeNodeInterface $node, $language, $viaQueue = false)
+    {
+        if ($viaQueue) {
+            $identifier = $this->mapper->createIdentifier($node, $language);
+            $this->queueOperation('add', $identifier);
+        } else {
+            $document = $this->mapper->mapNode($node, $language);
+            if (!$document) {
+                return 0;
+            }
+            $this->executeOperation('add', $document);
+        }
+
+        return 1;
+    }
+
+    /**
+     * @param TreeNodeInterface $node
+     * @param string            $language
+     * @param bool              $viaQueue
+     *
+     * @return bool
+     */
+    public function updateNode(TreeNodeInterface $node, $language, $viaQueue = false)
+    {
+        if ($viaQueue) {
+            $identifier = $this->mapper->createIdentifier($node, $language);
+            $this->queueOperation('update', $identifier);
+        } else {
+            $document = $this->mapper->mapNode($node, $language);
+            if (!$document) {
+                return 0;
+            }
+            $this->executeOperation('update', $document);
+        }
+
+        return 1;
+    }
+
+    /**
+     * @param TreeNodeInterface $node
+     * @param string            $language
+     * @param bool              $viaQueue
+     *
+     * @return bool
+     */
+    public function deleteNode(TreeNodeInterface $node, $language, $viaQueue = false)
+    {
+        if ($viaQueue) {
+            $identifier = $this->mapper->createIdentifier($node, $language);
+            $this->queueOperation('delete', $identifier);
+        } else {
+            $document = $this->mapper->mapNode($node, $language);
+            if (!$document) {
+                return 0;
+            }
+            $this->executeOperation('delete', $document);
+        }
+
+        return 1;
     }
 
     /**
@@ -104,23 +205,17 @@ class ElementIndexer implements IndexerInterface
      */
     public function add($identifier, $viaQueue = false)
     {
-        $document = $this->mapper->map($identifier);
-
-        if (!$document) {
-            return false;
-        }
-
-        $commands = $this->storage->createCommands()
-            ->addDocument($document)
-            ->commit();
-
-        if (!$viaQueue) {
-            $this->storage->runCommands($commands);
+        if ($viaQueue) {
+            $this->queueOperation('add', $identifier);
         } else {
-            $this->storage->queueCommands($commands);
+            $document = $this->mapper->mapIdentifier($identifier);
+            if (!$document) {
+                return 0;
+            }
+            $this->executeOperation('add', $document);
         }
 
-        return true;
+        return 1;
     }
 
     /**
@@ -128,23 +223,17 @@ class ElementIndexer implements IndexerInterface
      */
     public function update($identifier, $viaQueue = false)
     {
-        $document = $this->mapper->map($identifier);
-
-        if (!$document) {
-            return false;
-        }
-
-        $commands = $this->storage->createCommands()
-            ->updateDocument($document)
-            ->commit();
-
-        if (!$viaQueue) {
-            $this->storage->runCommands($commands);
+        if ($viaQueue) {
+            $this->queueOperation('update', $identifier);
         } else {
-            $this->storage->queueCommands($commands);
+            $document = $this->mapper->mapIdentifier($identifier);
+            if (!$document) {
+                return 0;
+            }
+            $this->executeOperation('update', $document);
         }
 
-        return true;
+        return 1;
     }
 
     /**
@@ -152,23 +241,17 @@ class ElementIndexer implements IndexerInterface
      */
     public function delete($identifier, $viaQueue = false)
     {
-        $document = $this->mapper->map($identifier);
-
-        if (!$document) {
-            return false;
-        }
-
-        $commands = $this->storage->createCommands()
-            ->deleteDocument($document)
-            ->commit();
-
-        if (!$viaQueue) {
-            $this->storage->runCommands($commands);
+        if ($viaQueue) {
+            $this->queueOperation('delete', $identifier);
         } else {
-            $this->storage->queueCommands($commands);
+            $document = $this->mapper->mapIdentifier($identifier);
+            if (!$document) {
+                return 0;
+            }
+            $this->executeOperation('delete', $document);
         }
 
-        return true;
+        return 1;
     }
 
     /**
@@ -176,30 +259,31 @@ class ElementIndexer implements IndexerInterface
      */
     public function indexAll($viaQueue = false)
     {
-        $documentIds = $this->mapper->findIdentifiers();
+        $identifiers = $this->mapper->findIdentifiers();
 
-        $commands = $this->storage->createCommands();
+        $operations = $this->storage->createOperations();
 
         $cnt = 0;
-        foreach ($documentIds as $documentId) {
-            $document = $this->mapper->map($documentId);
-
-            if (!$document) {
-                $this->logger->error("Document $documentId could not be loaded.");
-                continue;
+        foreach ($identifiers as $identifier) {
+            if ($viaQueue) {
+                $operations->addIdentifier($identifier);
+            } else {
+                $document = $this->mapper->mapIdentifier($identifier);
+                if (!$document) {
+                    continue;
+                }
+                $operations->addDocument($document);
             }
-
-            $commands->addDocument($document);
 
             $cnt++;
         }
 
-        $commands->commit();
+        $operations->commit();
 
         if (!$viaQueue) {
-            $this->storage->runCommands($commands);
+            $this->storage->execute($operations);
         } else {
-            $this->storage->queueCommands($commands);
+            $this->storage->queue($operations);
         }
 
         return $cnt;
