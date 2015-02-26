@@ -61,6 +61,7 @@ class NodeListener implements EventSubscriberInterface
         $language   = $event->getLanguage();
         $node       = $event->getNode();
 
+        return;
         $this->indexer->add("treenode_{$node->getId()}_{$language}", true);
     }
 
