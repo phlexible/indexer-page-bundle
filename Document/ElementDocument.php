@@ -37,7 +37,7 @@ class ElementDocument extends Document
                 'elementtypeId'   => array('type' => self::TYPE_STRING),
                 'elementtype'     => array('type' => self::TYPE_STRING),
                 'url'             => array('type' => self::TYPE_STRING),
-                'siterootId'      => array('type' => self::TYPE_STRING),
+                'siterootId'      => array('type' => self::TYPE_STRING, 'indexed' => false),
                 'siteroot'        => array('type' => self::TYPE_STRING),
                 'navigation'      => array('type' => self::TYPE_BOOLEAN),
                 'restricted'      => array('type' => self::TYPE_BOOLEAN),
