@@ -440,8 +440,6 @@ class ElementDocumentMapper
         $siterootUrl = $siteroot->getDefaultUrl();
 
         $request->setLocale($language);
-        $request->attributes->set('_locale', $language);
-        $request->attributes->set('language', $language);
         $request->attributes->set('routeDocument', $treeNode);
         $request->attributes->set('contentDocument', $treeNode);
         $request->attributes->set('siterootUrl', $siterootUrl);
