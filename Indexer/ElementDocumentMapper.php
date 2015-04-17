@@ -430,16 +430,19 @@ class ElementDocumentMapper
     {
         $request = new Request();
 
+        $context = $this->container->get('router.request_context');
         $requestStack = $this->container->get('request_stack');
         $requestStack->push($request);
 
         $this->container->enterScope('request');
-        $this->container->set('request', new Request(), 'request');
+        $this->container->set('request', $request, 'request');
 
         $siteroot = $this->siterootManager->find($treeNode->getTree()->getSiterootId());
         $siterootUrl = $siteroot->getDefaultUrl();
 
+        $context->setParameter('_locale', $language);
         $request->setLocale($language);
+        $request->attributes->set('_locale', $language);
         $request->attributes->set('routeDocument', $treeNode);
         $request->attributes->set('contentDocument', $treeNode);
         $request->attributes->set('siterootUrl', $siterootUrl);
@@ -452,7 +455,9 @@ class ElementDocumentMapper
 
             $content = $this->templating->render($data['template'], (array) $data);
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
+            $this->logger->error("Error while indexing document {$document->getIdentifier()}: {$e->getMessage()}");
+
+            $this->container->leaveScope('request');
 
             return null;
         }
