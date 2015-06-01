@@ -9,13 +9,10 @@
 namespace Phlexible\Bundle\IndexerElementBundle\EventListener;
 
 use Phlexible\Bundle\IndexerElementBundle\Indexer\ElementIndexer;
-use Phlexible\Bundle\QueueBundle\Entity\Job;
-use Phlexible\Bundle\QueueBundle\Model\JobManagerInterface;
 use Phlexible\Bundle\TreeBundle\Event\MoveNodeEvent;
 use Phlexible\Bundle\TreeBundle\Event\NodeEvent;
 use Phlexible\Bundle\TreeBundle\Event\PublishNodeEvent;
 use Phlexible\Bundle\TreeBundle\Event\SetNodeOfflineEvent;
-use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 use Phlexible\Bundle\TreeBundle\TreeEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
