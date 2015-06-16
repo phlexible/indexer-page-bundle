@@ -4,7 +4,6 @@ namespace Phlexible\Bundle\IndexerElementBundle\Tests\Indexer;
 
 use Phlexible\Bundle\IndexerBundle\Storage\Operation\Operations;
 use Phlexible\Bundle\IndexerBundle\Storage\StorageInterface;
-use Phlexible\Bundle\IndexerBundle\Storage\UpdateQuery\Command\CommandCollection;
 use Phlexible\Bundle\IndexerElementBundle\Document\ElementDocument;
 use Phlexible\Bundle\IndexerElementBundle\Indexer\ElementDocumentMapper;
 use Phlexible\Bundle\IndexerElementBundle\Indexer\ElementIndexer;
