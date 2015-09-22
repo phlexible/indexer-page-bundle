@@ -1,5 +1,6 @@
 {
     "version": "1.0",
+    "name": "phlexible/indexer-element-bundle",
     "path-mappings": {
         "/phlexible/phlexibleindexerelement/icons": "Resources/public/icons"
     },
