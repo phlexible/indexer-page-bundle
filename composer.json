@@ -3,7 +3,7 @@
     "description": "phlexible.cms indexer element bundle",
     "license": "proprietary",
 	"type": "symfony-bundle",
-	"keywords": ["indexer", "search"],
+	"keywords": ["indexer", "search", "content"],
     "autoload": {
         "psr-4": {
             "Phlexible\\Bundle\\IndexerElementBundle\\": ""
@@ -15,11 +15,11 @@
         "psr/log": "~1.0",
         "symfony/dom-crawler": "~2.6"
     },
-    "suggest": {
-        "phlexible/frontend-search-bundle": "Default frontend search for elements"
-    },
     "require-dev": {
         "phpunit/phpunit": "~4.5"
+    },
+    "suggest": {
+        "phlexible/frontend-search-bundle": "Default frontend search for elements"
     },
     "repositories": [
         {
