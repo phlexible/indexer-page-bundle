@@ -8,9 +8,8 @@
 
 namespace Phlexible\Bundle\IndexerElementBundle\Event;
 
-use Phlexible\Bundle\ElementBundle\Entity\ElementVersion;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
-use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
+use Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentDescriptor;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -26,35 +25,18 @@ class MapDocumentEvent extends Event
     private $document;
 
     /**
-     * @var TreeNodeInterface
+     * @var DocumentDescriptor
      */
-    private $node;
+    private $descriptor;
 
     /**
-     * @var ElementVersion
+     * @param DocumentInterface  $document
+     * @param DocumentDescriptor $descriptor
      */
-    private $elementVersion;
-
-    /**
-     * @var string
-     */
-    private $language;
-
-    /**
-     * @param DocumentInterface $document
-     * @param TreeNodeInterface $node
-     * @param ElementVersion    $elementVersion
-     * @param string            $language
-     */
-    public function __construct(DocumentInterface $document,
-                                TreeNodeInterface $node,
-                                ElementVersion $elementVersion,
-                                $language)
+    public function __construct(DocumentInterface $document, DocumentDescriptor $descriptor)
     {
-        $this->document       = $document;
-        $this->node           = $node;
-        $this->elementVersion = $elementVersion;
-        $this->language       = $language;
+        $this->document = $document;
+        $this->descriptor = $descriptor;
     }
 
     /**
@@ -66,26 +48,10 @@ class MapDocumentEvent extends Event
     }
 
     /**
-     * @return TreeNodeInterface
+     * @return DocumentDescriptor
      */
-    public function getNode()
+    public function getDescriptor()
     {
-        return $this->node;
-    }
-
-    /**
-     * @return ElementVersion
-     */
-    public function getElementVersion()
-    {
-        return $this->elementVersion;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLanguage()
-    {
-        return $this->language;
+        return $this->descriptor;
     }
 }

@@ -1,0 +1,34 @@
+services:
+    phlexible_indexer_element.element_indexible_voter:
+        class: Phlexible\Bundle\IndexerElementBundle\Indexer\IndexibleVoter\ElementIndexibleVoter
+        public: false
+        arguments:
+            - @phlexible_element.element_service
+            - @logger
+        tags:
+            - {name: monolog.logger, channel: indexer}
+
+    phlexible_indexer_element.node_indexible_voter:
+        class: Phlexible\Bundle\IndexerElementBundle\Indexer\IndexibleVoter\NodeIndexibleVoter
+        public: false
+        arguments:
+            - @logger
+        tags:
+            - {name: monolog.logger, channel: indexer}
+
+    phlexible_indexer_element.siteroot_indexible_voter:
+        class: Phlexible\Bundle\IndexerElementBundle\Indexer\IndexibleVoter\SiterootIndexibleVoter
+        public: false
+        arguments:
+            - @logger
+        tags:
+            - {name: monolog.logger, channel: indexer}
+
+    phlexible_indexer_element.indexible_voter:
+        class: Phlexible\Bundle\IndexerElementBundle\Indexer\IndexibleVoter\ChainIndexibleVoter
+        public: false
+        arguments:
+            -
+                - @phlexible_indexer_element.element_indexible_voter
+                - @phlexible_indexer_element.node_indexible_voter
+                - @phlexible_indexer_element.siteroot_indexible_voter

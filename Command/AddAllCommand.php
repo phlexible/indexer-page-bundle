@@ -37,12 +37,10 @@ class AddAllCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        ini_set('memory_limit', -1);
-
         $indexer = $this->getContainer()->get('phlexible_indexer_element.element_indexer');
         $storage = $indexer->getStorage();
 
-        $output->writeln('Indexer: ' . $indexer->getName());
+        $output->writeln('Indexer: ' . get_class($indexer));
         $output->writeln('  Storage: ' . get_class($storage));
         $output->writeln('    DSN: ' . $storage->getConnectionString());
 

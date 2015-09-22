@@ -6,21 +6,19 @@
  * @license   proprietary
  */
 
-namespace Phlexible\Bundle\IndexerElementBundle\Indexer;
+namespace Phlexible\Bundle\IndexerElementBundle\Indexer\ContentTitleExtractor;
 
 /**
- * Content cleaner interface
+ * Content title extractor interface
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-interface ContentCleanerInterface
+interface ContentTitleExtractorInterface
 {
     /**
-     * Clean content
-     *
      * @param string $content
      *
-     * @return string
+     * @return string|null
      */
-    public function clean($content);
+    public function extractTitle($content);
 }

@@ -8,6 +8,8 @@
 
 namespace Phlexible\Bundle\IndexerElementBundle\Indexer;
 
+use Phlexible\Bundle\IndexerBundle\Document\DocumentFactory;
+use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
 use Phlexible\Bundle\IndexerBundle\Indexer\IndexerInterface;
 use Phlexible\Bundle\IndexerBundle\Storage\StorageInterface;
@@ -24,14 +26,24 @@ use Psr\Log\LoggerInterface;
 class ElementIndexer implements IndexerInterface
 {
     /**
+     * @var DocumentFactory
+     */
+    private $documentFactory;
+
+    /**
      * @var StorageInterface
      */
     private $storage;
 
     /**
-     * @var ElementDocumentMapper
+     * @var DocumentMapper
      */
     private $mapper;
+
+    /**
+     * @var ContentIdentifierInterface
+     */
+    private $identifier;
 
     /**
      * @var JobManagerInterface
@@ -44,29 +56,35 @@ class ElementIndexer implements IndexerInterface
     private $logger;
 
     /**
-     * @param StorageInterface      $storage
-     * @param ElementDocumentMapper $mapper
-     * @param JobManagerInterface   $jobManager
-     * @param LoggerInterface       $logger
+     * @var string
      */
-    public function __construct(
-        StorageInterface $storage,
-        ElementDocumentMapper $mapper,
-        JobManagerInterface $jobManager,
-        LoggerInterface $logger)
-    {
-        $this->storage = $storage;
-        $this->mapper = $mapper;
-        $this->jobManager = $jobManager;
-        $this->logger = $logger;
-    }
+    private $documentClass;
 
     /**
-     * {@inheritdoc}
+     * @param DocumentFactory            $documentFactory
+     * @param StorageInterface           $storage
+     * @param DocumentMapper             $mapper
+     * @param ContentIdentifierInterface $identifier
+     * @param JobManagerInterface        $jobManager
+     * @param LoggerInterface            $logger
+     * @param string                     $documentClass
      */
-    public function getName()
-    {
-        return 'Elements indexer';
+    public function __construct(
+        DocumentFactory $documentFactory,
+        StorageInterface $storage,
+        DocumentMapper $mapper,
+        ContentIdentifierInterface $identifier,
+        JobManagerInterface $jobManager,
+        LoggerInterface $logger,
+        $documentClass = ElementDocument::class
+    ) {
+        $this->documentFactory = $documentFactory;
+        $this->storage = $storage;
+        $this->mapper = $mapper;
+        $this->identifier = $identifier;
+        $this->jobManager = $jobManager;
+        $this->logger = $logger;
+        $this->documentClass = $documentClass;
     }
 
     /**
@@ -88,40 +106,83 @@ class ElementIndexer implements IndexerInterface
     /**
      * {@inheritdoc}
      */
-    public function getDocumentClass()
+    public function supports(DocumentIdentity $identity)
     {
-        return $this->mapper->getDocumentClass();
+        return $this->identifier->validateIdentity($identity);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supports($identifier)
+    public function createDocument()
     {
-        return $identifier instanceof ElementDocument || $this->mapper->matchIdentifier($identifier);
+        return $this->documentFactory->factory($this->documentClass);
     }
 
     /**
-     * @param string $method
-     * @param string $identifier
+     * @param string           $method
+     * @param DocumentIdentity $identity
      */
-    private function queueOperation($method, $identifier)
+    private function queueIdentityOperation($method, DocumentIdentity $identity)
     {
-        $method .= 'Identifier';
+        $method .= 'Identity';
 
         $operations = $this->storage->createOperations()
-            ->$method($identifier)
+            ->$method($identity)
             ->commit();
 
         $this->storage->queue($operations);
     }
 
     /**
-     * @param string            $method
-     * @param DocumentInterface $document
+     * @param string             $method
+     * @param DocumentDescriptor $descriptor
      */
-    private function executeOperation($method, DocumentInterface $document)
+    private function queueDescriptorOperation($method, DocumentDescriptor $descriptor)
     {
+        $method .= 'Identity';
+
+        $operations = $this->storage->createOperations()
+            ->$method($descriptor->getIdentity())
+            ->commit();
+
+        $this->storage->queue($operations);
+    }
+
+    /**
+     * @param string           $method
+     * @param DocumentIdentity $identity
+     */
+    private function executeIdentityOperation($method, DocumentIdentity $identity)
+    {
+        $descriptor = $this->identifier->createDescriptorFromIdentity($identity);
+        if (!$descriptor) {
+            return;
+        }
+
+        $document = $this->createDocument();
+        $this->mapper->mapDocument($document, $descriptor);
+
+        $method .= 'Document';
+
+        $operations = $this->storage->createOperations()
+            ->$method($document)
+            ->commit();
+
+        $this->storage->execute($operations);
+    }
+
+    /**
+     * @param string             $method
+     * @param DocumentDescriptor $descriptor
+     */
+    private function executeDescriptorOperation($method, DocumentDescriptor $descriptor)
+    {
+        $document = $this->mapper->mapDocument($descriptor);
+        if (!$document) {
+            return;
+        }
+
         $method .= 'Document';
 
         $operations = $this->storage->createOperations()
@@ -140,15 +201,12 @@ class ElementIndexer implements IndexerInterface
      */
     public function addNode(TreeNodeInterface $node, $language, $viaQueue = false)
     {
+        $descriptor = $this->identifier->createDescriptorFromNode($node, $language);
+
         if ($viaQueue) {
-            $identifier = $this->mapper->createIdentifier($node, $language);
-            $this->queueOperation('add', $identifier);
+            $this->queueDescriptorOperation('add', $descriptor);
         } else {
-            $document = $this->mapper->mapNode($node, $language);
-            if (!$document) {
-                return 0;
-            }
-            $this->executeOperation('add', $document);
+            $this->executeDescriptorOperation('add', $descriptor);
         }
 
         return 1;
@@ -163,15 +221,12 @@ class ElementIndexer implements IndexerInterface
      */
     public function updateNode(TreeNodeInterface $node, $language, $viaQueue = false)
     {
+        $descriptor = $this->identifier->createDescriptorFromNode($node, $language);
+
         if ($viaQueue) {
-            $identifier = $this->mapper->createIdentifier($node, $language);
-            $this->queueOperation('update', $identifier);
+            $this->queueDescriptorOperation('update', $descriptor);
         } else {
-            $document = $this->mapper->mapNode($node, $language);
-            if (!$document) {
-                return 0;
-            }
-            $this->executeOperation('update', $document);
+            $this->executeDescriptorOperation('update', $descriptor);
         }
 
         return 1;
@@ -186,15 +241,12 @@ class ElementIndexer implements IndexerInterface
      */
     public function deleteNode(TreeNodeInterface $node, $language, $viaQueue = false)
     {
+        $descriptor = $this->identifier->createDescriptorFromNode($node, $language);
+
         if ($viaQueue) {
-            $identifier = $this->mapper->createIdentifier($node, $language);
-            $this->queueOperation('delete', $identifier);
+            $this->queueDescriptorOperation('delete', $descriptor);
         } else {
-            $document = $this->mapper->mapNode($node, $language);
-            if (!$document) {
-                return 0;
-            }
-            $this->executeOperation('delete', $document);
+            $this->executeDescriptorOperation('delete', $descriptor);
         }
 
         return 1;
@@ -203,16 +255,12 @@ class ElementIndexer implements IndexerInterface
     /**
      * {@inheritdoc}
      */
-    public function add($identifier, $viaQueue = false)
+    public function add(DocumentIdentity $identity, $viaQueue = false)
     {
         if ($viaQueue) {
-            $this->queueOperation('add', $identifier);
+            $this->queueIdentityOperation('add', $identity);
         } else {
-            $document = $this->mapper->mapIdentifier($identifier);
-            if (!$document) {
-                return 0;
-            }
-            $this->executeOperation('add', $document);
+            $this->executeIdentityOperation('add', $identity);
         }
 
         return 1;
@@ -221,16 +269,12 @@ class ElementIndexer implements IndexerInterface
     /**
      * {@inheritdoc}
      */
-    public function update($identifier, $viaQueue = false)
+    public function update(DocumentIdentity $identity, $viaQueue = false)
     {
         if ($viaQueue) {
-            $this->queueOperation('update', $identifier);
+            $this->queueIdentityOperation('update', $identity);
         } else {
-            $document = $this->mapper->mapIdentifier($identifier);
-            if (!$document) {
-                return 0;
-            }
-            $this->executeOperation('update', $document);
+            $this->executeIdentityOperation('update', $identity);
         }
 
         return 1;
@@ -239,16 +283,12 @@ class ElementIndexer implements IndexerInterface
     /**
      * {@inheritdoc}
      */
-    public function delete($identifier, $viaQueue = false)
+    public function delete(DocumentIdentity $identity, $viaQueue = false)
     {
         if ($viaQueue) {
-            $this->queueOperation('delete', $identifier);
+            $this->queueIdentityOperation('delete', $identity);
         } else {
-            $document = $this->mapper->mapIdentifier($identifier);
-            if (!$document) {
-                return 0;
-            }
-            $this->executeOperation('delete', $document);
+            $this->executeIdentityOperation('delete', $identity);
         }
 
         return 1;
@@ -259,19 +299,17 @@ class ElementIndexer implements IndexerInterface
      */
     public function indexAll($viaQueue = false)
     {
-        $identifiers = $this->mapper->findIdentifiers();
+        $descriptors = $this->identifier->findAllDescriptors();
 
         $operations = $this->storage->createOperations();
 
         $cnt = 0;
-        foreach ($identifiers as $identifier) {
+        foreach ($descriptors as $descriptor) {
             if ($viaQueue) {
-                $operations->addIdentifier($identifier);
+                $operations->addIdentity($descriptor->getIdentity());
             } else {
-                $document = $this->mapper->mapIdentifier($identifier);
-                if (!$document) {
-                    continue;
-                }
+                $document = $this->createDocument();
+                $this->mapper->mapDocument($document, $descriptor);
                 $operations->addDocument($document);
             }
 

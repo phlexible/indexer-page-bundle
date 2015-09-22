@@ -27,6 +27,9 @@ class PhlexibleIndexerElementExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('appliers.yml');
+        $loader->load('filters.yml');
+        $loader->load('voters.yml');
 
         $configuration = $this->getConfiguration($config, $container);
         $config = $this->processConfiguration($configuration, $config);

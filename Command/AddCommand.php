@@ -8,6 +8,7 @@
 
 namespace Phlexible\Bundle\IndexerElementBundle\Command;
 
+use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -46,19 +47,19 @@ class AddCommand extends ContainerAwareCommand
         $indexer = $this->getContainer()->get('phlexible_indexer_element.element_indexer');
         $storage = $indexer->getStorage();
 
-        $output->writeln('Indexer: ' . $indexer->getName());
+        $output->writeln('Indexer: ' . get_class($indexer));
         $output->writeln('  Storage: ' . get_class($storage));
         $output->writeln('    DSN: ' . $storage->getConnectionString());
 
-        $identifier = "element_{$treeId}_{$language}";
+        $identity = new DocumentIdentity("element_{$treeId}_{$language}");
 
-        if (!$indexer->add($identifier)) {
-            $output->writeln("<error>Document $identifier could not be loaded.</error>");
+        if (!$indexer->add($identity)) {
+            $output->writeln("<error>Document {$identity->getIdentifier()} could not be loaded.</error>");
 
             return 1;
         }
 
-        $output->writeln("$identifier index done.");
+        $output->writeln("{$identity->getIdentifier()} index done.");
 
         return 0;
     }

@@ -13,6 +13,7 @@ use Phlexible\Bundle\IndexerBundle\Document\Document;
 /**
  * Media document
  *
+ * @author Stephan Wentz <sw@brainbits.net>
  * @author Phillip Look <pl@brainbits.net>
  */
 class ElementDocument extends Document
@@ -32,15 +33,13 @@ class ElementDocument extends Document
 
                 'language'        => array('type' => self::TYPE_STRING),
                 'cleantitle'      => array('type' => self::TYPE_STRING, 'readonly' => true),
-                'tid'             => array('type' => self::TYPE_INTEGER),
-                'eid'             => array('type' => self::TYPE_INTEGER),
+                'nodeId'          => array('type' => self::TYPE_INTEGER),
+                'typeId'          => array('type' => self::TYPE_INTEGER),
                 'elementtypeId'   => array('type' => self::TYPE_STRING),
                 'elementtype'     => array('type' => self::TYPE_STRING),
-                'url'             => array('type' => self::TYPE_STRING),
                 'siterootId'      => array('type' => self::TYPE_STRING, 'indexed' => false),
                 'siteroot'        => array('type' => self::TYPE_STRING),
                 'navigation'      => array('type' => self::TYPE_BOOLEAN),
-                'restricted'      => array('type' => self::TYPE_BOOLEAN),
             )
         );
     }
