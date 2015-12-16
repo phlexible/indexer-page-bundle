@@ -8,9 +8,7 @@
 
 namespace Phlexible\Bundle\IndexerElementBundle\Indexer;
 
-use Phlexible\Bundle\IndexerBundle\Document\DocumentFactory;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
-use Phlexible\Bundle\IndexerElementBundle\Document\ElementDocument;
 use Phlexible\Bundle\IndexerElementBundle\Event\MapDocumentEvent;
 use Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentApplier\DocumentApplierInterface;
 use Phlexible\Bundle\IndexerElementBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
