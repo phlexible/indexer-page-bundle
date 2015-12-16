@@ -92,7 +92,16 @@ class ContentRenderer implements ContentRendererInterface
         try {
             ob_start();
 
-            $request = new Request();
+            $request = new Request(
+                array(),
+                array(),
+                array(),
+                array(),
+                array(),
+                array(
+                    'SERVER_NAME' => $siteroot->getDefaultUrl()->getHostname(),
+                )
+            );
             $this->requestStack->push($request);
 
             $this->container->enterScope('request');
