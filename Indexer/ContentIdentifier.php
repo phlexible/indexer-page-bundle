@@ -116,7 +116,7 @@ class ContentIdentifier implements ContentIdentifierInterface
 
             // get siteroot properties
             $siterootDisabled = $siteroot->getProperty('element_indexer.disabled');
-            $skipElementTypes = explode(';', $siteroot->getProperty('element_indexer.skip_elementtype_ids'));
+            $skipElementTypes = explode(',', $siteroot->getProperty('element_indexer.skip_elementtype_ids'));
 
             if ($siterootDisabled) {
                 continue;
