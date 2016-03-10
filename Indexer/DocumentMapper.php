@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class DocumentMapper
+class DocumentMapper implements DocumentMapperInterface
 {
     /**
      * @var IndexibleVoterInterface
@@ -62,13 +62,7 @@ class DocumentMapper
     }
 
     /**
-     * Map node to document
-     *
-     * @param DocumentInterface  $document
-     * @param DocumentDescriptor $descriptor
-     *
-     * @return DocumentInterface
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function mapDocument(DocumentInterface $document, DocumentDescriptor $descriptor)
     {

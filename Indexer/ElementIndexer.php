@@ -36,7 +36,7 @@ class ElementIndexer implements IndexerInterface
     private $storage;
 
     /**
-     * @var DocumentMapper
+     * @var DocumentMapperInterface
      */
     private $mapper;
 
@@ -63,7 +63,7 @@ class ElementIndexer implements IndexerInterface
     /**
      * @param DocumentFactory            $documentFactory
      * @param StorageInterface           $storage
-     * @param DocumentMapper             $mapper
+     * @param DocumentMapperInterface    $mapper
      * @param ContentIdentifierInterface $identifier
      * @param JobManagerInterface        $jobManager
      * @param LoggerInterface            $logger
@@ -72,7 +72,7 @@ class ElementIndexer implements IndexerInterface
     public function __construct(
         DocumentFactory $documentFactory,
         StorageInterface $storage,
-        DocumentMapper $mapper,
+        DocumentMapperInterface $mapper,
         ContentIdentifierInterface $identifier,
         JobManagerInterface $jobManager,
         LoggerInterface $logger,
