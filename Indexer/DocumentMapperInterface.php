@@ -23,7 +23,7 @@ interface DocumentMapperInterface
      * @param DocumentInterface  $document
      * @param DocumentDescriptor $descriptor
      *
-     * @return DocumentInterface
+     * @return bool
      * @throws \Exception
      */
     public function mapDocument(DocumentInterface $document, DocumentDescriptor $descriptor);

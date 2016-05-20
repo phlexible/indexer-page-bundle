@@ -67,7 +67,7 @@ class DocumentMapper implements DocumentMapperInterface
     public function mapDocument(DocumentInterface $document, DocumentDescriptor $descriptor)
     {
         if (IndexibleVoterInterface::VOTE_DENY === $this->voter->isIndexible($descriptor)) {
-            return null;
+            return false;
         }
 
         try {
@@ -82,7 +82,7 @@ class DocumentMapper implements DocumentMapperInterface
         $event = new MapDocumentEvent($document, $descriptor);
         $this->dispatcher->dispatch(IndexerElementEvents::MAP_DOCUMENT, $event);
 
-        return $document;
+        return true;
     }
 
     /**
