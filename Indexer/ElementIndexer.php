@@ -311,10 +311,9 @@ class ElementIndexer implements IndexerInterface
                 $document = $this->createDocument();
                 if ($this->mapper->mapDocument($document, $descriptor)) {
                     $operations->addDocument($document);
+                    $cnt++;
                 }
             }
-
-            $cnt++;
         }
 
         $operations->commit();
