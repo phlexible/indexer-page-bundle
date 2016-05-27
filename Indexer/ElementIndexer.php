@@ -161,7 +161,9 @@ class ElementIndexer implements IndexerInterface
         }
 
         $document = $this->createDocument();
-        $this->mapper->mapDocument($document, $descriptor);
+        if (!$this->mapper->mapDocument($document, $descriptor)) {
+            return;
+        }
 
         $method .= 'Document';
 
@@ -178,8 +180,8 @@ class ElementIndexer implements IndexerInterface
      */
     private function executeDescriptorOperation($method, DocumentDescriptor $descriptor)
     {
-        $document = $this->mapper->mapDocument($descriptor);
-        if (!$document) {
+        $document = $this->createDocument();
+        if (!$this->mapper->mapDocument($document, $descriptor)) {
             return;
         }
 
@@ -303,7 +305,6 @@ class ElementIndexer implements IndexerInterface
 
         $operations = $this->storage->createOperations();
 
-        $cnt = 0;
         foreach ($descriptors as $descriptor) {
             if ($viaQueue) {
                 $operations->addIdentity($descriptor->getIdentity());
@@ -311,9 +312,12 @@ class ElementIndexer implements IndexerInterface
                 $document = $this->createDocument();
                 if ($this->mapper->mapDocument($document, $descriptor)) {
                     $operations->addDocument($document);
-                    $cnt++;
                 }
             }
+        }
+
+        if (!count($operations)) {
+            return 0;
         }
 
         $operations->commit();
@@ -324,6 +328,6 @@ class ElementIndexer implements IndexerInterface
             $this->storage->queue($operations);
         }
 
-        return $cnt;
+        return count($operations);
     }
 }
