@@ -84,7 +84,7 @@ class DocumentMapperTest extends \PHPUnit_Framework_TestCase
         $document = new ElementDocument();
         $identity = new DocumentDescriptor(new DocumentIdentity('abc'), new ContentTreeNode(), new Siteroot(), 'de');
 
-        $document = $this->mapper->mapDocument($document, $identity);
+        $this->mapper->mapDocument($document, $identity);
 
         $this->assertInstanceOf(ElementDocument::class, $document);
     }

@@ -108,7 +108,7 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
         $descriptor = new DocumentDescriptor($identity, new ContentTreeNode(), new Siteroot(), 'de');
 
         $this->identifier->createDescriptorFromIdentity($identity)->willReturn($descriptor);
-        $this->mapper->mapDocument($this->document, $descriptor)->shouldBeCalled();
+        $this->mapper->mapDocument($this->document, $descriptor)->shouldBeCalled()->willReturn(true);
 
         $this->storage->execute(Argument::cetera())->shouldBeCalled();
         $this->storage->queue(Argument::cetera())->shouldNotBeCalled();
@@ -142,7 +142,7 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
         $descriptor = new DocumentDescriptor($identity, new ContentTreeNode(), new Siteroot(), 'de');
 
         $this->identifier->createDescriptorFromIdentity($identity)->willReturn($descriptor);
-        $this->mapper->mapDocument($this->document, $descriptor)->shouldBeCalled();
+        $this->mapper->mapDocument($this->document, $descriptor)->shouldBeCalled()->willReturn(true);
 
         $this->storage->execute(Argument::cetera())->shouldBeCalled();
         $this->storage->queue(Argument::cetera())->shouldNotBeCalled();
@@ -176,7 +176,7 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
         $descriptor = new DocumentDescriptor($identity, new ContentTreeNode(), new Siteroot(), 'de');
 
         $this->identifier->createDescriptorFromIdentity($identity)->willReturn($descriptor);
-        $this->mapper->mapDocument($this->document, $descriptor)->shouldBeCalled();
+        $this->mapper->mapDocument($this->document, $descriptor)->shouldBeCalled()->willReturn(true);
 
         $this->storage->execute(Argument::cetera())->shouldBeCalled();
         $this->storage->queue(Argument::cetera())->shouldNotBeCalled();
@@ -209,8 +209,8 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
         $descriptor1 = new DocumentDescriptor(new DocumentIdentity('treenode_1_de'), new ContentTreeNode(), new Siteroot(), 'de');
         $descriptor2 = new DocumentDescriptor(new DocumentIdentity('treenode_2_en'), new ContentTreeNode(), new Siteroot(), 'en');
         $this->identifier->findAllDescriptors()->willReturn(array($descriptor1, $descriptor2));
-        $this->mapper->mapDocument(Argument::type(ElementDocument::class), $descriptor1)->shouldBeCalled();
-        $this->mapper->mapDocument(Argument::type(ElementDocument::class), $descriptor2)->shouldBeCalled();
+        $this->mapper->mapDocument(Argument::type(ElementDocument::class), $descriptor1)->shouldBeCalled()->willReturn(true);
+        $this->mapper->mapDocument(Argument::type(ElementDocument::class), $descriptor2)->shouldBeCalled()->willReturn(true);
 
         $this->storage->execute(Argument::cetera())->shouldBeCalled();
         $this->storage->queue(Argument::cetera())->shouldNotBeCalled();
