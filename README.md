@@ -1,5 +1,5 @@
 PhlexibleIndexerElementBundle
 =============================
 
-This bundle provides automatic indexing of nodes/pages.
+This bundle provides automatic indexing of the html output of nodes.
 Requires the PhlexibleIndexerBundle infrastructure.
