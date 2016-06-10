@@ -13,7 +13,6 @@ use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
 use Phlexible\Bundle\IndexerElementBundle\Indexer\ContentFilter\ContentFilterInterface;
 use Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\IndexerElementBundle\Indexer\ContentRenderer\ContentRendererInterface;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\ContentTitleExtractor\ContentTitleExtractor;
 use Phlexible\Bundle\IndexerElementBundle\Indexer\ContentTitleExtractor\ContentTitleExtractorInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -44,6 +43,11 @@ class ContentDocumentApplier implements DocumentApplierInterface
      * @var ContentRendererInterface
      */
     private $contentRenderer;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $dispatcher;
 
     /**
      * @var LoggerInterface

@@ -25,21 +25,21 @@ class ElementDocument extends Document
     {
         $this->setFields(
             array(
-                'title'           => array('type' => self::TYPE_STRING),
-                'highlight_title' => array('type' => self::TYPE_STRING, 'readonly' => true),
-                'tags'            => array('type' => self::TYPE_TEXT, 'array' => true, 'readonly' => true),
-                'copy'            => array('type' => self::TYPE_TEXT, 'array' => true, 'readonly' => true),
-                'content'         => array('type' => self::TYPE_STRING, 'copyFields' => array('copy')),
-
-                'language'        => array('type' => self::TYPE_STRING),
-                'cleantitle'      => array('type' => self::TYPE_STRING, 'readonly' => true),
-                'nodeId'          => array('type' => self::TYPE_INTEGER),
-                'typeId'          => array('type' => self::TYPE_INTEGER),
-                'elementtypeId'   => array('type' => self::TYPE_STRING),
-                'elementtype'     => array('type' => self::TYPE_STRING),
-                'siterootId'      => array('type' => self::TYPE_STRING, 'indexed' => false),
-                'siteroot'        => array('type' => self::TYPE_STRING),
-                'navigation'      => array('type' => self::TYPE_BOOLEAN),
+                'title'         => array('type' => self::TYPE_STRING, 'copyTo' => array('fullText', 'autocomplete', 'didYouMean')),
+                'tags'          => array('type' => self::TYPE_TEXT, 'copyTo' => array('fullText')),
+                'content'       => array('type' => self::TYPE_STRING, 'copyTo' => array('fullText', 'autocomplete', 'didYouMean')),
+                'fullText'      => array('type' => self::TYPE_TEXT, 'stored' => false),
+                'meta'          => array('type' => self::TYPE_TEXT, 'stored' => true),
+                'language'      => array('type' => self::TYPE_STRING),
+                'nodeId'        => array('type' => self::TYPE_INTEGER),
+                'typeId'        => array('type' => self::TYPE_INTEGER),
+                'elementtypeId' => array('type' => self::TYPE_STRING),
+                'elementtype'   => array('type' => self::TYPE_STRING),
+                'siterootId'    => array('type' => self::TYPE_STRING, 'indexed' => false),
+                'siteroot'      => array('type' => self::TYPE_STRING),
+                'navigation'    => array('type' => self::TYPE_BOOLEAN),
+                'autocomplete'  => array('type' => self::TYPE_STRING, 'analyzer' => 'autocomplete', 'stored' => true, 'indexed' => true),
+                'didYouMean'    => array('type' => self::TYPE_STRING, 'analyzer' => 'didYouMean', 'stored' => true, 'indexed' => true),
             )
         );
     }
