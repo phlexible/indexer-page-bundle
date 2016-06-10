@@ -55,5 +55,6 @@ services:
         class: Phlexible\Bundle\IndexerElementBundle\EventListener\NodeListener
         arguments:
             - @phlexible_indexer_element.element_indexer
+            - %phlexible_cms.languages.available%
         tags:
             - {name: kernel.event_subscriber}

@@ -9,6 +9,7 @@
 namespace Phlexible\Bundle\IndexerElementBundle\EventListener;
 
 use Phlexible\Bundle\IndexerElementBundle\Indexer\ElementIndexer;
+use Phlexible\Bundle\TreeBundle\Event\DeleteNodeEvent;
 use Phlexible\Bundle\TreeBundle\Event\MoveNodeEvent;
 use Phlexible\Bundle\TreeBundle\Event\NodeEvent;
 use Phlexible\Bundle\TreeBundle\Event\PublishNodeEvent;
@@ -29,11 +30,18 @@ class NodeListener implements EventSubscriberInterface
     private $indexer;
 
     /**
-     * @param ElementIndexer $indexer
+     * @var array
      */
-    public function __construct(ElementIndexer $indexer)
+    private $languages;
+
+    /**
+     * @param ElementIndexer $indexer
+     * @param string         $languages
+     */
+    public function __construct(ElementIndexer $indexer, $languages)
     {
         $this->indexer = $indexer;
+        $this->languages = explode(',', $languages);
     }
 
     /**
@@ -97,13 +105,13 @@ class NodeListener implements EventSubscriberInterface
     }
 
     /**
-     * @param NodeEvent $event
+     * @param DeleteNodeEvent $event
      */
-    public function onDeleteNode(NodeEvent $event)
+    public function onDeleteNode(DeleteNodeEvent $event)
     {
         $node = $event->getNode();
 
-        foreach ($node->getTree()->getPublishedLanguages($node) as $language) {
+        foreach ($this->languages as $language) {
             $this->indexer->deleteNode($node, $language, true);
         }
     }

@@ -176,7 +176,7 @@ class ContentIdentifier implements ContentIdentifierInterface
      *
      * @return DocumentIdentity
      */
-    private function createIdentity(TreeNodeInterface $node, $language)
+    protected function createIdentity(TreeNodeInterface $node, $language)
     {
         return new DocumentIdentity("element_{$node->getId()}_$language");
     }
@@ -186,7 +186,7 @@ class ContentIdentifier implements ContentIdentifierInterface
      *
      * @return array|null
      */
-    private function matchIdentity(DocumentIdentity $identity)
+    protected function matchIdentity(DocumentIdentity $identity)
     {
         if (!preg_match('/^element_(\d+)_(\w\w)$/', $identity->getIdentifier(), $match)) {
             return null;
