@@ -50,11 +50,11 @@ class NodeListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            TreeEvents::PUBLISH_NODE     => 'onPublishNode',
-            TreeEvents::UPDATE_NODE      => 'onUpdateNode',
-            TreeEvents::MOVE_NODE        => 'onMoveNode',
-            TreeEvents::SET_NODE_OFFLINE => 'onSetNodeOffline',
-            TreeEvents::DELETE_NODE      => 'onDeleteNode',
+            TreeEvents::PUBLISH_NODE       => 'onPublishNode',
+            TreeEvents::UPDATE_NODE        => 'onUpdateNode',
+            TreeEvents::MOVE_NODE          => 'onMoveNode',
+            TreeEvents::SET_NODE_OFFLINE   => 'onSetNodeOffline',
+            TreeEvents::BEFORE_DELETE_NODE => 'onDeleteNode',
         );
     }
 
