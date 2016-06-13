@@ -8,6 +8,7 @@
 
 namespace Phlexible\Bundle\IndexerElementBundle\Command;
 
+use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -50,9 +51,9 @@ class DeleteCommand extends ContainerAwareCommand
         $output->writeln('  Storage: ' . get_class($storage));
         $output->writeln('    DSN: ' . $storage->getConnectionString());
 
-        $identifier = "element_{$treeId}_{$language}";
+        $identity = new DocumentIdentity("element_{$treeId}_{$language}");
 
-        $cnt = $storage->delete($identifier);
+        $cnt = $storage->delete($identity);
 
         $output->writeln("Deleted $cnt documents.");
 
