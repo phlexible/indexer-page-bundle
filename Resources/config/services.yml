@@ -2,12 +2,12 @@ services:
     phlexible_indexer_element.element_indexer:
         class: Phlexible\Bundle\IndexerElementBundle\Indexer\ElementIndexer
         arguments:
-            - @phlexible_indexer.document_factory
-            - @phlexible_indexer_element.storage
-            - @phlexible_indexer_element.document_mapper
-            - @phlexible_indexer_element.content_identifier
-            - @phlexible_queue.job_manager
-            - @logger
+            - "@phlexible_indexer.document_factory"
+            - "@phlexible_indexer_element.storage"
+            - "@phlexible_indexer_element.document_mapper"
+            - "@phlexible_indexer_element.content_identifier"
+            - "@phlexible_queue.job_manager"
+            - "@logger"
         tags:
             - {name: phlexible_indexer.indexer}
             - {name: monolog.logger, channel: indexer}
@@ -16,10 +16,10 @@ services:
         class: Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentMapper
         public: false
         arguments:
-            - @phlexible_indexer_element.indexible_voter
-            - @phlexible_indexer_element.document_applier
-            - @event_dispatcher
-            - @logger
+            - "@phlexible_indexer_element.indexible_voter"
+            - "@phlexible_indexer_element.document_applier"
+            - "@event_dispatcher"
+            - "@logger"
         tags:
             - {name: monolog.logger, channel: indexer}
 
@@ -27,9 +27,9 @@ services:
         class: Phlexible\Bundle\IndexerElementBundle\Indexer\ContentIdentifier
         public: false
         arguments:
-            - @phlexible_siteroot.siteroot_manager
-            - @phlexible_tree.content_tree_manager
-            - @phlexible_element.element_service
+            - "@phlexible_siteroot.siteroot_manager"
+            - "@phlexible_tree.content_tree_manager"
+            - "@phlexible_element.element_service"
         tags:
             - {name: monolog.logger, channel: indexer}
 
@@ -37,12 +37,12 @@ services:
         class: Phlexible\Bundle\IndexerElementBundle\Indexer\ContentRenderer\ContentRenderer
         public: false
         arguments:
-            - @service_container
-            - @router.request_context
-            - @request_stack
-            - @phlexible_element_renderer.configurator
-            - @templating
-            - @logger
+            - "@service_container"
+            - "@router.request_context"
+            - "@request_stack"
+            - "@phlexible_element_renderer.configurator"
+            - "@templating"
+            - "@logger"
         tags:
             - {name: monolog.logger, channel: indexer}
 
@@ -54,7 +54,7 @@ services:
     phlexible_indexer_element.listener.node:
         class: Phlexible\Bundle\IndexerElementBundle\EventListener\NodeListener
         arguments:
-            - @phlexible_indexer_element.element_indexer
-            - %phlexible_cms.languages.available%
+            - "@phlexible_indexer_element.element_indexer"
+            - "%phlexible_cms.languages.available%"
         tags:
             - {name: kernel.event_subscriber}

@@ -4,8 +4,8 @@ services:
         public: false
         arguments:
             -
-                - @phlexible_indexer_element.no_index_content_filter
-                - @phlexible_indexer_element.html_content_filter
+                - "@phlexible_indexer_element.no_index_content_filter"
+                - "@phlexible_indexer_element.html_content_filter"
 
     phlexible_indexer_element.no_index_content_filter:
         class: Phlexible\Bundle\IndexerElementBundle\Indexer\ContentFilter\NoIndexContentFilter

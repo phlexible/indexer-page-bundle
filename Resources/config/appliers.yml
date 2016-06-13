@@ -4,9 +4,9 @@ services:
         public: false
         arguments:
             -
-                - @phlexible_indexer_element.boost_document_applier
-                - @phlexible_indexer_element.meta_document_applier
-                - @phlexible_indexer_element.content_document_applier
+                - "@phlexible_indexer_element.boost_document_applier"
+                - "@phlexible_indexer_element.meta_document_applier"
+                - "@phlexible_indexer_element.content_document_applier"
 
     phlexible_indexer_element.boost_document_applier:
         class: Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentApplier\BoostDocumentApplier
@@ -16,19 +16,23 @@ services:
         class: Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentApplier\ContentDocumentApplier
         public: false
         arguments:
-            - @phlexible_element.element_service
-            - @phlexible_indexer_element.content_filter
-            - @phlexible_indexer_element.content_title_extractor
-            - @phlexible_indexer_element.content_renderer
-            - @event_dispatcher
-            - @logger
+            - "@phlexible_element.element_service"
+            - "@phlexible_indexer_element.content_filter"
+            - "@phlexible_indexer_element.content_title_extractor"
+            - "@phlexible_indexer_element.content_renderer"
+            - "@event_dispatcher"
+            - "@logger"
+        tags:
+            - {name: monolog.logger, channel: indexer}
 
     phlexible_indexer_element.meta_document_applier:
         class: Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentApplier\MetaDocumentApplier
         public: false
         arguments:
-            - @phlexible_element.element_service
-            - @phlexible_element.element_meta_set_resolver
-            - @phlexible_element.element_meta_data_manager
-            - @event_dispatcher
-            - @logger
+            - "@phlexible_element.element_service"
+            - "@phlexible_element.element_meta_set_resolver"
+            - "@phlexible_element.element_meta_data_manager"
+            - "@event_dispatcher"
+            - "@logger"
+        tags:
+            - {name: monolog.logger, channel: indexer}
