@@ -25,10 +25,9 @@ class ElementDocument extends Document
     {
         $this->setFields(
             array(
-                'title'         => array('type' => self::TYPE_STRING, 'copyTo' => array('fullText', 'autocomplete', 'didYouMean')),
-                'tags'          => array('type' => self::TYPE_TEXT, 'copyTo' => array('fullText')),
-                'content'       => array('type' => self::TYPE_STRING, 'copyTo' => array('fullText', 'autocomplete', 'didYouMean')),
-                'fullText'      => array('type' => self::TYPE_TEXT, 'stored' => false),
+                'title'         => array('type' => self::TYPE_STRING, 'copyTo' => array('autocomplete', 'didYouMean')),
+                'tags'          => array('type' => self::TYPE_TEXT),
+                'content'       => array('type' => self::TYPE_STRING, 'copyTo' => array('autocomplete', 'didYouMean')),
                 'meta'          => array('type' => self::TYPE_TEXT, 'stored' => true),
                 'language'      => array('type' => self::TYPE_STRING),
                 'nodeId'        => array('type' => self::TYPE_INTEGER),
