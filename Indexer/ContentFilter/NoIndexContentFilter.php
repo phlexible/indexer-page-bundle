@@ -8,6 +8,8 @@
 
 namespace Phlexible\Bundle\IndexerElementBundle\Indexer\ContentFilter;
 
+use Phlexible\Bundle\IndexerElementBundle\Exception\LogicException;
+
 /**
  * No index content filter
  *
@@ -34,7 +36,7 @@ class NoIndexContentFilter implements ContentFilterInterface
     public function filter($content)
     {
         if (substr_count($content, $this->noIndexComment) % 2) {
-            throw new \Exception("Found odd number of noindex directives. Seems like an opening or closing noindex is missing.");
+            throw new LogicException("Found odd number of noindex directives. Seems like an opening or closing noindex is missing.");
         }
 
         // Remove Content between NoIndex tags

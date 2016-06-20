@@ -23,7 +23,6 @@ interface ContentRendererInterface
      * @param DocumentDescriptor $descriptor
      *
      * @return string
-     * @throws \Exception
      */
     public function render(DocumentDescriptor $descriptor);
 }
