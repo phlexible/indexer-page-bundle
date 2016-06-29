@@ -9,6 +9,7 @@
 namespace Phlexible\Bundle\IndexerElementBundle\Indexer\IndexibleVoter;
 
 use Phlexible\Bundle\ElementBundle\ElementService;
+use Phlexible\Bundle\ElementtypeBundle\Model\Elementtype;
 use Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentDescriptor;
 use Psr\Log\LoggerInterface;
 
@@ -49,18 +50,19 @@ class ElementIndexibleVoter implements IndexibleVoterInterface
 
         $skipElementtypeIds = explode(',', $siteroot->getProperty('element_indexer.skip_elementtype_ids'));
 
-        // skip elementtype?
-        $element       = $this->elementService->findElement($node->getTypeId());
-        $elementtypeId = $element->getElementtypeId();
-        if (in_array($elementtypeId, $skipElementtypeIds)) {
+        $element = $this->elementService->findElement($node->getTypeId());
+
+        // skip configured element types
+        if (in_array($element->getElementtypeId(), $skipElementtypeIds)) {
             $this->logger->info("TreeNode {$node->getId()} not indexed, elementtype id in skip list");
 
             return self::VOTE_DENY;
         }
 
-        // skip non full elements
         $elementtype = $this->elementService->findElementtype($element);
-        if ('full' !== $elementtype->getType()) {
+
+        // skip non full element types
+        if (Elementtype::TYPE_FULL !== $elementtype->getType()) {
             // ElementtypeVersion::TYPE_FULL
             $this->logger->info("TreeNode {$node->getId()} not indexed, not a full element");
 

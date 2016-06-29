@@ -10,6 +10,7 @@ namespace Phlexible\Bundle\IndexerElementBundle\Indexer;
 
 use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
+use Phlexible\Bundle\IndexerElementBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
 use Phlexible\Bundle\SiterootBundle\Model\SiterootManagerInterface;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeManagerInterface;
 use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
@@ -37,18 +38,26 @@ class ContentIdentifier implements ContentIdentifierInterface
     private $elementService;
 
     /**
+     * @var IndexibleVoterInterface
+     */
+    private $indexibleVoter;
+
+    /**
      * @param SiterootManagerInterface    $siterootManager
      * @param ContentTreeManagerInterface $treeManager
      * @param ElementService              $elementService
+     * @param IndexibleVoterInterface     $indexibleVoter
      */
     public function __construct(
         SiterootManagerInterface $siterootManager,
         ContentTreeManagerInterface $treeManager,
-        ElementService $elementService
+        ElementService $elementService,
+        IndexibleVoterInterface $indexibleVoter
     ) {
         $this->siterootManager = $siterootManager;
         $this->treeManager = $treeManager;
         $this->elementService = $elementService;
+        $this->indexibleVoter = $indexibleVoter;
     }
 
     /**
@@ -116,7 +125,6 @@ class ContentIdentifier implements ContentIdentifierInterface
 
             // get siteroot properties
             $siterootDisabled = $siteroot->getProperty('element_indexer.disabled');
-            $skipElementTypes = explode(',', $siteroot->getProperty('element_indexer.skip_elementtype_ids'));
 
             if ($siterootDisabled) {
                 continue;
@@ -130,44 +138,26 @@ class ContentIdentifier implements ContentIdentifierInterface
             foreach ($rii as $node) {
                 /* @var $node TreeNodeInterface */
 
-                if ($tree->isInstance($node) && !$tree->isInstanceMaster($node)) {
-                    continue;
-                }
-
-                /**
-                 * skip specific tids
-                 */
-                if ($node->getAttribute('searchNoIndex', false)) {
-                    continue;
-                }
+                $contentNode = $this->treeManager->find($siteroot->getId())->get($node->getId());
 
                 foreach ($tree->getPublishedVersions($node) as $language => $onlineVersion) {
-                    $element = $this->elementService->findElement($node->getTypeId());
-
-                    /**
-                     * skip specific element types
-                     */
-                    if (in_array($element->getElementtypeId(), $skipElementTypes)) {
-                        continue;
-                    }
-
-                    $elementtype = $this->elementService->findElementtype($element);
-                    if ('full' !== $elementtype->getType()) {
-                        continue;
-                    }
-
-                    $node = $this->treeManager->find($siteroot->getId())->get($node->getId());
-                    $descriptors[] = new DocumentDescriptor(
-                        $this->createIdentity($node, $language),
-                        $node,
+                    $descriptor = new DocumentDescriptor(
+                        $this->createIdentity($contentNode, $language),
+                        $contentNode,
                         $siteroot,
                         $language
                     );
+
+                    if ($this->indexibleVoter->isIndexible($descriptor) === IndexibleVoterInterface::VOTE_DENY) {
+                        continue;
+                    }
+
+                    yield ($descriptor);
+
+                    $descriptors[] = $descriptor;
                 }
             }
         }
-
-        return $descriptors;
     }
 
     /**

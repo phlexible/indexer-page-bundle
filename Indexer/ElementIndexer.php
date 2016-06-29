@@ -300,11 +300,11 @@ class ElementIndexer implements IndexerInterface
      */
     public function indexAll($viaQueue = false)
     {
-        $descriptors = $this->identifier->findAllDescriptors();
+        //$descriptors = $this->identifier->findAllDescriptors();
 
         $operations = $this->storage->createOperations();
 
-        foreach ($descriptors as $descriptor) {
+        foreach ($this->identifier->findAllDescriptors() as $descriptor) {
             if ($viaQueue) {
                 $operations->addIdentity($descriptor->getIdentity());
             } else {
