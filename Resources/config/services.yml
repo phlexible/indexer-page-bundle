@@ -30,6 +30,7 @@ services:
             - "@phlexible_siteroot.siteroot_manager"
             - "@phlexible_tree.content_tree_manager"
             - "@phlexible_element.element_service"
+            - "@phlexible_indexer_element.indexible_voter"
         tags:
             - {name: monolog.logger, channel: indexer}
 

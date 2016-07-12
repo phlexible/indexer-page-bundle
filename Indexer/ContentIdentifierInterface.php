@@ -8,6 +8,7 @@
 
 namespace Phlexible\Bundle\IndexerElementBundle\Indexer;
 
+use Generator;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 
@@ -43,7 +44,7 @@ interface ContentIdentifierInterface
     /**
      * Return all identifiers
      *
-     * @return DocumentDescriptor[]
+     * @return Generator|DocumentDescriptor[]
      */
     public function findAllDescriptors();
 }

@@ -42,21 +42,37 @@ class NodeIndexibleVoter implements IndexibleVoterInterface
 
         $skipNodeIds = explode(',', $siteroot->getProperty('element_indexer.skip_node_ids'));
 
+        // skip redirect nodes
+        if ($node->getField('forward')) {
+            $this->logger->info("TreeNode {$node->getId()} not indexed, node is redirect");
+
+            return self::VOTE_DENY;
+        }
+
+        // skip not published nodes
         if (!$node->getTree()->getPublishedVersion($node, $language)) {
             $this->logger->info("TreeNode {$node->getId()} not indexed, node not published");
 
             return self::VOTE_DENY;
         }
 
-        // skip tid?
+        // skip nodes with disabled indexing
         if ($node->getAttribute('searchNoIndex', false)) {
             $this->logger->info("TreeNode {$node->getId()} not indexed, node is marked with no-index");
 
             return self::VOTE_DENY;
         }
 
+        // skip configured skip nodes
         if (in_array($node->getId(), $skipNodeIds)) {
             $this->logger->info("TreeNode {$node->getId()} not indexed, node id in skip node list");
+
+            return self::VOTE_DENY;
+        }
+
+        // skip slave instances
+        if ($node->getTree()->isInstance($node) && !$node->getTree()->isInstanceMaster($node)) {
+            $this->logger->info("TreeNode {$node->getId()} not indexed, not instance master");
 
             return self::VOTE_DENY;
         }
