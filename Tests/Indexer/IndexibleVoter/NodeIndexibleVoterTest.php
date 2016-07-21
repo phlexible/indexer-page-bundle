@@ -12,7 +12,9 @@ use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\IndexerElementBundle\Indexer\IndexibleVoter\NodeIndexibleVoter;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
+use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeInterface;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
+use Phlexible\Bundle\TreeBundle\ContentTree\DelegatingContentTree;
 use Phlexible\Bundle\TreeBundle\Model\TreeInterface;
 use Psr\Log\LoggerInterface;
 
@@ -47,7 +49,8 @@ class NodeIndexibleVoterTest extends \PHPUnit_Framework_TestCase
     {
         $node = new ContentTreeNode();
         $node->setId(123);
-        $tree = $this->prophesize(TreeInterface::class);
+        $tree = $this->prophesize(DelegatingContentTree::class);
+        $tree->getField($node, 'forward', null)->willReturn(null);
         $tree->getPublishedVersion($node, 'de')->willReturn(null);
         $node->setTree($tree->reveal());
         $siteroot = new Siteroot();
@@ -66,7 +69,8 @@ class NodeIndexibleVoterTest extends \PHPUnit_Framework_TestCase
         $node = new ContentTreeNode();
         $node->setId(123);
         $node->setAttribute('searchNoIndex', true);
-        $tree = $this->prophesize(TreeInterface::class);
+        $tree = $this->prophesize(DelegatingContentTree::class);
+        $tree->getField($node, 'forward', null)->willReturn(null);
         $tree->getPublishedVersion($node, 'de')->willReturn(50);
         $node->setTree($tree->reveal());
         $siteroot = new Siteroot();
@@ -84,7 +88,8 @@ class NodeIndexibleVoterTest extends \PHPUnit_Framework_TestCase
     {
         $node = new ContentTreeNode();
         $node->setId(123);
-        $tree = $this->prophesize(TreeInterface::class);
+        $tree = $this->prophesize(DelegatingContentTree::class);
+        $tree->getField($node, 'forward', null)->willReturn(null);
         $tree->getPublishedVersion($node, 'de')->willReturn(50);
         $node->setTree($tree->reveal());
         $siteroot = new Siteroot();
@@ -103,8 +108,10 @@ class NodeIndexibleVoterTest extends \PHPUnit_Framework_TestCase
     {
         $node = new ContentTreeNode();
         $node->setId(123);
-        $tree = $this->prophesize(TreeInterface::class);
+        $tree = $this->prophesize(DelegatingContentTree::class);
+        $tree->getField($node, 'forward', null)->willReturn(null);
         $tree->getPublishedVersion($node, 'de')->willReturn(50);
+        $tree->isInstance($node)->willReturn(false);
         $node->setTree($tree->reveal());
         $siteroot = new Siteroot();
         $identity = new DocumentIdentity('element_74_de');

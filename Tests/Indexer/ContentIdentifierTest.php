@@ -12,6 +12,7 @@ use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerElementBundle\Indexer\ContentIdentifier;
 use Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerElementBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\SiterootBundle\Model\SiterootManagerInterface;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeManagerInterface;
@@ -45,11 +46,13 @@ class ContentIdentifierTest extends \PHPUnit_Framework_TestCase
         $this->siterootManager = $this->prophesize(SiterootManagerInterface::class);
         $this->treeManager = $this->prophesize(ContentTreeManagerInterface::class);
         $elementService = $this->prophesize(ElementService::class);
+        $voter = $this->prophesize(IndexibleVoterInterface::class);
 
         $this->identifier = new ContentIdentifier(
             $this->siterootManager->reveal(),
             $this->treeManager->reveal(),
-            $elementService->reveal()
+            $elementService->reveal(),
+            $voter->reveal()
         );
     }
 
