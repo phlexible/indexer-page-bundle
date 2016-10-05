@@ -11,8 +11,11 @@
     },
     "require": {
         "php": ">=5.3.0",
-        "phlexible/phlexible": "~1.0",
+        "phlexible/element-bundle": "~1.0",
         "phlexible/indexer-bundle": "~1.0",
+        "phlexible/queue-bundle": "~1.0",
+        "phlexible/siteroot-bundle": "~1.0",
+        "phlexible/tree-bundle": "~1.0",
         "psr/log": "~1.0",
         "symfony/dom-crawler": "~2.6"
     },
