@@ -202,6 +202,8 @@ class ElementIndexer implements IndexerInterface
      */
     public function addNode(TreeNodeInterface $node, $language, $viaQueue = false)
     {
+        $this->logger->debug("addNode {$node->getId()} {$language}");
+
         $descriptor = $this->identifier->createDescriptorFromNode($node, $language);
 
         if ($viaQueue) {
@@ -222,6 +224,8 @@ class ElementIndexer implements IndexerInterface
      */
     public function updateNode(TreeNodeInterface $node, $language, $viaQueue = false)
     {
+        $this->logger->debug("updateNode {$node->getId()} {$language}");
+
         $descriptor = $this->identifier->createDescriptorFromNode($node, $language);
 
         if ($viaQueue) {
@@ -258,6 +262,8 @@ class ElementIndexer implements IndexerInterface
      */
     public function add(DocumentIdentity $identity, $viaQueue = false)
     {
+        $this->logger->debug("add {$identity}");
+
         if ($viaQueue) {
             $this->queueIdentityOperation('add', $identity);
         } else {
@@ -272,6 +278,8 @@ class ElementIndexer implements IndexerInterface
      */
     public function update(DocumentIdentity $identity, $viaQueue = false)
     {
+        $this->logger->debug("update {$identity}");
+
         if ($viaQueue) {
             $this->queueIdentityOperation('update', $identity);
         } else {
@@ -305,6 +313,8 @@ class ElementIndexer implements IndexerInterface
         $operations = $this->storage->createOperations();
 
         foreach ($this->identifier->findAllDescriptors() as $descriptor) {
+            $this->logger->info("indexAll {$descriptor->getNode()->getId()} {$descriptor->getLanguage()}");
+
             if ($viaQueue) {
                 $operations->addIdentity($descriptor->getIdentity());
             } else {
