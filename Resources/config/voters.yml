@@ -29,6 +29,6 @@ services:
         public: false
         arguments:
             -
-                - "@phlexible_indexer_page.page_indexible_voter"
+                - "@phlexible_indexer_page.element_indexible_voter"
                 - "@phlexible_indexer_page.node_indexible_voter"
                 - "@phlexible_indexer_page.siteroot_indexible_voter"
