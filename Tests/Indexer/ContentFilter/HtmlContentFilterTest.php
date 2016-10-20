@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\IndexerPagerBundle\Tests\Indexer\ContentFilter;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\HtmlContentFilter;
 
 /**
- * HTML content filter test
+ * HTML content filter test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -32,7 +32,7 @@ class HtmlContentFilterTest extends \PHPUnit_Framework_TestCase
 
     public function testFilterWhitespace()
     {
-        $html = "A     B";
+        $html = 'A     B';
 
         $filter = new HtmlContentFilter();
         $result = $filter->filter($html);
@@ -42,7 +42,7 @@ class HtmlContentFilterTest extends \PHPUnit_Framework_TestCase
 
     public function testFilterTags()
     {
-        $html = "<b>A</b><i>B</i>";
+        $html = '<b>A</b><i>B</i>';
 
         $filter = new HtmlContentFilter();
         $result = $filter->filter($html);

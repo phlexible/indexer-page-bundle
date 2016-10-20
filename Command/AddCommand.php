@@ -18,7 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Add command
+ * Add command.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -50,9 +50,9 @@ class AddCommand extends ContainerAwareCommand
         $indexer = $this->getContainer()->get('phlexible_indexer_element.element_indexer');
         $storage = $indexer->getStorage();
 
-        $output->writeln('Indexer: ' . get_class($indexer));
-        $output->writeln('  Storage: ' . get_class($storage));
-        $output->writeln('    DSN: ' . $storage->getConnectionString());
+        $output->writeln('Indexer: '.get_class($indexer));
+        $output->writeln('  Storage: '.get_class($storage));
+        $output->writeln('    DSN: '.$storage->getConnectionString());
 
         $identity = new DocumentIdentity("element_{$treeId}_{$language}");
 
@@ -66,5 +66,4 @@ class AddCommand extends ContainerAwareCommand
 
         return 0;
     }
-
 }

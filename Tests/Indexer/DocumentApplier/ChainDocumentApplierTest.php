@@ -13,14 +13,14 @@ namespace Phlexible\Bundle\IndexerPagerBundle\Tests\Indexer\DocumentApplier;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerPagerBundle\Document\PageDocument;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\ChainDocumentApplier;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\DocumentApplierInterface;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 
 /**
- * Chain document applier test
+ * Chain document applier test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

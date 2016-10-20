@@ -20,7 +20,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Meta document applier
+ * Meta document applier.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -70,19 +70,18 @@ class MetaDocumentApplier implements DocumentApplierInterface
         $this->elementMetaDataManager = $elementMetaDataManager;
         $this->dispatcher = $dispatcher;
         $this->logger = $logger;
-
     }
 
     /**
-     * @param DocumentInterface $document
-     * @param DocumentDescriptor   $descriptor
+     * @param DocumentInterface  $document
+     * @param DocumentDescriptor $descriptor
      */
     public function apply(DocumentInterface $document, DocumentDescriptor $descriptor)
     {
         $node = $descriptor->getNode();
         $language = $descriptor->getLanguage();
 
-        $element        = $this->elementService->findElement($node->getTypeId());
+        $element = $this->elementService->findElement($node->getTypeId());
         $elementVersion = $this->elementService->findElementVersion($element, $node->getTree()->getPublishedVersion($node, $language));
 
         $metaSet = $this->elementMetaSetResolver->resolve($elementVersion);

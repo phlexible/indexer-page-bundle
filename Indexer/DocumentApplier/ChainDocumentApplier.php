@@ -15,7 +15,7 @@ use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 
 /**
- * Chain document applier
+ * Chain document applier.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -35,8 +35,8 @@ class ChainDocumentApplier implements DocumentApplierInterface
     }
 
     /**
-     * @param DocumentInterface $document
-     * @param DocumentDescriptor   $descriptor
+     * @param DocumentInterface  $document
+     * @param DocumentDescriptor $descriptor
      */
     public function apply(DocumentInterface $document, DocumentDescriptor $descriptor)
     {

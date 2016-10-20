@@ -12,14 +12,14 @@
 namespace Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter;
 
 /**
- * Content filter interface
+ * Content filter interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
 interface ContentFilterInterface
 {
     /**
-     * Filter content
+     * Filter content.
      *
      * @param string $content
      *

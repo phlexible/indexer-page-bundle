@@ -16,7 +16,7 @@ use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 
 /**
- * Document descriptor
+ * Document descriptor.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

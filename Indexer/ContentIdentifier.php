@@ -19,7 +19,7 @@ use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeManagerInterface;
 use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 
 /**
- * Content identifier
+ * Content identifier.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -155,7 +155,7 @@ class ContentIdentifier implements ContentIdentifierInterface
                         continue;
                     }
 
-                    yield ($descriptor);
+                    yield $descriptor;
 
                     $descriptors[] = $descriptor;
                 }

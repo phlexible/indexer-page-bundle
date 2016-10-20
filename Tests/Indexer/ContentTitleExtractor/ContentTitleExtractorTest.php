@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\IndexerPagerBundle\Tests\Indexer\ContentTitleExtracto
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentTitleExtractor\ContentTitleExtractor;
 
 /**
- * Content title extractor
+ * Content title extractor.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

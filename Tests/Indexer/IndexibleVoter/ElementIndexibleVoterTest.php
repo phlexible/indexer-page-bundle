@@ -23,7 +23,7 @@ use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
 /**
- * Element indexible voter
+ * Element indexible voter.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

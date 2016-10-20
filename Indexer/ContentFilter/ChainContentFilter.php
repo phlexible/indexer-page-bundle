@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter;
 
 /**
- * Chain content filter
+ * Chain content filter.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

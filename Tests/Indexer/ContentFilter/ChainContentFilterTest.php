@@ -15,7 +15,7 @@ use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\ChainContentFilter
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\ContentFilterInterface;
 
 /**
- * Chain content filter test
+ * Chain content filter test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

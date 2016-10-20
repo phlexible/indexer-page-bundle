@@ -15,15 +15,15 @@ use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 
 /**
- * Boost document applier
+ * Boost document applier.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
 class BoostDocumentApplier implements DocumentApplierInterface
 {
     /**
-     * @param DocumentInterface $document
-     * @param DocumentDescriptor   $descriptor
+     * @param DocumentInterface  $document
+     * @param DocumentDescriptor $descriptor
      */
     public function apply(DocumentInterface $document, DocumentDescriptor $descriptor)
     {
@@ -31,8 +31,8 @@ class BoostDocumentApplier implements DocumentApplierInterface
         $siteroot = $descriptor->getSiteroot();
 
         $boostProperty = $siteroot->getProperty('element_indexer.boost_node_ids');
-        $boostTids     = $this->getKeyValueProperty($boostProperty);
-        $tid           = $node->getId();
+        $boostTids = $this->getKeyValueProperty($boostProperty);
+        $tid = $node->getId();
 
         // 1. try boosting by tid
         if (isset($boostTids[$tid])) {
@@ -43,9 +43,9 @@ class BoostDocumentApplier implements DocumentApplierInterface
 
         return;
 
-        $boostProperty     = $siteroot->getProperty('element_indexer.boost_elementtype_ids');
+        $boostProperty = $siteroot->getProperty('element_indexer.boost_elementtype_ids');
         $boostElementtypes = $this->getKeyValueProperty($boostProperty);
-        $elementTypeId     = $elementVersion->getElement()->getElementtypeId();
+        $elementTypeId = $elementVersion->getElement()->getElementtypeId();
 
         // 2. try boosting by element type id
         if (isset($boostElementtypes[$elementTypeId])) {
@@ -54,7 +54,7 @@ class BoostDocumentApplier implements DocumentApplierInterface
     }
 
     /**
-     * Parse a multivalue property 123:2;17:3
+     * Parse a multivalue property 123:2;17:3.
      *
      * @param string $property
      *
@@ -75,7 +75,7 @@ class BoostDocumentApplier implements DocumentApplierInterface
                 continue;
             }
 
-            $key   = trim($keyValue[0]);
+            $key = trim($keyValue[0]);
             $value = trim($keyValue[1]);
 
             // key and value must be present

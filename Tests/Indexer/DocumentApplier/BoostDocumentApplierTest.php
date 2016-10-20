@@ -13,13 +13,13 @@ namespace Phlexible\Bundle\IndexerPagerBundle\Tests\Indexer\DocumentApplier;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerPagerBundle\Document\PageDocument;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\BoostDocumentApplier;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 
 /**
- * Boost document applier test
+ * Boost document applier test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

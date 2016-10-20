@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * HTML content filter
+ * HTML content filter.
  *
  * @author Marco Fischer <mf@brainbits.net>
  */
@@ -29,7 +29,7 @@ class HtmlContentFilter implements ContentFilterInterface
         $content = str_replace('<', ' <', $content);
 
         // Remove NL, CR, TABs
-        $content = str_replace(array("\r", "\n", "\t"), array(' ',' ',' '), $content);
+        $content = str_replace(array("\r", "\n", "\t"), array(' ', ' ', ' '), $content);
 
         // Remove multiple whitespaces
         $content = preg_replace('|\s+|u', ' ', $content);

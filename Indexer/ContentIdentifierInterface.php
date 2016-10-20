@@ -16,7 +16,7 @@ use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 
 /**
- * Content identifier interface
+ * Content identifier interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -45,7 +45,7 @@ interface ContentIdentifierInterface
     public function createDescriptorFromIdentity(DocumentIdentity $identity);
 
     /**
-     * Return all identifiers
+     * Return all identifiers.
      *
      * @return Generator|DocumentDescriptor[]
      */

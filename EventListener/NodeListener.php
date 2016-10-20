@@ -21,7 +21,7 @@ use Phlexible\Bundle\TreeBundle\TreeEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Node listener
+ * Node listener.
  *
  * @author Marco Fischer <mf@brainbits.net>
  */
@@ -53,10 +53,10 @@ class NodeListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            TreeEvents::PUBLISH_NODE       => 'onPublishNode',
-            TreeEvents::UPDATE_NODE        => 'onUpdateNode',
-            TreeEvents::MOVE_NODE          => 'onMoveNode',
-            TreeEvents::SET_NODE_OFFLINE   => 'onSetNodeOffline',
+            TreeEvents::PUBLISH_NODE => 'onPublishNode',
+            TreeEvents::UPDATE_NODE => 'onUpdateNode',
+            TreeEvents::MOVE_NODE => 'onMoveNode',
+            TreeEvents::SET_NODE_OFFLINE => 'onSetNodeOffline',
             TreeEvents::BEFORE_DELETE_NODE => 'onDeleteNode',
         );
     }
@@ -66,8 +66,8 @@ class NodeListener implements EventSubscriberInterface
      */
     public function onPublishNode(PublishNodeEvent $event)
     {
-        $node       = $event->getNode();
-        $language   = $event->getLanguage();
+        $node = $event->getNode();
+        $language = $event->getLanguage();
 
         $this->indexer->addNode($node, $language, true);
     }
@@ -101,8 +101,8 @@ class NodeListener implements EventSubscriberInterface
      */
     public function onSetNodeOffline(SetNodeOfflineEvent $event)
     {
-        $language   = $event->getLanguage();
-        $node       = $event->getNode();
+        $language = $event->getLanguage();
+        $node = $event->getNode();
 
         $this->indexer->deleteNode($node, $language, true);
     }

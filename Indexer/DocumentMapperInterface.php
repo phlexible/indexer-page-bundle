@@ -14,14 +14,14 @@ namespace Phlexible\Bundle\IndexerPagerBundle\Indexer;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
 
 /**
- * Element document mapper interface
+ * Element document mapper interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
 interface DocumentMapperInterface
 {
     /**
-     * Map node to document
+     * Map node to document.
      *
      * @param DocumentInterface  $document
      * @param DocumentDescriptor $descriptor

@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentRenderer;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 
 /**
- * Content renderer interface
+ * Content renderer interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
