@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\IndexerPagerBundle\Tests\Indexer\ContentFilter;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\NoIndexContentFilter;
 
 /**
- * No index content filter test
+ * No index content filter test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentTitleExtractor;
 
 /**
- * Content title extractor
+ * Content title extractor.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

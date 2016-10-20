@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\IndexerPagerBundle\Exception;
 
 /**
- * Logic exception
+ * Logic exception.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

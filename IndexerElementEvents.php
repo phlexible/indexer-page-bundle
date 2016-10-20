@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\IndexerPagerBundle;
 
 /**
- * Elements indexer events
+ * Elements indexer events.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -20,7 +20,7 @@ class IndexerElementEvents
 {
     /**
      * Map Document Event
-     * Fired when a document is mapped
+     * Fired when a document is mapped.
      */
     const MAP_DOCUMENT = 'phlexible_indexer_element.map_document';
 }

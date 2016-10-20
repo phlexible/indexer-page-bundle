@@ -17,7 +17,7 @@ use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 use Psr\Log\LoggerInterface;
 
 /**
- * Element indexible voter
+ * Element indexible voter.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

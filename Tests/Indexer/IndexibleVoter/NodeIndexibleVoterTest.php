@@ -20,7 +20,7 @@ use Phlexible\Bundle\TreeBundle\ContentTree\DelegatingContentTree;
 use Psr\Log\LoggerInterface;
 
 /**
- * Node indexible voter
+ * Node indexible voter.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

@@ -15,15 +15,15 @@ use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 
 /**
- * Document applier interface
+ * Document applier interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
 interface DocumentApplierInterface
 {
     /**
-     * @param DocumentInterface $document
-     * @param DocumentDescriptor   $descriptor
+     * @param DocumentInterface  $document
+     * @param DocumentDescriptor $descriptor
      */
     public function apply(DocumentInterface $document, DocumentDescriptor $descriptor);
 }

@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\IndexerPagerBundle\Indexer\IndexibleVoter;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 
 /**
- * Indexible voter interface
+ * Indexible voter interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

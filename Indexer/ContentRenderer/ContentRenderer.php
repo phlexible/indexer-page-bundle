@@ -22,7 +22,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Templating\EngineInterface;
 
 /**
- * Content renderer
+ * Content renderer.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

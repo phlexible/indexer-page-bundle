@@ -15,7 +15,7 @@ use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 use Psr\Log\LoggerInterface;
 
 /**
- * Siteroot indexible voter
+ * Siteroot indexible voter.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -42,7 +42,7 @@ class SiterootIndexibleVoter implements IndexibleVoterInterface
         $node = $descriptor->getNode();
         $siteroot = $descriptor->getSiteroot();
 
-        $siterootDisabled  = (bool) $siteroot->getProperty('element_indexer.disabled');
+        $siterootDisabled = (bool) $siteroot->getProperty('element_indexer.disabled');
 
         // skip siteroot?
         if ($siterootDisabled) {

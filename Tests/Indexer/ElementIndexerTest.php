@@ -28,7 +28,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
 
 /**
- * Element indexer test
+ * Element indexer test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

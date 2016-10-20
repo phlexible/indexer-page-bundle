@@ -18,10 +18,10 @@ use Phlexible\Bundle\ElementtypeBundle\Model\Elementtype;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerPagerBundle\Document\PageDocument;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\NoIndexContentFilter;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentRenderer\ContentRendererInterface;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentTitleExtractor\ContentTitleExtractorInterface;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\ContentDocumentApplier;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 use Phlexible\Bundle\TreeBundle\ContentTree\DelegatingContentTree;
@@ -29,7 +29,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Content document applier test
+ * Content document applier test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

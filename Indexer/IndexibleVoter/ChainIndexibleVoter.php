@@ -12,10 +12,9 @@
 namespace Phlexible\Bundle\IndexerPagerBundle\Indexer\IndexibleVoter;
 
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
-use Psr\Log\LoggerInterface;
 
 /**
- * Chain indexible voter
+ * Chain indexible voter.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

@@ -16,7 +16,7 @@ use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Elements indexer event
+ * Elements indexer event.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

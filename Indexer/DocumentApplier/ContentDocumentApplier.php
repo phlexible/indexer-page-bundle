@@ -14,14 +14,14 @@ namespace Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier;
 use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\ContentFilterInterface;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentRenderer\ContentRendererInterface;
 use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentTitleExtractor\ContentTitleExtractorInterface;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Content document applier
+ * Content document applier.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -79,12 +79,11 @@ class ContentDocumentApplier implements DocumentApplierInterface
         $this->contentRenderer = $contentRenderer;
         $this->dispatcher = $dispatcher;
         $this->logger = $logger;
-
     }
 
     /**
-     * @param DocumentInterface $document
-     * @param DocumentDescriptor   $descriptor
+     * @param DocumentInterface  $document
+     * @param DocumentDescriptor $descriptor
      */
     public function apply(DocumentInterface $document, DocumentDescriptor $descriptor)
     {
@@ -101,7 +100,7 @@ class ContentDocumentApplier implements DocumentApplierInterface
 
         $content = $this->contentFilter->filter($content);
 
-        $element        = $this->elementService->findElement($node->getTypeId());
+        $element = $this->elementService->findElement($node->getTypeId());
         $elementVersion = $this->elementService->findElementVersion($element, $node->getTree()->getPublishedVersion($node, $language));
 
         $title = $this->titleExtractor->extractTitle($content);

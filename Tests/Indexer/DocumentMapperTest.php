@@ -24,7 +24,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Document mapper test
+ * Document mapper test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

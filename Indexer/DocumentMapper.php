@@ -20,7 +20,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Element document mapper
+ * Element document mapper.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -77,7 +77,7 @@ class DocumentMapper implements DocumentMapperInterface
             $this->applyDescriptor($document, $descriptor);
             $this->applier->apply($document, $descriptor);
         } catch (\Exception $e) {
-            $this->logger->error('mapIdentity() exception: ' . $e->getMessage());
+            $this->logger->error('mapIdentity() exception: '.$e->getMessage());
 
             throw $e;
         }

@@ -23,7 +23,7 @@ use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 use Phlexible\Bundle\TreeBundle\ContentTree\DelegatingContentTree;
 
 /**
- * Content identifier test
+ * Content identifier test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

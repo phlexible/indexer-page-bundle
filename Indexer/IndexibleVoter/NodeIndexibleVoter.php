@@ -15,7 +15,7 @@ use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
 use Psr\Log\LoggerInterface;
 
 /**
- * Node indexible voter
+ * Node indexible voter.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -37,8 +37,7 @@ class NodeIndexibleVoter implements IndexibleVoterInterface
     /**
      * {@inheritdoc}
      */
-    public function
-        /*
+    public function /*
          * This file is part of the phlexible indexer page package.
          *
          * (c) Stephan Wentz <sw@brainbits.net>

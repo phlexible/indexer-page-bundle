@@ -19,7 +19,7 @@ use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 
 /**
- * Chain indexible voter
+ * Chain indexible voter.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
