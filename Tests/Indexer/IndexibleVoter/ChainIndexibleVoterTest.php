@@ -29,7 +29,7 @@ class ChainIndexibleVoterTest extends \PHPUnit_Framework_TestCase
     {
         $node = new ContentTreeNode();
         $siteroot = new Siteroot();
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $voter1 = $this->prophesize(IndexibleVoterInterface::class);
@@ -48,7 +48,7 @@ class ChainIndexibleVoterTest extends \PHPUnit_Framework_TestCase
     {
         $node = new ContentTreeNode();
         $siteroot = new Siteroot();
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $voter1 = $this->prophesize(IndexibleVoterInterface::class);
@@ -67,7 +67,7 @@ class ChainIndexibleVoterTest extends \PHPUnit_Framework_TestCase
     {
         $node = new ContentTreeNode();
         $siteroot = new Siteroot();
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $voter1 = $this->prophesize(IndexibleVoterInterface::class);

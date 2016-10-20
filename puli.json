@@ -1,13 +1,13 @@
 {
     "version": "1.0",
-    "name": "phlexible/indexer-element-bundle",
+    "name": "phlexible/indexer-page-bundle",
     "path-mappings": {
-        "/phlexible/phlexibleindexerelement/icons": "Resources/public/icons"
+        "/phlexible/phlexibleindexerpage/icons": "Resources/public/icons"
     },
     "bindings": {
         "2468ef62-d345-537d-bd58-5a089f6a497d": {
             "_class": "Puli\\Discovery\\Binding\\ResourceBinding",
-            "query": "/phlexible/phlexibleindexerelement/icons/*.png",
+            "query": "/phlexible/phlexibleindexerpage/icons/*.png",
             "type": "phlexible/icons"
         }
     },

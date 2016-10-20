@@ -25,12 +25,12 @@ class PhlexibleIndexerPageBundle extends Bundle
         // @TODO: implement skip/boost for unique IDs
 
         return array(
-            'indexer.elements.enabled',
-            'indexer.elements.skip.restricted',
-            'indexer.elements.skip.elementtypeids',
-            'indexer.elements.skip.tids',
-            'indexer.elements.boost.elementtypeids',
-            'indexer.elements.boost.tids',
+            'indexer.page.enabled',
+            'indexer.page.skip.restricted',
+            'indexer.page.skip.elementtypeids',
+            'indexer.page.skip.tids',
+            'indexer.page.boost.elementtypeids',
+            'indexer.page.boost.tids',
         );
     }
 }

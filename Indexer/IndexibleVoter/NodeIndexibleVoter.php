@@ -51,7 +51,7 @@ class NodeIndexibleVoter implements IndexibleVoterInterface
         $siteroot = $descriptor->getSiteroot();
         $language = $descriptor->getLanguage();
 
-        $skipNodeIds = explode(',', $siteroot->getProperty('element_indexer.skip_node_ids'));
+        $skipNodeIds = explode(',', $siteroot->getProperty('page_indexer.skip_node_ids'));
 
         // skip redirect nodes
         if ($node->getField('forward')) {

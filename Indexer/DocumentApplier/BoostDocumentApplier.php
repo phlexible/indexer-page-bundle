@@ -30,7 +30,7 @@ class BoostDocumentApplier implements DocumentApplierInterface
         $node = $descriptor->getNode();
         $siteroot = $descriptor->getSiteroot();
 
-        $boostProperty = $siteroot->getProperty('element_indexer.boost_node_ids');
+        $boostProperty = $siteroot->getProperty('page_indexer.boost_node_ids');
         $boostTids = $this->getKeyValueProperty($boostProperty);
         $tid = $node->getId();
 
@@ -43,7 +43,7 @@ class BoostDocumentApplier implements DocumentApplierInterface
 
         return;
 
-        $boostProperty = $siteroot->getProperty('element_indexer.boost_elementtype_ids');
+        $boostProperty = $siteroot->getProperty('page_indexer.boost_elementtype_ids');
         $boostElementtypes = $this->getKeyValueProperty($boostProperty);
         $elementTypeId = $elementVersion->getElement()->getElementtypeId();
 

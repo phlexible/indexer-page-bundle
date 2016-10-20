@@ -63,8 +63,8 @@ class ElementIndexibleVoterTest extends \PHPUnit_Framework_TestCase
         $node->setId(123);
         $node->setTypeId(234);
         $siteroot = new Siteroot();
-        $siteroot->setProperty('element_indexer.skip_elementtype_ids', '345,456');
-        $identity = new DocumentIdentity('element_74_de');
+        $siteroot->setProperty('page_indexer.skip_elementtype_ids', '345,456');
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $this->elementService->findElement(234)->willReturn($element);
@@ -86,7 +86,7 @@ class ElementIndexibleVoterTest extends \PHPUnit_Framework_TestCase
         $node->setId(123);
         $node->setTypeId(234);
         $siteroot = new Siteroot();
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $this->elementService->findElement(234)->willReturn($element);
@@ -109,7 +109,7 @@ class ElementIndexibleVoterTest extends \PHPUnit_Framework_TestCase
         $node->setId(123);
         $node->setTypeId(234);
         $siteroot = new Siteroot();
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $this->elementService->findElement(234)->willReturn($element);

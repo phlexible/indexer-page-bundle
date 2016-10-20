@@ -42,7 +42,7 @@ class SiterootIndexibleVoter implements IndexibleVoterInterface
         $node = $descriptor->getNode();
         $siteroot = $descriptor->getSiteroot();
 
-        $siterootDisabled = (bool) $siteroot->getProperty('element_indexer.disabled');
+        $siterootDisabled = (bool) $siteroot->getProperty('page_indexer.disabled');
 
         // skip siteroot?
         if ($siterootDisabled) {

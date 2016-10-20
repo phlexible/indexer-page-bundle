@@ -64,7 +64,7 @@ class ContentIdentifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateValidIdentifierReturnsTrue()
     {
-        $this->assertTrue($this->identifier->validateIdentity(new DocumentIdentity('element_123_de')));
+        $this->assertTrue($this->identifier->validateIdentity(new DocumentIdentity('page_123_de')));
     }
 
     /**
@@ -110,7 +110,7 @@ class ContentIdentifierTest extends \PHPUnit_Framework_TestCase
         $this->treeManager->findByTreeId(123)->willReturn($tree->reveal());
         $this->siterootManager->find(123)->willReturn($siteroot);
 
-        $identity = new DocumentIdentity('element_123_de');
+        $identity = new DocumentIdentity('page_123_de');
         $descriptor = $this->identifier->createDescriptorFromIdentity($identity);
 
         $this->assertInstanceOf(DocumentDescriptor::class, $descriptor);

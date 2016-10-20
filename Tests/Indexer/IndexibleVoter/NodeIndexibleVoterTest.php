@@ -55,7 +55,7 @@ class NodeIndexibleVoterTest extends \PHPUnit_Framework_TestCase
         $tree->getPublishedVersion($node, 'de')->willReturn(null);
         $node->setTree($tree->reveal());
         $siteroot = new Siteroot();
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $this->logger->info('TreeNode 123 not indexed, node not published')->shouldBeCalled();
@@ -75,7 +75,7 @@ class NodeIndexibleVoterTest extends \PHPUnit_Framework_TestCase
         $tree->getPublishedVersion($node, 'de')->willReturn(50);
         $node->setTree($tree->reveal());
         $siteroot = new Siteroot();
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $this->logger->info('TreeNode 123 not indexed, node is marked with no-index')->shouldBeCalled();
@@ -94,8 +94,8 @@ class NodeIndexibleVoterTest extends \PHPUnit_Framework_TestCase
         $tree->getPublishedVersion($node, 'de')->willReturn(50);
         $node->setTree($tree->reveal());
         $siteroot = new Siteroot();
-        $siteroot->setProperty('element_indexer.skip_node_ids', '123,234');
-        $identity = new DocumentIdentity('element_74_de');
+        $siteroot->setProperty('page_indexer.skip_node_ids', '123,234');
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $this->logger->info('TreeNode 123 not indexed, node id in skip node list')->shouldBeCalled();
@@ -115,7 +115,7 @@ class NodeIndexibleVoterTest extends \PHPUnit_Framework_TestCase
         $tree->isInstance($node)->willReturn(false);
         $node->setTree($tree->reveal());
         $siteroot = new Siteroot();
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $result = $this->voter->isIndexible($descriptor);

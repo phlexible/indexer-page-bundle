@@ -51,7 +51,7 @@ class ElementIndexibleVoter implements IndexibleVoterInterface
         $node = $descriptor->getNode();
         $siteroot = $descriptor->getSiteroot();
 
-        $skipElementtypeIds = explode(',', $siteroot->getProperty('element_indexer.skip_elementtype_ids'));
+        $skipElementtypeIds = explode(',', $siteroot->getProperty('page_indexer.skip_elementtype_ids'));
 
         $element = $this->elementService->findElement($node->getTypeId());
 

@@ -28,11 +28,11 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
 
 /**
- * Element indexer test.
+ * Page indexer test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class ElementIndexerTest extends \PHPUnit_Framework_TestCase
+class PageIndexerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var DocumentFactory|ObjectProphecy

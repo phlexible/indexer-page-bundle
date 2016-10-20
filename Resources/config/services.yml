@@ -1,5 +1,5 @@
 services:
-    phlexible_indexer_page.element_indexer:
+    phlexible_indexer_page.page_indexer:
         class: Phlexible\Bundle\IndexerPageBundle\Indexer\ElementIndexer
         arguments:
             - "@phlexible_indexer.document_factory"
@@ -55,7 +55,7 @@ services:
     phlexible_indexer_page.listener.node:
         class: Phlexible\Bundle\IndexerPageBundle\EventListener\NodeListener
         arguments:
-            - "@phlexible_indexer_page.element_indexer"
+            - "@phlexible_indexer_page.page_indexer"
             - "%phlexible_cms.languages.available%"
         tags:
             - {name: kernel.event_subscriber}

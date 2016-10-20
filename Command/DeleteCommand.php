@@ -30,8 +30,8 @@ class DeleteCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('indexer-element:delete')
-            ->setDescription('Delete element document.')
+            ->setName('indexer-page:delete')
+            ->setDescription('Delete page document.')
             ->addArgument('treeId', InputArgument::REQUIRED, 'Tree node ID')
             ->addArgument('language', InputArgument::REQUIRED, 'Language')
         ;
@@ -47,14 +47,14 @@ class DeleteCommand extends ContainerAwareCommand
         $treeId = $input->getArgument('treeId');
         $language = $input->getArgument('language');
 
-        $indexer = $this->getContainer()->get('phlexible_indexer_element.element_indexer');
+        $indexer = $this->getContainer()->get('phlexible_indexer_page.page_indexer');
         $storage = $indexer->getStorage();
 
         $output->writeln('Indexer: '.get_class($indexer));
         $output->writeln('  Storage: '.get_class($storage));
         $output->writeln('    DSN: '.$storage->getConnectionString());
 
-        $identity = new DocumentIdentity("element_{$treeId}_{$language}");
+        $identity = new DocumentIdentity("page_{$treeId}_{$language}");
 
         $cnt = $storage->delete($identity);
 

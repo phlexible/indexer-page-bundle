@@ -21,7 +21,7 @@ use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
 interface ContentRendererInterface
 {
     /**
-     * Load a html representation of an element.
+     * Load a html representation of a node.
      *
      * @param DocumentDescriptor $descriptor
      *

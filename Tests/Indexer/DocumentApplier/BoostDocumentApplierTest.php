@@ -31,7 +31,7 @@ class BoostDocumentApplierTest extends \PHPUnit_Framework_TestCase
         $node = new ContentTreeNode();
         $node->setId(123);
         $siteroot = new Siteroot();
-        $siteroot->setProperty('element_indexer.boost_node_ids', '123:12');
+        $siteroot->setProperty('page_indexer.boost_node_ids', '123:12');
         $identity = new DocumentDescriptor(new DocumentIdentity('abc'), $node, $siteroot, 'de');
 
         $applier = new BoostDocumentApplier();

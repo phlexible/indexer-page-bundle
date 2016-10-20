@@ -21,7 +21,7 @@ use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Element indexer.
+ * Page indexer.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

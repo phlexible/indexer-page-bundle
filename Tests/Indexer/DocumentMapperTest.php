@@ -16,7 +16,7 @@ use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
 use Phlexible\Bundle\IndexerPageBundle\Event\MapDocumentEvent;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\DocumentApplierInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
-use Phlexible\Bundle\IndexerPageBundle\IndexerElementEvents;
+use Phlexible\Bundle\IndexerPageBundle\IndexerPageEvents;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 use Prophecy\Argument;
@@ -95,7 +95,7 @@ class DocumentMapperTest extends \PHPUnit_Framework_TestCase
         $document = new PageDocument();
         $identity = new DocumentDescriptor(new DocumentIdentity('abc'), new ContentTreeNode(), new Siteroot(), 'de');
 
-        $this->dispatcher->dispatch(IndexerElementEvents::MAP_DOCUMENT, Argument::type(MapDocumentEvent::class))->shouldBeCalled();
+        $this->dispatcher->dispatch(IndexerPageEvents::MAP_DOCUMENT, Argument::type(MapDocumentEvent::class))->shouldBeCalled();
 
         $this->mapper->mapDocument($document, $identity);
     }

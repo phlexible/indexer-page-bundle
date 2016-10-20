@@ -29,8 +29,8 @@ class AddAllCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('indexer-element:add-all')
-            ->setDescription('Index all element documents.')
+            ->setName('indexer-page:add-all')
+            ->setDescription('Index all page documents.')
             ->addOption('queue', null, InputOption::VALUE_NONE, 'Queue updates instead of immediate run.')
         ;
     }
@@ -40,7 +40,7 @@ class AddAllCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $indexer = $this->getContainer()->get('phlexible_indexer_element.element_indexer');
+        $indexer = $this->getContainer()->get('phlexible_indexer_page.page_indexer');
         $storage = $indexer->getStorage();
 
         $output->writeln('Indexer: '.get_class($indexer));

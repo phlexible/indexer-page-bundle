@@ -127,7 +127,7 @@ class ContentIdentifier implements ContentIdentifierInterface
             $siteroot = $this->siterootManager->find($tree->getSiterootId());
 
             // get siteroot properties
-            $siterootDisabled = $siteroot->getProperty('element_indexer.disabled');
+            $siterootDisabled = $siteroot->getProperty('page_indexer.disabled');
 
             if ($siterootDisabled) {
                 continue;
@@ -171,7 +171,7 @@ class ContentIdentifier implements ContentIdentifierInterface
      */
     protected function createIdentity(TreeNodeInterface $node, $language)
     {
-        return new DocumentIdentity("element_{$node->getId()}_$language");
+        return new DocumentIdentity("page_{$node->getId()}_$language");
     }
 
     /**
@@ -181,7 +181,7 @@ class ContentIdentifier implements ContentIdentifierInterface
      */
     protected function matchIdentity(DocumentIdentity $identity)
     {
-        if (!preg_match('/^element_(\d+)_(\w\w)$/', $identity->getIdentifier(), $match)) {
+        if (!preg_match('/^page_(\d+)_(\w\w)$/', $identity->getIdentifier(), $match)) {
             return null;
         }
 

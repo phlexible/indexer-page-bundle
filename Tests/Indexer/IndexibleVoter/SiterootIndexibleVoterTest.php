@@ -50,7 +50,7 @@ class SiterootIndexibleVoterTest extends \PHPUnit_Framework_TestCase
         $node = new ContentTreeNode();
         $node->setId(123);
         $siteroot = new Siteroot();
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $result = $this->voter->isIndexible($descriptor);
@@ -63,8 +63,8 @@ class SiterootIndexibleVoterTest extends \PHPUnit_Framework_TestCase
         $node = new ContentTreeNode();
         $node->setId(123);
         $siteroot = new Siteroot();
-        $siteroot->setProperty('element_indexer.disabled', false);
-        $identity = new DocumentIdentity('element_74_de');
+        $siteroot->setProperty('page_indexer.disabled', false);
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $result = $this->voter->isIndexible($descriptor);
@@ -77,8 +77,8 @@ class SiterootIndexibleVoterTest extends \PHPUnit_Framework_TestCase
         $node = new ContentTreeNode();
         $node->setId(123);
         $siteroot = new Siteroot();
-        $siteroot->setProperty('element_indexer.disabled', true);
-        $identity = new DocumentIdentity('element_74_de');
+        $siteroot->setProperty('page_indexer.disabled', true);
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $this->logger->info('TreeNode 123 not indexed, siteroot is disabled')->shouldBeCalled();

@@ -15,7 +15,7 @@ use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
 use Phlexible\Bundle\IndexerPageBundle\Event\MapDocumentEvent;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\DocumentApplierInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
-use Phlexible\Bundle\IndexerPageBundle\IndexerElementEvents;
+use Phlexible\Bundle\IndexerPageBundle\IndexerPageEvents;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -83,7 +83,7 @@ class DocumentMapper implements DocumentMapperInterface
         }
 
         $event = new MapDocumentEvent($document, $descriptor);
-        $this->dispatcher->dispatch(IndexerElementEvents::MAP_DOCUMENT, $event);
+        $this->dispatcher->dispatch(IndexerPageEvents::MAP_DOCUMENT, $event);
 
         return true;
     }
