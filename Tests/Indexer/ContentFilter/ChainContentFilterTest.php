@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\Tests\Indexer\ContentFilter;
+namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\ContentFilter;
 
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\ChainContentFilter;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\ContentFilterInterface;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\ChainContentFilter;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\ContentFilterInterface;
 
 /**
  * Chain content filter test.

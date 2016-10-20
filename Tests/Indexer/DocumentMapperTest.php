@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\Indexer;
+namespace Phlexible\Bundle\IndexerPageBundle\Indexer;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Phlexible\Bundle\IndexerPagerBundle\Document\PageDocument;
-use Phlexible\Bundle\IndexerPagerBundle\Event\MapDocumentEvent;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\DocumentApplierInterface;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
-use Phlexible\Bundle\IndexerPagerBundle\IndexerElementEvents;
+use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
+use Phlexible\Bundle\IndexerPageBundle\Event\MapDocumentEvent;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\DocumentApplierInterface;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
+use Phlexible\Bundle\IndexerPageBundle\IndexerElementEvents;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 use Prophecy\Argument;

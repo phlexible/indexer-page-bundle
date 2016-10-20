@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter;
+namespace Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter;
 
 /**
  * Content filter interface.

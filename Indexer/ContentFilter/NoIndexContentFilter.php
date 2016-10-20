@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter;
+namespace Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter;
 
-use Phlexible\Bundle\IndexerPagerBundle\Exception\LogicException;
+use Phlexible\Bundle\IndexerPageBundle\Exception\LogicException;
 
 /**
  * No index content filter.

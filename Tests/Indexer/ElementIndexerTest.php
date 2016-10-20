@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\Tests\Indexer;
+namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentFactory;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerBundle\Storage\Operation\Operations;
 use Phlexible\Bundle\IndexerBundle\Storage\StorageInterface;
-use Phlexible\Bundle\IndexerPagerBundle\Document\PageDocument;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentIdentifierInterface;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentMapper;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\PageIndexer;
+use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentIdentifierInterface;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentMapper;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageIndexer;
 use Phlexible\Bundle\QueueBundle\Model\JobManagerInterface;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;

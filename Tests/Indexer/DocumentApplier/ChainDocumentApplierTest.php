@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\Tests\Indexer\DocumentApplier;
+namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\DocumentApplier;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Phlexible\Bundle\IndexerPagerBundle\Document\PageDocument;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\ChainDocumentApplier;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\DocumentApplierInterface;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\ChainDocumentApplier;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\DocumentApplierInterface;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 

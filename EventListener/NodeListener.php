@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\EventListener;
+namespace Phlexible\Bundle\IndexerPageBundle\EventListener;
 
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\PageIndexer;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageIndexer;
 use Phlexible\Bundle\TreeBundle\Event\DeleteNodeEvent;
 use Phlexible\Bundle\TreeBundle\Event\MoveNodeEvent;
 use Phlexible\Bundle\TreeBundle\Event\NodeEvent;

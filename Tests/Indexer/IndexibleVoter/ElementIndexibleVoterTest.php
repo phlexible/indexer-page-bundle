@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\Tests\Indexer\IndexibleVoter;
+namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\IndexibleVoter;
 
 use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\ElementBundle\Entity\Element;
 use Phlexible\Bundle\ElementtypeBundle\Model\Elementtype;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\IndexibleVoter\ElementIndexibleVoter;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\ElementIndexibleVoter;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 use Prophecy\Argument;

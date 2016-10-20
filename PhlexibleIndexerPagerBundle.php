@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle;
+namespace Phlexible\Bundle\IndexerPageBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Marco Fischer <mf@brainbits.net>
  */
-class PhlexibleIndexerPagerBundle extends Bundle
+class PhlexibleIndexerPageBundle extends Bundle
 {
     public function getSiterootProperties()
     {

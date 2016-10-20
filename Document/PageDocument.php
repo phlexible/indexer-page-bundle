@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\Document;
+namespace Phlexible\Bundle\IndexerPageBundle\Document;
 
 use Phlexible\Bundle\IndexerBundle\Document\Document;
 

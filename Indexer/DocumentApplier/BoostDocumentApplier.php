@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier;
+namespace Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
 
 /**
  * Boost document applier.

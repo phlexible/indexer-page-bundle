@@ -1,6 +1,6 @@
 services:
     phlexible_indexer_page.element_indexer:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\ElementIndexer
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\ElementIndexer
         arguments:
             - "@phlexible_indexer.document_factory"
             - "@phlexible_indexer_page.storage"
@@ -13,7 +13,7 @@ services:
             - {name: monolog.logger, channel: indexer}
 
     phlexible_indexer_page.document_mapper:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentMapper
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentMapper
         public: false
         arguments:
             - "@phlexible_indexer_page.indexible_voter"
@@ -24,7 +24,7 @@ services:
             - {name: monolog.logger, channel: indexer}
 
     phlexible_indexer_page.content_identifier:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentIdentifier
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\ContentIdentifier
         public: false
         arguments:
             - "@phlexible_siteroot.siteroot_manager"
@@ -35,7 +35,7 @@ services:
             - {name: monolog.logger, channel: indexer}
 
     phlexible_indexer_page.content_renderer:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentRenderer\ContentRenderer
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\ContentRenderer\ContentRenderer
         public: false
         arguments:
             - "@service_container"
@@ -48,12 +48,12 @@ services:
             - {name: monolog.logger, channel: indexer}
 
     phlexible_indexer_page.content_title_extractor:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentTitleExtractor\ContentTitleExtractor
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\ContentTitleExtractor\ContentTitleExtractor
         public: false
 
     # event listeners
     phlexible_indexer_page.listener.node:
-        class: Phlexible\Bundle\IndexerPagerBundle\EventListener\NodeListener
+        class: Phlexible\Bundle\IndexerPageBundle\EventListener\NodeListener
         arguments:
             - "@phlexible_indexer_page.element_indexer"
             - "%phlexible_cms.languages.available%"

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\Tests\Indexer\ContentFilter;
+namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\ContentFilter;
 
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\NoIndexContentFilter;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\NoIndexContentFilter;
 
 /**
  * No index content filter test.

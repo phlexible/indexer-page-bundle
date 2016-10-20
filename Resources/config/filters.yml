@@ -1,6 +1,6 @@
 services:
     phlexible_indexer_page.content_filter:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\ChainContentFilter
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\ChainContentFilter
         public: false
         arguments:
             -
@@ -8,9 +8,9 @@ services:
                 - "@phlexible_indexer_page.html_content_filter"
 
     phlexible_indexer_page.no_index_content_filter:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\NoIndexContentFilter
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\NoIndexContentFilter
         public: false
 
     phlexible_indexer_page.html_content_filter:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\HtmlContentFilter
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\HtmlContentFilter
         public: false

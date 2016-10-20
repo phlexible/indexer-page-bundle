@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle;
+namespace Phlexible\Bundle\IndexerPageBundle;
 
 /**
  * Elements indexer events.

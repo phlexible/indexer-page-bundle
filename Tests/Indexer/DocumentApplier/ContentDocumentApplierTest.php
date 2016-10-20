@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\Tests\Indexer\DocumentApplier;
+namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\DocumentApplier;
 
 use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\ElementBundle\Entity\Element;
 use Phlexible\Bundle\ElementBundle\Entity\ElementVersion;
 use Phlexible\Bundle\ElementtypeBundle\Model\Elementtype;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Phlexible\Bundle\IndexerPagerBundle\Document\PageDocument;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\NoIndexContentFilter;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentRenderer\ContentRendererInterface;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentTitleExtractor\ContentTitleExtractorInterface;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\ContentDocumentApplier;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\NoIndexContentFilter;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentRenderer\ContentRendererInterface;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentTitleExtractor\ContentTitleExtractorInterface;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\ContentDocumentApplier;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 use Phlexible\Bundle\TreeBundle\ContentTree\DelegatingContentTree;

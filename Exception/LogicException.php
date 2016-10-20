@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\Exception;
+namespace Phlexible\Bundle\IndexerPageBundle\Exception;
 
 /**
  * Logic exception.

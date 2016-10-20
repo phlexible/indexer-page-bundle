@@ -1,6 +1,6 @@
 services:
     phlexible_indexer_page.document_applier:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\ChainDocumentApplier
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\ChainDocumentApplier
         public: false
         arguments:
             -
@@ -9,11 +9,11 @@ services:
                 - "@phlexible_indexer_page.content_document_applier"
 
     phlexible_indexer_page.boost_document_applier:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\BoostDocumentApplier
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\BoostDocumentApplier
         public: false
 
     phlexible_indexer_page.content_document_applier:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\ContentDocumentApplier
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\ContentDocumentApplier
         public: false
         arguments:
             - "@phlexible_element.element_service"
@@ -26,7 +26,7 @@ services:
             - {name: monolog.logger, channel: indexer}
 
     phlexible_indexer_page.meta_document_applier:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\MetaDocumentApplier
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\MetaDocumentApplier
         public: false
         arguments:
             - "@phlexible_element.element_service"

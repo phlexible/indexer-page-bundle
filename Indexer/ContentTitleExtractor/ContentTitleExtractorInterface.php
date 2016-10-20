@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentTitleExtractor;
+namespace Phlexible\Bundle\IndexerPageBundle\Indexer\ContentTitleExtractor;
 
 /**
  * Content title extractor interface.

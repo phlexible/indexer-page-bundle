@@ -1,6 +1,6 @@
 services:
     phlexible_indexer_page.element_indexible_voter:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\IndexibleVoter\ElementIndexibleVoter
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\ElementIndexibleVoter
         public: false
         arguments:
             - "@phlexible_element.element_service"
@@ -9,7 +9,7 @@ services:
             - {name: monolog.logger, channel: indexer}
 
     phlexible_indexer_page.node_indexible_voter:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\IndexibleVoter\NodeIndexibleVoter
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\NodeIndexibleVoter
         public: false
         arguments:
             - "@logger"
@@ -17,7 +17,7 @@ services:
             - {name: monolog.logger, channel: indexer}
 
     phlexible_indexer_page.siteroot_indexible_voter:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\IndexibleVoter\SiterootIndexibleVoter
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\SiterootIndexibleVoter
         public: false
         arguments:
             - "@logger"
@@ -25,7 +25,7 @@ services:
             - {name: monolog.logger, channel: indexer}
 
     phlexible_indexer_page.indexible_voter:
-        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\IndexibleVoter\ChainIndexibleVoter
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\ChainIndexibleVoter
         public: false
         arguments:
             -

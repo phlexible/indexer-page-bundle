@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\Command;
+namespace Phlexible\Bundle\IndexerPageBundle\Command;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

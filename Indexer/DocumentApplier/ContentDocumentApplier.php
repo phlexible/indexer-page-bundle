@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier;
+namespace Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier;
 
 use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\ContentFilterInterface;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentRenderer\ContentRendererInterface;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentTitleExtractor\ContentTitleExtractorInterface;
-use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\ContentFilterInterface;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentRenderer\ContentRendererInterface;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentTitleExtractor\ContentTitleExtractorInterface;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
