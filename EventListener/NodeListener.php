@@ -1,14 +1,17 @@
 <?php
-/**
- * phlexible
+
+/*
+ * This file is part of the phlexible indexer page package.
  *
- * @copyright 2007-2013 brainbits GmbH (http://www.brainbits.net)
- * @license   proprietary
+ * (c) Stephan Wentz <sw@brainbits.net>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerElementBundle\EventListener;
+namespace Phlexible\Bundle\IndexerPagerBundle\EventListener;
 
-use Phlexible\Bundle\IndexerElementBundle\Indexer\ElementIndexer;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\PageIndexer;
 use Phlexible\Bundle\TreeBundle\Event\DeleteNodeEvent;
 use Phlexible\Bundle\TreeBundle\Event\MoveNodeEvent;
 use Phlexible\Bundle\TreeBundle\Event\NodeEvent;
@@ -25,7 +28,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class NodeListener implements EventSubscriberInterface
 {
     /**
-     * @var ElementIndexer
+     * @var PageIndexer
      */
     private $indexer;
 
@@ -35,10 +38,10 @@ class NodeListener implements EventSubscriberInterface
     private $languages;
 
     /**
-     * @param ElementIndexer $indexer
-     * @param string         $languages
+     * @param PageIndexer $indexer
+     * @param string      $languages
      */
-    public function __construct(ElementIndexer $indexer, $languages)
+    public function __construct(PageIndexer $indexer, $languages)
     {
         $this->indexer = $indexer;
         $this->languages = explode(',', $languages);

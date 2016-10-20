@@ -17,11 +17,11 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Element indexer extension
+ * Page indexer extension
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class PhlexibleIndexerElementExtension extends Extension
+class PhlexibleIndexerPageExtension extends Extension
 {
     /**
      * {@inheritdoc}

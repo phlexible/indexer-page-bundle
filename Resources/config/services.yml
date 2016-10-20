@@ -1,41 +1,41 @@
 services:
-    phlexible_indexer_element.element_indexer:
-        class: Phlexible\Bundle\IndexerElementBundle\Indexer\ElementIndexer
+    phlexible_indexer_page.element_indexer:
+        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\ElementIndexer
         arguments:
             - "@phlexible_indexer.document_factory"
-            - "@phlexible_indexer_element.storage"
-            - "@phlexible_indexer_element.document_mapper"
-            - "@phlexible_indexer_element.content_identifier"
+            - "@phlexible_indexer_page.storage"
+            - "@phlexible_indexer_page.document_mapper"
+            - "@phlexible_indexer_page.content_identifier"
             - "@phlexible_queue.job_manager"
             - "@logger"
         tags:
             - {name: phlexible_indexer.indexer}
             - {name: monolog.logger, channel: indexer}
 
-    phlexible_indexer_element.document_mapper:
-        class: Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentMapper
+    phlexible_indexer_page.document_mapper:
+        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentMapper
         public: false
         arguments:
-            - "@phlexible_indexer_element.indexible_voter"
-            - "@phlexible_indexer_element.document_applier"
+            - "@phlexible_indexer_page.indexible_voter"
+            - "@phlexible_indexer_page.document_applier"
             - "@event_dispatcher"
             - "@logger"
         tags:
             - {name: monolog.logger, channel: indexer}
 
-    phlexible_indexer_element.content_identifier:
-        class: Phlexible\Bundle\IndexerElementBundle\Indexer\ContentIdentifier
+    phlexible_indexer_page.content_identifier:
+        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentIdentifier
         public: false
         arguments:
             - "@phlexible_siteroot.siteroot_manager"
             - "@phlexible_tree.content_tree_manager"
             - "@phlexible_element.element_service"
-            - "@phlexible_indexer_element.indexible_voter"
+            - "@phlexible_indexer_page.indexible_voter"
         tags:
             - {name: monolog.logger, channel: indexer}
 
-    phlexible_indexer_element.content_renderer:
-        class: Phlexible\Bundle\IndexerElementBundle\Indexer\ContentRenderer\ContentRenderer
+    phlexible_indexer_page.content_renderer:
+        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentRenderer\ContentRenderer
         public: false
         arguments:
             - "@service_container"
@@ -47,15 +47,15 @@ services:
         tags:
             - {name: monolog.logger, channel: indexer}
 
-    phlexible_indexer_element.content_title_extractor:
-        class: Phlexible\Bundle\IndexerElementBundle\Indexer\ContentTitleExtractor\ContentTitleExtractor
+    phlexible_indexer_page.content_title_extractor:
+        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentTitleExtractor\ContentTitleExtractor
         public: false
 
     # event listeners
-    phlexible_indexer_element.listener.node:
-        class: Phlexible\Bundle\IndexerElementBundle\EventListener\NodeListener
+    phlexible_indexer_page.listener.node:
+        class: Phlexible\Bundle\IndexerPagerBundle\EventListener\NodeListener
         arguments:
-            - "@phlexible_indexer_element.element_indexer"
+            - "@phlexible_indexer_page.element_indexer"
             - "%phlexible_cms.languages.available%"
         tags:
             - {name: kernel.event_subscriber}

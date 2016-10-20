@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the phlexible indexer element package.
+ * This file is part of the phlexible indexer page package.
  *
  * (c) Stephan Wentz <sw@brainbits.net>
  *
@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerElementBundle\Indexer;
+namespace Phlexible\Bundle\IndexerPagerBundle\Indexer;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentFactory;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerBundle\Indexer\IndexerInterface;
 use Phlexible\Bundle\IndexerBundle\Storage\StorageInterface;
-use Phlexible\Bundle\IndexerElementBundle\Document\ElementDocument;
+use Phlexible\Bundle\IndexerPagerBundle\Document\PageDocument;
 use Phlexible\Bundle\QueueBundle\Model\JobManagerInterface;
 use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 use Psr\Log\LoggerInterface;
@@ -25,7 +25,7 @@ use Psr\Log\LoggerInterface;
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class ElementIndexer implements IndexerInterface
+class PageIndexer implements IndexerInterface
 {
     /**
      * @var DocumentFactory
@@ -78,7 +78,7 @@ class ElementIndexer implements IndexerInterface
         ContentIdentifierInterface $identifier,
         JobManagerInterface $jobManager,
         LoggerInterface $logger,
-        $documentClass = ElementDocument::class
+        $documentClass = PageDocument::class
     ) {
         $this->documentFactory = $documentFactory;
         $this->storage = $storage;
@@ -94,7 +94,7 @@ class ElementIndexer implements IndexerInterface
      */
     public function getType()
     {
-        return 'element';
+        return 'page';
     }
 
     /**

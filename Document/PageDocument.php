@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the phlexible indexer element package.
+ * This file is part of the phlexible indexer page package.
  *
  * (c) Stephan Wentz <sw@brainbits.net>
  *
@@ -19,7 +19,7 @@ use Phlexible\Bundle\IndexerBundle\Document\Document;
  * @author Stephan Wentz <sw@brainbits.net>
  * @author Phillip Look <pl@brainbits.net>
  */
-class ElementDocument extends Document
+class PageDocument extends Document
 {
     /**
      * Constructor.
@@ -51,6 +51,6 @@ class ElementDocument extends Document
      */
     public function getName()
     {
-        return 'element';
+        return 'page';
     }
 }

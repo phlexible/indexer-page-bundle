@@ -1,16 +1,25 @@
 <?php
 
-namespace Phlexible\Bundle\IndexerElementBundle\Tests\Indexer;
+/*
+ * This file is part of the phlexible indexer page package.
+ *
+ * (c) Stephan Wentz <sw@brainbits.net>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Phlexible\Bundle\IndexerPagerBundle\Tests\Indexer;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentFactory;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerBundle\Storage\Operation\Operations;
 use Phlexible\Bundle\IndexerBundle\Storage\StorageInterface;
-use Phlexible\Bundle\IndexerElementBundle\Document\ElementDocument;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\ContentIdentifierInterface;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentDescriptor;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentMapper;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\ElementIndexer;
+use Phlexible\Bundle\IndexerPagerBundle\Document\PageDocument;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentIdentifierInterface;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentMapper;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\PageIndexer;
 use Phlexible\Bundle\QueueBundle\Model\JobManagerInterface;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
@@ -18,6 +27,11 @@ use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Element indexer test
+ *
+ * @author Stephan Wentz <sw@brainbits.net>
+ */
 class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -26,12 +40,12 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
     private $documentFactory;
 
     /**
-     * @var ElementDocument
+     * @var PageDocument
      */
     private $document;
 
     /**
-     * @var ElementIndexer
+     * @var PageIndexer
      */
     private $indexer;
 
@@ -62,10 +76,10 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->document = new ElementDocument();
+        $this->document = new PageDocument();
         $this->document->setIdentity(new DocumentIdentity('A'));
         $this->documentFactory = $this->prophesize(DocumentFactory::class);
-        $this->documentFactory->factory('Phlexible\Bundle\IndexerElementBundle\Document\ElementDocument')->willReturn($this->document);
+        $this->documentFactory->factory(PageDocument::class)->willReturn($this->document);
         $this->storage = $this->prophesize(StorageInterface::class);
         $this->mapper = $this->prophesize(DocumentMapper::class);
         $this->identifier = $this->prophesize(ContentIdentifierInterface::class);
@@ -74,7 +88,7 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 
         $this->storage->createOperations()->willReturn(new Operations());
 
-        $this->indexer = new ElementIndexer(
+        $this->indexer = new PageIndexer(
             $this->documentFactory->reveal(),
             $this->storage->reveal(),
             $this->mapper->reveal(),
@@ -86,7 +100,7 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 
     public function testSupportedIdentifier()
     {
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
 
         $this->identifier->validateIdentity($identity)->willReturn(true);
 
@@ -104,7 +118,7 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 
     public function testAdd()
     {
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, new ContentTreeNode(), new Siteroot(), 'de');
 
         $this->identifier->createDescriptorFromIdentity($identity)->willReturn($descriptor);
@@ -118,7 +132,7 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 
     public function testAddWithQueue()
     {
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
 
         $this->storage->execute(Argument::cetera())->shouldNotBeCalled();
         $this->storage->queue(Argument::cetera())->shouldBeCalled();
@@ -128,7 +142,7 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 
     public function testAddWithoutDocument()
     {
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
 
         $this->identifier->createDescriptorFromIdentity($identity)->willReturn(null);
         $this->storage->execute(Argument::cetera())->shouldNotBeCalled();
@@ -138,7 +152,7 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, new ContentTreeNode(), new Siteroot(), 'de');
 
         $this->identifier->createDescriptorFromIdentity($identity)->willReturn($descriptor);
@@ -152,7 +166,7 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateWithQueue()
     {
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
 
         $this->storage->execute(Argument::cetera())->shouldNotBeCalled();
         $this->storage->queue(Argument::cetera())->shouldBeCalled();
@@ -162,7 +176,7 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateWithoutDocument()
     {
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
 
         $this->identifier->createDescriptorFromIdentity($identity)->willReturn(null);
         $this->storage->execute(Argument::cetera())->shouldNotBeCalled();
@@ -172,7 +186,7 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 
     public function testDelete()
     {
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
         $descriptor = new DocumentDescriptor($identity, new ContentTreeNode(), new Siteroot(), 'de');
 
         $this->identifier->createDescriptorFromIdentity($identity)->willReturn($descriptor);
@@ -186,7 +200,7 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteWithQueue()
     {
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
 
         $this->storage->execute(Argument::cetera())->shouldNotBeCalled();
         $this->storage->queue(Argument::cetera())->shouldBeCalled();
@@ -196,7 +210,7 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteWithoutDocument()
     {
-        $identity = new DocumentIdentity('element_74_de');
+        $identity = new DocumentIdentity('page_74_de');
 
         $this->identifier->createDescriptorFromIdentity($identity)->willReturn(null);
         $this->storage->execute(Argument::cetera())->shouldNotBeCalled();
@@ -206,11 +220,11 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 
     public function testIndexAll()
     {
-        $descriptor1 = new DocumentDescriptor(new DocumentIdentity('treenode_1_de'), new ContentTreeNode(), new Siteroot(), 'de');
-        $descriptor2 = new DocumentDescriptor(new DocumentIdentity('treenode_2_en'), new ContentTreeNode(), new Siteroot(), 'en');
+        $descriptor1 = new DocumentDescriptor(new DocumentIdentity('page_1_de'), new ContentTreeNode(), new Siteroot(), 'de');
+        $descriptor2 = new DocumentDescriptor(new DocumentIdentity('page_2_en'), new ContentTreeNode(), new Siteroot(), 'en');
         $this->identifier->findAllDescriptors()->willReturn(array($descriptor1, $descriptor2));
-        $this->mapper->mapDocument(Argument::type(ElementDocument::class), $descriptor1)->shouldBeCalled()->willReturn(true);
-        $this->mapper->mapDocument(Argument::type(ElementDocument::class), $descriptor2)->shouldBeCalled()->willReturn(true);
+        $this->mapper->mapDocument(Argument::type(PageDocument::class), $descriptor1)->shouldBeCalled()->willReturn(true);
+        $this->mapper->mapDocument(Argument::type(PageDocument::class), $descriptor2)->shouldBeCalled()->willReturn(true);
 
         $this->storage->execute(Argument::cetera())->shouldBeCalled();
         $this->storage->queue(Argument::cetera())->shouldNotBeCalled();
@@ -220,8 +234,8 @@ class ElementIndexerTest extends \PHPUnit_Framework_TestCase
 
     public function testIndexAllWithQueue()
     {
-        $descriptor1 = new DocumentDescriptor(new DocumentIdentity('treenode_1_de'), new ContentTreeNode(), new Siteroot(), 'de');
-        $descriptor2 = new DocumentDescriptor(new DocumentIdentity('treenode_2_en'), new ContentTreeNode(), new Siteroot(), 'en');
+        $descriptor1 = new DocumentDescriptor(new DocumentIdentity('page_1_de'), new ContentTreeNode(), new Siteroot(), 'de');
+        $descriptor2 = new DocumentDescriptor(new DocumentIdentity('page_2_en'), new ContentTreeNode(), new Siteroot(), 'en');
         $this->identifier->findAllDescriptors()->willReturn(array($descriptor1, $descriptor2));
         $this->mapper->mapDocument(Argument::cetera())->shouldNotBeCalled();
         $this->storage->execute(Argument::cetera())->shouldNotBeCalled();

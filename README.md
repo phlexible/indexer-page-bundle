@@ -1,5 +1,5 @@
-PhlexibleIndexerElementBundle
-=============================
+PhlexibleIndexerPageBundle
+==========================
 
 This bundle provides automatic indexing of the html output of nodes.
 Requires the PhlexibleIndexerBundle infrastructure.
@@ -8,16 +8,16 @@ Requires the PhlexibleIndexerBundle infrastructure.
 Installation
 ------------
 
-1. Download PhlexibleIndexerElementBundle using composer
+1. Download PhlexibleIndexerPageBundle using composer
 2. Enable the Bundle
 3. Clear the symfony cache
 
-### Step 1: Download PhlexibleIndexerElementBundle using composer
+### Step 1: Download PhlexibleIndexerPageBundle using composer
 
-Add PhlexibleIndexerBundle by running the command:
+Add PhlexibleIndexerPageBundle by running the command:
 
 ``` bash
-$ php composer.phar require phlexible/indexer-element-bundle "~1.0.0"
+$ php composer.phar require phlexible/indexer-page-bundle "~1.0.0"
 ```
 
 Composer will install the bundle to your project's `vendor/phlexible` directory.
@@ -34,7 +34,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Phlexible\Bundle\IndexerElementBundle\PhlexibleIndexerElementBundle(),
+        new Phlexible\Bundle\IndexerPageBundle\PhlexibleIndexerPageBundle(),
     );
 }
 ```

@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\IndexerPagerBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Element indexer bundle
+ * Page indexer bundle
  *
  * @author Marco Fischer <mf@brainbits.net>
  */

@@ -1,18 +1,21 @@
 <?php
-/**
- * phlexible
+
+/*
+ * This file is part of the phlexible indexer page package.
  *
- * @copyright 2007-2013 brainbits GmbH (http://www.brainbits.net)
- * @license   proprietary
+ * (c) Stephan Wentz <sw@brainbits.net>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerElementBundle\Tests\Indexer;
+namespace Phlexible\Bundle\IndexerPagerBundle\Tests\Indexer;
 
 use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\ContentIdentifier;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentDescriptor;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentIdentifier;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\SiterootBundle\Model\SiterootManagerInterface;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeManagerInterface;
@@ -69,9 +72,9 @@ class ContentIdentifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateInvalidIdentifierReturnsFalse()
     {
-        $this->assertFalse($this->identifier->validateIdentity(new DocumentIdentity('xelement_123_de')));
-        $this->assertFalse($this->identifier->validateIdentity(new DocumentIdentity('element_1x23_de')));
-        $this->assertFalse($this->identifier->validateIdentity(new DocumentIdentity('element_123_d1e')));
+        $this->assertFalse($this->identifier->validateIdentity(new DocumentIdentity('invalid_123_de')));
+        $this->assertFalse($this->identifier->validateIdentity(new DocumentIdentity('page_1x23_de')));
+        $this->assertFalse($this->identifier->validateIdentity(new DocumentIdentity('page_123_d1e')));
     }
 
     /**

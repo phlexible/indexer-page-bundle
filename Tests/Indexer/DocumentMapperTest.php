@@ -1,29 +1,30 @@
 <?php
-/**
- * phlexible
+
+/*
+ * This file is part of the phlexible indexer page package.
  *
- * @copyright 2007-2013 brainbits GmbH (http://www.brainbits.net)
- * @license   proprietary
+ * (c) Stephan Wentz <sw@brainbits.net>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerElementBundle\Indexer;
+namespace Phlexible\Bundle\IndexerPagerBundle\Indexer;
 
-use Phlexible\Bundle\IndexerBundle\Document\DocumentFactory;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Phlexible\Bundle\IndexerElementBundle\Document\ElementDocument;
-use Phlexible\Bundle\IndexerElementBundle\Event\MapDocumentEvent;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentApplier\DocumentApplierInterface;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
-use Phlexible\Bundle\IndexerElementBundle\IndexerElementEvents;
+use Phlexible\Bundle\IndexerPagerBundle\Document\PageDocument;
+use Phlexible\Bundle\IndexerPagerBundle\Event\MapDocumentEvent;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\DocumentApplierInterface;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
+use Phlexible\Bundle\IndexerPagerBundle\IndexerElementEvents;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
- * Document mapper
+ * Document mapper test
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
@@ -71,7 +72,7 @@ class DocumentMapperTest extends \PHPUnit_Framework_TestCase
 
     public function testMapIdentityReturnsNullOnDeniedVoter()
     {
-        $document = new ElementDocument();
+        $document = new PageDocument();
         $identity = new DocumentDescriptor(new DocumentIdentity('abc'), new ContentTreeNode(), new Siteroot(), 'de');
 
         $this->voter->isIndexible($identity)->willReturn(IndexibleVoterInterface::VOTE_DENY);
@@ -81,17 +82,17 @@ class DocumentMapperTest extends \PHPUnit_Framework_TestCase
 
     public function testMapIdentityReturnsDocument()
     {
-        $document = new ElementDocument();
+        $document = new PageDocument();
         $identity = new DocumentDescriptor(new DocumentIdentity('abc'), new ContentTreeNode(), new Siteroot(), 'de');
 
         $this->mapper->mapDocument($document, $identity);
 
-        $this->assertInstanceOf(ElementDocument::class, $document);
+        $this->assertInstanceOf(PageDocument::class, $document);
     }
 
     public function testMapIdentityDispatchesMapDocumentEvent()
     {
-        $document = new ElementDocument();
+        $document = new PageDocument();
         $identity = new DocumentDescriptor(new DocumentIdentity('abc'), new ContentTreeNode(), new Siteroot(), 'de');
 
         $this->dispatcher->dispatch(IndexerElementEvents::MAP_DOCUMENT, Argument::type(MapDocumentEvent::class))->shouldBeCalled();

@@ -1,17 +1,20 @@
 <?php
-/**
- * phlexible
+
+/*
+ * This file is part of the phlexible indexer page package.
  *
- * @copyright 2007-2013 brainbits GmbH (http://www.brainbits.net)
- * @license   proprietary
+ * (c) Stephan Wentz <sw@brainbits.net>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerElementBundle\Tests\Indexer\IndexibleVoter;
+namespace Phlexible\Bundle\IndexerPagerBundle\Tests\Indexer\IndexibleVoter;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentDescriptor;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\IndexibleVoter\ChainIndexibleVoter;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\IndexibleVoter\ChainIndexibleVoter;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 

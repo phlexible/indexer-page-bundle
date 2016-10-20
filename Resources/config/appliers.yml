@@ -1,32 +1,32 @@
 services:
-    phlexible_indexer_element.document_applier:
-        class: Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentApplier\ChainDocumentApplier
+    phlexible_indexer_page.document_applier:
+        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\ChainDocumentApplier
         public: false
         arguments:
             -
-                - "@phlexible_indexer_element.boost_document_applier"
-                - "@phlexible_indexer_element.meta_document_applier"
-                - "@phlexible_indexer_element.content_document_applier"
+                - "@phlexible_indexer_page.boost_document_applier"
+                - "@phlexible_indexer_page.meta_document_applier"
+                - "@phlexible_indexer_page.content_document_applier"
 
-    phlexible_indexer_element.boost_document_applier:
-        class: Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentApplier\BoostDocumentApplier
+    phlexible_indexer_page.boost_document_applier:
+        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\BoostDocumentApplier
         public: false
 
-    phlexible_indexer_element.content_document_applier:
-        class: Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentApplier\ContentDocumentApplier
+    phlexible_indexer_page.content_document_applier:
+        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\ContentDocumentApplier
         public: false
         arguments:
             - "@phlexible_element.element_service"
-            - "@phlexible_indexer_element.content_filter"
-            - "@phlexible_indexer_element.content_title_extractor"
-            - "@phlexible_indexer_element.content_renderer"
+            - "@phlexible_indexer_page.content_filter"
+            - "@phlexible_indexer_page.content_title_extractor"
+            - "@phlexible_indexer_page.content_renderer"
             - "@event_dispatcher"
             - "@logger"
         tags:
             - {name: monolog.logger, channel: indexer}
 
-    phlexible_indexer_element.meta_document_applier:
-        class: Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentApplier\MetaDocumentApplier
+    phlexible_indexer_page.meta_document_applier:
+        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\MetaDocumentApplier
         public: false
         arguments:
             - "@phlexible_element.element_service"

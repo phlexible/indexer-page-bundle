@@ -1,16 +1,16 @@
 services:
-    phlexible_indexer_element.content_filter:
-        class: Phlexible\Bundle\IndexerElementBundle\Indexer\ContentFilter\ChainContentFilter
+    phlexible_indexer_page.content_filter:
+        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\ChainContentFilter
         public: false
         arguments:
             -
-                - "@phlexible_indexer_element.no_index_content_filter"
-                - "@phlexible_indexer_element.html_content_filter"
+                - "@phlexible_indexer_page.no_index_content_filter"
+                - "@phlexible_indexer_page.html_content_filter"
 
-    phlexible_indexer_element.no_index_content_filter:
-        class: Phlexible\Bundle\IndexerElementBundle\Indexer\ContentFilter\NoIndexContentFilter
+    phlexible_indexer_page.no_index_content_filter:
+        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\NoIndexContentFilter
         public: false
 
-    phlexible_indexer_element.html_content_filter:
-        class: Phlexible\Bundle\IndexerElementBundle\Indexer\ContentFilter\HtmlContentFilter
+    phlexible_indexer_page.html_content_filter:
+        class: Phlexible\Bundle\IndexerPagerBundle\Indexer\ContentFilter\HtmlContentFilter
         public: false

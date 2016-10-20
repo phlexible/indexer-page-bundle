@@ -1,18 +1,21 @@
 <?php
-/**
- * phlexible
+
+/*
+ * This file is part of the phlexible indexer page package.
  *
- * @copyright 2007-2013 brainbits GmbH (http://www.brainbits.net)
- * @license   proprietary
+ * (c) Stephan Wentz <sw@brainbits.net>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerElementBundle\Tests\Indexer\DocumentApplier;
+namespace Phlexible\Bundle\IndexerPagerBundle\Tests\Indexer\DocumentApplier;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Phlexible\Bundle\IndexerElementBundle\Document\ElementDocument;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentDescriptor;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentApplier\ChainDocumentApplier;
-use Phlexible\Bundle\IndexerElementBundle\Indexer\DocumentApplier\DocumentApplierInterface;
+use Phlexible\Bundle\IndexerPagerBundle\Document\PageDocument;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\ChainDocumentApplier;
+use Phlexible\Bundle\IndexerPagerBundle\Indexer\DocumentApplier\DocumentApplierInterface;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 
@@ -25,7 +28,7 @@ class ChainDocumentApplierTest extends \PHPUnit_Framework_TestCase
 {
     public function testApplierChain()
     {
-        $document = new ElementDocument();
+        $document = new PageDocument();
         $identity = new DocumentDescriptor(new DocumentIdentity('abc'), new ContentTreeNode(), new Siteroot(), 'de');
 
         $applier1 = $this->prophesize(DocumentApplierInterface::class);
