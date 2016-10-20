@@ -7,12 +7,15 @@
          syntaxCheck="true"
          verbose="true">
     <testsuites>
-        <testsuite name="indexer-element-bundle">
+        <testsuite name="indexer-page-bundle">
             <directory>Tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
+        <whitelist>
+            <directory suffix=".php">.</directory>
+        </whitelist>
         <blacklist>
             <directory suffix=".php">Tests</directory>
             <directory suffix=".php">vendor</directory>
