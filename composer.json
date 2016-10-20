@@ -16,7 +16,7 @@
         "phlexible/queue-bundle": "~1.2",
         "phlexible/siteroot-bundle": "~1.2",
         "phlexible/tree-bundle": "~1.2",
-        "psr/log": "^1.2",
+        "psr/log": "^1.0",
         "symfony/dom-crawler": "^2.8"
     },
     "require-dev": {
