@@ -1,6 +1,6 @@
 services:
     phlexible_indexer_page.page_indexer:
-        class: Phlexible\Bundle\IndexerPageBundle\Indexer\ElementIndexer
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\PageIndexer
         arguments:
             - "@phlexible_indexer.document_factory"
             - "@phlexible_indexer_page.storage"
