@@ -1,6 +1,6 @@
 {
     "name": "phlexible/indexer-page-bundle",
-    "description": "phlexible.cms indexer page bundle",
+    "description": "phlexible indexer page bundle",
     "license": "MIT",
     "type": "symfony-bundle",
     "keywords": ["indexer", "search", "content"],
@@ -31,7 +31,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.2-dev"
+            "dev-master": "1.1-dev"
         }
     },
     "minimum-stability": "dev",
