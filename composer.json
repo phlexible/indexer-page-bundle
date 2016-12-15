@@ -26,6 +26,9 @@
     "suggest": {
         "phlexible/frontend-search-bundle": "Default frontend search for elements"
     },
+    "replace": {
+        "phlexible/indexer-element-bundle": "*"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.2-dev"
