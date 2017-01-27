@@ -11,6 +11,8 @@
 
 namespace Phlexible\Bundle\IndexerPageBundle;
 
+use Phlexible\Bundle\IndexerPageBundle\DependencyInjection\Compiler\AddParametersGeneratorPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -20,17 +22,10 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PhlexibleIndexerPageBundle extends Bundle
 {
-    public function getSiterootProperties()
+    public function build(ContainerBuilder $container)
     {
-        // @TODO: implement skip/boost for unique IDs
+        parent::build($container);
 
-        return array(
-            'indexer.page.enabled',
-            'indexer.page.skip.restricted',
-            'indexer.page.skip.elementtypeids',
-            'indexer.page.skip.tids',
-            'indexer.page.boost.elementtypeids',
-            'indexer.page.boost.tids',
-        );
+        $container->addCompilerPass(new AddParametersGeneratorPass());
     }
 }

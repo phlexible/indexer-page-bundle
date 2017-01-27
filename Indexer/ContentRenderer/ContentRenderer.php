@@ -14,6 +14,7 @@ namespace Phlexible\Bundle\IndexerPageBundle\Indexer\ContentRenderer;
 use Phlexible\Bundle\ElementRendererBundle\Configurator\Configuration;
 use Phlexible\Bundle\ElementRendererBundle\Configurator\ConfiguratorInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\BUndle\IndexerPageBundle\Indexer\ParametersGenerator\IndexerParametersGeneratorInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,12 +60,18 @@ class ContentRenderer implements ContentRendererInterface
     private $logger;
 
     /**
-     * @param ContainerInterface    $container
-     * @param RequestContext        $requestContext
-     * @param RequestStack          $requestStack
-     * @param ConfiguratorInterface $configurator
-     * @param EngineInterface       $templating
-     * @param LoggerInterface       $logger
+     * @var IndexerParametersGeneratorInterface
+     */
+    private $indexerParametersGenerator;
+
+    /**
+     * @param ContainerInterface                  $container
+     * @param RequestContext                      $requestContext
+     * @param RequestStack                        $requestStack
+     * @param ConfiguratorInterface               $configurator
+     * @param EngineInterface                     $templating
+     * @param LoggerInterface                     $logger
+     * @param IndexerParametersGeneratorInterface $indexerParametersGenerator
      */
     public function __construct(
         ContainerInterface $container,
@@ -72,14 +79,16 @@ class ContentRenderer implements ContentRendererInterface
         RequestStack $requestStack,
         ConfiguratorInterface $configurator,
         EngineInterface $templating,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        IndexerParametersGeneratorInterface $indexerParametersGenerator
     ) {
-        $this->container = $container;
-        $this->requestContext = $requestContext;
-        $this->requestStack = $requestStack;
-        $this->configurator = $configurator;
-        $this->templating = $templating;
-        $this->logger = $logger;
+        $this->container                  = $container;
+        $this->requestContext             = $requestContext;
+        $this->requestStack               = $requestStack;
+        $this->configurator               = $configurator;
+        $this->templating                 = $templating;
+        $this->logger                     = $logger;
+        $this->indexerParametersGenerator = $indexerParametersGenerator;
     }
 
     /**
@@ -87,23 +96,23 @@ class ContentRenderer implements ContentRendererInterface
      */
     public function render(DocumentDescriptor $descriptor)
     {
-        $node = $descriptor->getNode();
-        $siteroot = $descriptor->getSiteroot();
-        $language = $descriptor->getLanguage();
-        $parameters = $this->createParameters($descriptor);
+        $node       = $descriptor->getNode();
+        $siteroot   = $descriptor->getSiteroot();
+        $language   = $descriptor->getLanguage();
+        $parameters = $this->indexerParametersGenerator->createParameters($descriptor);
 
         try {
             ob_start();
 
             $request = new Request(
-                array(),
-                array(),
-                array(),
-                array(),
-                array(),
-                array(
+                [],
+                [],
+                [],
+                [],
+                [],
+                [
                     'SERVER_NAME' => $siteroot->getDefaultUrl()->getHostname(),
-                )
+                ]
             );
             $this->requestStack->push($request);
 
@@ -124,7 +133,7 @@ class ContentRenderer implements ContentRendererInterface
             try {
                 /* @var $configuration Configuration */
                 $configuration = $this->configurator->configure($request, null);
-                $data = $configuration->getVariables();
+                $data          = $configuration->getVariables();
 
                 $content = $this->templating->render($data['template'], (array) $data);
             } catch (\Exception $e) {
@@ -152,15 +161,5 @@ class ContentRenderer implements ContentRendererInterface
 
             throw $e;
         }
-    }
-
-    /**
-     * @param DocumentDescriptor $identity
-     *
-     * @return array
-     */
-    private function createParameters(DocumentDescriptor $identity)
-    {
-        return array('_locale' => $identity->getLanguage(), '_country' => 'de');
     }
 }
