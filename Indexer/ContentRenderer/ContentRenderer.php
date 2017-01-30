@@ -14,7 +14,7 @@ namespace Phlexible\Bundle\IndexerPageBundle\Indexer\ContentRenderer;
 use Phlexible\Bundle\ElementRendererBundle\Configurator\Configuration;
 use Phlexible\Bundle\ElementRendererBundle\Configurator\ConfiguratorInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
-use Phlexible\BUndle\IndexerPageBundle\Indexer\ParametersGenerator\IndexerParametersGeneratorInterface;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\ParametersGenerator\IndexerParametersGeneratorInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;

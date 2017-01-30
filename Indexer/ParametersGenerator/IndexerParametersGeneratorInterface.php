@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\BUndle\IndexerPageBundle\Indexer\ParametersGenerator;
+namespace Phlexible\Bundle\IndexerPageBundle\Indexer\ParametersGenerator;
 
 use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
 
 /**
- * Create parameters for indexing
+ * Create parameters for indexing.
  *
  * @author Jens Schulze <jdschulze@brainbits.net>
  */

@@ -9,11 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\BUndle\IndexerPageBundle\Indexer\ParametersGenerator;
+namespace Phlexible\Bundle\IndexerPageBundle\Indexer\ParametersGenerator;
 
 use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
 
-class LocaleIndexerParametersGenerator implements IndexerParametersGeneratorInterface
+/**
+ * Locale parameters generator.
+ *
+ * @author Jens-Daniel Schulze <jdschulze@brainbits.net>
+ * @author Stephan Wentz <sw@brainbits.net>
+ */
+class LocaleParametersGenerator implements IndexerParametersGeneratorInterface
 {
     /**
      * {@inheritdoc}

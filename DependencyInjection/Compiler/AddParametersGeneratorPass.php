@@ -9,12 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\BUndle\IndexerPageBundle\DependencyInjection\Compiler;
+namespace Phlexible\Bundle\IndexerPageBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * Add parameters generator pass.
+ *
+ * @author Jens-Daniel Schulze <jdschulze@brainbits.net>
+ * @author Stephan Wentz <sw@brainbits.net>
+ */
 class AddParametersGeneratorPass implements CompilerPassInterface
 {
     /**
@@ -23,7 +29,7 @@ class AddParametersGeneratorPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $generators = array();
-        foreach ($container->findTaggedServiceIds('phlexible_indexer_element.param_generator') as $id => $ttributes) {
+        foreach ($container->findTaggedServiceIds('phlexible_indexer_page.param_generator') as $id => $ttributes) {
             $priority = isset($attributes[0]['priority']) ? $attributes[0]['priority'] : 0;
             $generators[$priority][] = new Reference($id);
         }
@@ -35,6 +41,6 @@ class AddParametersGeneratorPass implements CompilerPassInterface
         krsort($generators);
         $generators = call_user_func_array('array_merge', $generators);
 
-        $container->getDefinition('phlexible_indexer_element.parameters_generator')->replaceArgument(0, $generators);
+        $container->getDefinition('phlexible_indexer_page.parameters_generator')->replaceArgument(0, $generators);
     }
 }

@@ -35,10 +35,10 @@ services:
             - {name: monolog.logger, channel: indexer}
 
     phlexible_indexer_page.locale_parameters_generator:
-        class: Phlexible\Bundle\IndexerPageBundle\Indexer\ParametersGenerator\LocaleIndexerParametersGenerator
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\ParametersGenerator\LocaleParametersGenerator
         public: false
         tags:
-            - {name: phlexible_indexer_element.param_generator, priority: 900}
+            - {name: phlexible_indexer_page.param_generator, priority: 900}
 
     phlexible_indexer_page.parameters_generator:
         class: Phlexible\Bundle\IndexerPageBundle\Indexer\ParametersGenerator\ChainParametersGenerator
@@ -55,7 +55,7 @@ services:
             - "@phlexible_element_renderer.configurator"
             - "@templating"
             - "@logger"
-            - "@phlexible_indexer_element.parameters_generator"
+            - "@phlexible_indexer_page.parameters_generator"
         tags:
             - {name: monolog.logger, channel: indexer}
 
