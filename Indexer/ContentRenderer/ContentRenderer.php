@@ -82,12 +82,12 @@ class ContentRenderer implements ContentRendererInterface
         LoggerInterface $logger,
         IndexerParametersGeneratorInterface $indexerParametersGenerator
     ) {
-        $this->container                  = $container;
-        $this->requestContext             = $requestContext;
-        $this->requestStack               = $requestStack;
-        $this->configurator               = $configurator;
-        $this->templating                 = $templating;
-        $this->logger                     = $logger;
+        $this->container = $container;
+        $this->requestContext = $requestContext;
+        $this->requestStack = $requestStack;
+        $this->configurator = $configurator;
+        $this->templating = $templating;
+        $this->logger = $logger;
         $this->indexerParametersGenerator = $indexerParametersGenerator;
     }
 
@@ -96,9 +96,9 @@ class ContentRenderer implements ContentRendererInterface
      */
     public function render(DocumentDescriptor $descriptor)
     {
-        $node       = $descriptor->getNode();
-        $siteroot   = $descriptor->getSiteroot();
-        $language   = $descriptor->getLanguage();
+        $node = $descriptor->getNode();
+        $siteroot = $descriptor->getSiteroot();
+        $language = $descriptor->getLanguage();
         $parameters = $this->indexerParametersGenerator->createParameters($descriptor);
 
         try {
@@ -133,7 +133,7 @@ class ContentRenderer implements ContentRendererInterface
             try {
                 /* @var $configuration Configuration */
                 $configuration = $this->configurator->configure($request, null);
-                $data          = $configuration->getVariables();
+                $data = $configuration->getVariables();
 
                 $content = $this->templating->render($data['template'], (array) $data);
             } catch (\Exception $e) {
