@@ -16,14 +16,17 @@ use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\SiterootIndexibleVoter;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 /**
  * Node indexible voter.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\SiterootIndexibleVoter
  */
-class SiterootIndexibleVoterTest extends \PHPUnit_Framework_TestCase
+class SiterootIndexibleVoterTest extends TestCase
 {
     /**
      * @var SiterootIndexibleVoter

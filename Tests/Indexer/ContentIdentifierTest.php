@@ -21,13 +21,16 @@ use Phlexible\Bundle\SiterootBundle\Model\SiterootManagerInterface;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeManagerInterface;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 use Phlexible\Bundle\TreeBundle\ContentTree\DelegatingContentTree;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Content identifier test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\ContentIdentifier
  */
-class ContentIdentifierTest extends \PHPUnit_Framework_TestCase
+class ContentIdentifierTest extends TestCase
 {
     /**
      * @var ContentIdentifier

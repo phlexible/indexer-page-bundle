@@ -19,6 +19,7 @@ use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\ElementIndexibleVoter;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
@@ -26,8 +27,10 @@ use Psr\Log\LoggerInterface;
  * Element indexible voter.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\ElementIndexibleVoter
  */
-class ElementIndexibleVoterTest extends \PHPUnit_Framework_TestCase
+class ElementIndexibleVoterTest extends TestCase
 {
     /**
      * @var ElementIndexibleVoter

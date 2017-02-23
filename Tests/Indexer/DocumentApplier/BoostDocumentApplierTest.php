@@ -17,13 +17,16 @@ use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\BoostDocumentAppl
 use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Boost document applier test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\BoostDocumentApplier
  */
-class BoostDocumentApplierTest extends \PHPUnit_Framework_TestCase
+class BoostDocumentApplierTest extends TestCase
 {
     public function testApplyBoost()
     {

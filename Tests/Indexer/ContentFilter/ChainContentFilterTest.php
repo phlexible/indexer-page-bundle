@@ -13,13 +13,16 @@ namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\ContentFilter;
 
 use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\ChainContentFilter;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\ContentFilterInterface;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Chain content filter test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @cofers \Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\ChainContentFilter
  */
-class ChainContentFilterTest extends \PHPUnit_Framework_TestCase
+class ChainContentFilterTest extends TestCase
 {
     public function testFilterChain()
     {

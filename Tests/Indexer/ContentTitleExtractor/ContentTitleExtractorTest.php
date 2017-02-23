@@ -12,13 +12,16 @@
 namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\ContentTitleExtractor;
 
 use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentTitleExtractor\ContentTitleExtractor;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Content title extractor.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\ContentTitleExtractor\ContentTitleExtractor
  */
-class ContentTitleExtractorTest extends \PHPUnit_Framework_TestCase
+class ContentTitleExtractorTest extends TestCase
 {
     public function testExtractWithH1()
     {

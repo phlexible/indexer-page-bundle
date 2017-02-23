@@ -18,13 +18,16 @@ use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\DocumentApplierIn
 use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Chain document applier test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\ChainDocumentApplier
  */
-class ChainDocumentApplierTest extends \PHPUnit_Framework_TestCase
+class ChainDocumentApplierTest extends TestCase
 {
     public function testApplierChain()
     {

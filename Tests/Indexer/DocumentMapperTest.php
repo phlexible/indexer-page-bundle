@@ -19,6 +19,7 @@ use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\IndexibleVoterInte
 use Phlexible\Bundle\IndexerPageBundle\IndexerPageEvents;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -27,8 +28,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * Document mapper test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentMapper
  */
-class DocumentMapperTest extends \PHPUnit_Framework_TestCase
+class DocumentMapperTest extends TestCase
 {
     /**
      * @var IndexibleVoterInterface

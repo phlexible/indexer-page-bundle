@@ -17,13 +17,16 @@ use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\ChainIndexibleVote
 use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Chain indexible voter.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\ChainIndexibleVoter
  */
-class ChainIndexibleVoterTest extends \PHPUnit_Framework_TestCase
+class ChainIndexibleVoterTest extends TestCase
 {
     public function testIndexibleChainReturnsAllowOnAllAllowed()
     {

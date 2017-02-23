@@ -25,6 +25,7 @@ use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 use Phlexible\Bundle\TreeBundle\ContentTree\DelegatingContentTree;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -32,8 +33,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * Content document applier test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\ContentDocumentApplier
  */
-class ContentDocumentApplierTest extends \PHPUnit_Framework_TestCase
+class ContentDocumentApplierTest extends TestCase
 {
     /**
      * @var ContentDocumentApplier

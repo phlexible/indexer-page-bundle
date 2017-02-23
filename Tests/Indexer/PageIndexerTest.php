@@ -23,6 +23,7 @@ use Phlexible\Bundle\IndexerPageBundle\Indexer\PageIndexer;
 use Phlexible\Bundle\QueueBundle\Model\JobManagerInterface;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
@@ -31,8 +32,10 @@ use Psr\Log\LoggerInterface;
  * Page indexer test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\PageIndexer
  */
-class PageIndexerTest extends \PHPUnit_Framework_TestCase
+class PageIndexerTest extends TestCase
 {
     /**
      * @var DocumentFactory|ObjectProphecy

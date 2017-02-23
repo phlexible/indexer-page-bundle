@@ -12,13 +12,16 @@
 namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\ContentFilter;
 
 use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\NoIndexContentFilter;
+use PHPUnit\Framework\TestCase;
 
 /**
  * No index content filter test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\NoIndexContentFilter
  */
-class NoIndexContentFilterTest extends \PHPUnit_Framework_TestCase
+class NoIndexContentFilterTest extends TestCase
 {
     public function testFilterNoIndex()
     {

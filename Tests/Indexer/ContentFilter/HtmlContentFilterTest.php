@@ -12,13 +12,16 @@
 namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\ContentFilter;
 
 use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\HtmlContentFilter;
+use PHPUnit\Framework\TestCase;
 
 /**
  * HTML content filter test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
+ *
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\HtmlContentFilter
  */
-class HtmlContentFilterTest extends \PHPUnit_Framework_TestCase
+class HtmlContentFilterTest extends TestCase
 {
     public function testFilterControlCharacters()
     {
