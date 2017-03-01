@@ -63,6 +63,11 @@ class PageIndexer implements IndexerInterface
     private $documentClass;
 
     /**
+     * @var int
+     */
+    private $batchSize;
+
+    /**
      * @param DocumentFactory            $documentFactory
      * @param StorageInterface           $storage
      * @param DocumentMapperInterface    $mapper
@@ -70,6 +75,7 @@ class PageIndexer implements IndexerInterface
      * @param JobManagerInterface        $jobManager
      * @param LoggerInterface            $logger
      * @param string                     $documentClass
+     * @param int                        $batchSize
      */
     public function __construct(
         DocumentFactory $documentFactory,
@@ -78,7 +84,8 @@ class PageIndexer implements IndexerInterface
         ContentIdentifierInterface $identifier,
         JobManagerInterface $jobManager,
         LoggerInterface $logger,
-        $documentClass = PageDocument::class
+        $documentClass = PageDocument::class,
+        $batchSize = 50
     ) {
         $this->documentFactory = $documentFactory;
         $this->storage = $storage;
@@ -87,6 +94,7 @@ class PageIndexer implements IndexerInterface
         $this->jobManager = $jobManager;
         $this->logger = $logger;
         $this->documentClass = $documentClass;
+        $this->batchSize = $batchSize;
     }
 
     /**
@@ -311,35 +319,74 @@ class PageIndexer implements IndexerInterface
      */
     public function indexAll($viaQueue = false)
     {
-        //$descriptors = $this->identifier->findAllDescriptors();
+        $descriptors = $this->identifier->findAllDescriptors();
+
+        $cnt = 0;
 
         $operations = $this->storage->createOperations();
 
-        foreach ($this->identifier->findAllDescriptors() as $descriptor) {
+        foreach ($descriptors as $descriptor) {
             $this->logger->info("indexAll {$descriptor->getNode()->getId()} {$descriptor->getLanguage()}");
 
-            if ($viaQueue) {
-                $operations->addIdentity($descriptor->getIdentity());
-            } else {
-                $document = $this->createDocument();
-                if ($this->mapper->mapDocument($document, $descriptor)) {
-                    $operations->addDocument($document);
-                }
+            $document = $this->createDocument();
+            if (!$this->mapper->mapDocument($document, $descriptor)) {
+                continue;
+            }
+            $operations->addDocument($document);
+
+            ++$cnt;
+
+            if ($cnt % $this->batchSize === 0) {
+                $operations->commit();
+
+                $this->storage->execute($operations);
+
+                $operations = $this->storage->createOperations();
             }
         }
 
-        if (!count($operations)) {
-            return 0;
+        if (count($operations)) {
+            $operations->commit();
+
+            $this->storage->execute($operations);
         }
 
-        $operations->commit();
+        return $cnt;
+    }
 
-        if (!$viaQueue) {
-            $this->storage->execute($operations);
-        } else {
+    /**
+     * {@inheritdoc}
+     */
+    public function queueAll()
+    {
+        $descriptors = $this->identifier->findAllDescriptors();
+
+        $cnt = 0;
+
+        $operations = $this->storage->createOperations();
+
+        foreach ($descriptors as $descriptor) {
+            $this->logger->info("queueAll {$descriptor->getNode()->getId()} {$descriptor->getLanguage()}");
+
+            $operations->addIdentity($descriptor->getIdentity());
+
+            ++$cnt;
+
+            if ($cnt % $this->batchSize === 0) {
+                $operations->commit();
+
+                $this->storage->queue($operations);
+
+                $operations = $this->storage->createOperations();
+            }
+        }
+
+        if (count($operations)) {
+            $operations->commit();
+
             $this->storage->queue($operations);
         }
 
-        return count($operations);
+        return $cnt;
     }
 }
