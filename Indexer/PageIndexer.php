@@ -317,26 +317,33 @@ class PageIndexer implements IndexerInterface
     /**
      * {@inheritdoc}
      */
-    public function indexAll($viaQueue = false)
+    public function indexAll()
     {
         $descriptors = $this->identifier->findAllDescriptors();
 
-        $cnt = 0;
+        $handled = 0;
+        $batch = 0;
+        $total = count($descriptors);
 
         $operations = $this->storage->createOperations();
 
         foreach ($descriptors as $descriptor) {
-            $this->logger->info("indexAll {$descriptor->getNode()->getId()} {$descriptor->getLanguage()}");
+            ++$handled;
+
+            $this->logger->info("indexAll add {$descriptor->getNode()->getId()} {$descriptor->getLanguage()}");
 
             $document = $this->createDocument();
             if (!$this->mapper->mapDocument($document, $descriptor)) {
+                $this->logger->warning("indexAll skipping {$descriptor->getNode()->getId()} {$descriptor->getLanguage()}");
                 continue;
             }
             $operations->addDocument($document);
 
-            ++$cnt;
+            ++$batch;
 
-            if ($cnt % $this->batchSize === 0) {
+            if ($batch % $this->batchSize === 0) {
+                $this->logger->notice("indexAll batch commit ($handled/$total)");
+
                 $operations->commit();
 
                 $this->storage->execute($operations);
@@ -346,12 +353,14 @@ class PageIndexer implements IndexerInterface
         }
 
         if (count($operations)) {
+            $this->logger->notice("indexAll commit ($handled/$total)");
+
             $operations->commit();
 
             $this->storage->execute($operations);
         }
 
-        return $cnt;
+        return $handled;
     }
 
     /**
@@ -361,18 +370,24 @@ class PageIndexer implements IndexerInterface
     {
         $descriptors = $this->identifier->findAllDescriptors();
 
-        $cnt = 0;
+        $handled = 0;
+        $batch = 0;
+        $total = count($descriptors);
 
         $operations = $this->storage->createOperations();
 
         foreach ($descriptors as $descriptor) {
-            $this->logger->info("queueAll {$descriptor->getNode()->getId()} {$descriptor->getLanguage()}");
+            ++$handled;
+
+            $this->logger->info("queueAll add {$descriptor->getNode()->getId()} {$descriptor->getLanguage()}");
 
             $operations->addIdentity($descriptor->getIdentity());
 
-            ++$cnt;
+            ++$batch;
 
-            if ($cnt % $this->batchSize === 0) {
+            if ($batch % $this->batchSize === 0) {
+                $this->logger->notice("queueAll batch commit ($handled/$total)");
+
                 $operations->commit();
 
                 $this->storage->queue($operations);
@@ -382,11 +397,13 @@ class PageIndexer implements IndexerInterface
         }
 
         if (count($operations)) {
+            $this->logger->notice("queueAll commit ($handled/$total)");
+
             $operations->commit();
 
             $this->storage->queue($operations);
         }
 
-        return $cnt;
+        return $handled;
     }
 }
