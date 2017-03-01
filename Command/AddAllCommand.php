@@ -49,7 +49,11 @@ class AddAllCommand extends ContainerAwareCommand
 
         $viaQueue = $input->getOption('queue');
 
-        $result = $indexer->indexAll($viaQueue);
+        if ($viaQueue) {
+            $result = $indexer->queueAll();
+        } else {
+            $result = $indexer->indexAll();
+        }
 
         if (!$result) {
             $output->writeln('Nothing to index.');
