@@ -235,7 +235,7 @@ class PageIndexerTest extends TestCase
         $this->indexer->indexAll();
     }
 
-    public function testIndexAllWithQueue()
+    public function testQueueAll()
     {
         $descriptor1 = new DocumentDescriptor(new DocumentIdentity('page_1_de'), new ContentTreeNode(), new Siteroot(), 'de');
         $descriptor2 = new DocumentDescriptor(new DocumentIdentity('page_2_en'), new ContentTreeNode(), new Siteroot(), 'en');
@@ -244,6 +244,6 @@ class PageIndexerTest extends TestCase
         $this->storage->execute(Argument::cetera())->shouldNotBeCalled();
         $this->storage->queue(Argument::cetera())->shouldBeCalled();
 
-        $this->indexer->indexAll(true);
+        $this->indexer->queueAll();
     }
 }
