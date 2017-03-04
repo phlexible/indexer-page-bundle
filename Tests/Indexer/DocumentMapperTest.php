@@ -9,12 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPageBundle\Indexer;
+namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
 use Phlexible\Bundle\IndexerPageBundle\Event\MapDocumentEvent;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\DocumentApplierInterface;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentMapper;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
 use Phlexible\Bundle\IndexerPageBundle\IndexerPageEvents;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
@@ -54,6 +56,16 @@ class DocumentMapperTest extends TestCase
     private $logger;
 
     /**
+     * @var PageDocument
+     */
+    private $document;
+
+    /**
+     * @var DocumentDescriptor
+     */
+    private $descriptor;
+
+    /**
      * @var DocumentMapper
      */
     private $mapper;
@@ -65,6 +77,9 @@ class DocumentMapperTest extends TestCase
         $this->dispatcher = $this->prophesize(EventDispatcherInterface::class);
         $this->logger = $this->prophesize(LoggerInterface::class);
 
+        $this->document = new PageDocument();
+        $this->descriptor = new DocumentDescriptor(new DocumentIdentity('abc'), new ContentTreeNode(), new Siteroot(), 'de');
+
         $this->mapper = new DocumentMapper(
             $this->voter->reveal(),
             $this->applier->reveal(),
@@ -73,33 +88,33 @@ class DocumentMapperTest extends TestCase
         );
     }
 
-    public function testMapIdentityReturnsNullOnDeniedVoter()
+    public function testMapDocumentReturnsFalseOnNotIndexible()
     {
-        $document = new PageDocument();
-        $identity = new DocumentDescriptor(new DocumentIdentity('abc'), new ContentTreeNode(), new Siteroot(), 'de');
+        $this->voter->isIndexible($this->descriptor)->willReturn(IndexibleVoterInterface::VOTE_DENY);
 
-        $this->voter->isIndexible($identity)->willReturn(IndexibleVoterInterface::VOTE_DENY);
+        $result = $this->mapper->mapDocument($this->document, $this->descriptor);
 
-        $this->mapper->mapDocument($document, $identity);
+        $this->assertFalse($result);
     }
 
-    public function testMapIdentityReturnsDocument()
+    public function testMapDocumentCallsApplier()
     {
-        $document = new PageDocument();
-        $identity = new DocumentDescriptor(new DocumentIdentity('abc'), new ContentTreeNode(), new Siteroot(), 'de');
+        $this->applier->apply($this->document, $this->descriptor)->shouldBeCalled();
 
-        $this->mapper->mapDocument($document, $identity);
-
-        $this->assertInstanceOf(PageDocument::class, $document);
+        $this->mapper->mapDocument($this->document, $this->descriptor);
     }
 
-    public function testMapIdentityDispatchesMapDocumentEvent()
+    public function testMapDocumentDispatchesMapDocumentEvent()
     {
-        $document = new PageDocument();
-        $identity = new DocumentDescriptor(new DocumentIdentity('abc'), new ContentTreeNode(), new Siteroot(), 'de');
-
         $this->dispatcher->dispatch(IndexerPageEvents::MAP_DOCUMENT, Argument::type(MapDocumentEvent::class))->shouldBeCalled();
 
-        $this->mapper->mapDocument($document, $identity);
+        $this->mapper->mapDocument($this->document, $this->descriptor);
+    }
+
+    public function testMapDocumentReturnsTrueOnSuccess()
+    {
+        $result = $this->mapper->mapDocument($this->document, $this->descriptor);
+
+        $this->assertTrue($result);
     }
 }
