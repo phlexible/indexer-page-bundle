@@ -8,6 +8,7 @@ services:
             - "@phlexible_indexer_page.content_identifier"
             - "@phlexible_queue.job_manager"
             - "@logger"
+            - "%phlexible_indexer_page.document_class%"
             - "%phlexible_indexer_page.batch_size%"
         tags:
             - {name: phlexible_indexer.indexer}

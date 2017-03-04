@@ -323,7 +323,6 @@ class PageIndexer implements IndexerInterface
 
         $handled = 0;
         $batch = 0;
-        $total = count($descriptors);
 
         $operations = $this->storage->createOperations();
 
@@ -342,7 +341,7 @@ class PageIndexer implements IndexerInterface
             ++$batch;
 
             if ($batch % $this->batchSize === 0) {
-                $this->logger->notice("indexAll batch commit ($handled/$total)");
+                $this->logger->notice("indexAll batch commit ($handled)");
 
                 $operations->commit();
 
@@ -353,7 +352,7 @@ class PageIndexer implements IndexerInterface
         }
 
         if (count($operations)) {
-            $this->logger->notice("indexAll commit ($handled/$total)");
+            $this->logger->notice("indexAll commit ($handled)");
 
             $operations->commit();
 

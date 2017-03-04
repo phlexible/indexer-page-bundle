@@ -121,8 +121,6 @@ class ContentIdentifier implements ContentIdentifierInterface
      */
     public function findAllDescriptors()
     {
-        $descriptors = array();
-
         foreach ($this->treeManager->findAll() as $tree) {
             $siteroot = $this->siterootManager->find($tree->getSiterootId());
 
@@ -156,8 +154,6 @@ class ContentIdentifier implements ContentIdentifierInterface
                     }
 
                     yield $descriptor;
-
-                    $descriptors[] = $descriptor;
                 }
             }
         }

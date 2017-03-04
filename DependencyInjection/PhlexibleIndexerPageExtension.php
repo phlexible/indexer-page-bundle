@@ -37,6 +37,7 @@ class PhlexibleIndexerPageExtension extends Extension
         $configuration = $this->getConfiguration($config, $container);
         $config = $this->processConfiguration($configuration, $config);
 
+        $container->setParameter('phlexible_indexer_page.document_class', $config['document_class']);
         $container->setParameter('phlexible_indexer_page.batch_size', $config['batch_size']);
 
         $container->setAlias('phlexible_indexer_page.storage', $config['storage']);
