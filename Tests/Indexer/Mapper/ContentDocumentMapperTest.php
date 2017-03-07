@@ -20,8 +20,8 @@ use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\NoIndexContentFilter;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentRenderer\ContentRendererInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentTitleExtractor\ContentTitleExtractorInterface;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\ContentDocumentApplier;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper\ContentDocumentMapper;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 use Phlexible\Bundle\TreeBundle\ContentTree\DelegatingContentTree;
@@ -30,16 +30,16 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Content document applier test.
+ * Content document mapper test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  *
- * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\ContentDocumentApplier
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper\ContentDocumentMapper
  */
-class ContentDocumentApplierTest extends TestCase
+class ContentDocumentMapperTest extends TestCase
 {
     /**
-     * @var ContentDocumentApplier
+     * @var ContentDocumentMapper
      */
     private $applier;
 
@@ -76,7 +76,7 @@ class ContentDocumentApplierTest extends TestCase
         $this->dispatcher = $this->prophesize(EventDispatcherInterface::class);
         $this->logger = $this->prophesize(LoggerInterface::class);
 
-        $this->applier = new ContentDocumentApplier(
+        $this->applier = new ContentDocumentMapper(
             $this->elementService->reveal(),
             new NoIndexContentFilter(),
             $this->titleExtractor->reveal(),
@@ -86,7 +86,7 @@ class ContentDocumentApplierTest extends TestCase
         );
     }
 
-    public function testApplyContent()
+    public function testMapDocument()
     {
         $document = new PageDocument();
         $element = new Element();
@@ -100,7 +100,7 @@ class ContentDocumentApplierTest extends TestCase
         $tree = $this->prophesize(DelegatingContentTree::class);
         $tree->getPublishedVersion($node, 'de')->willReturn(50);
         $node->setTree($tree->reveal());
-        $identity = new DocumentDescriptor(new DocumentIdentity('abc'), $node, new Siteroot(), 'de');
+        $identity = new PageDocumentDescriptor(new DocumentIdentity('abc'), $node, new Siteroot(), 'de');
 
         $this->renderer->render($identity)->willReturn('testContent');
         $this->titleExtractor->extractTitle('testContent')->willReturn('testTitle');
@@ -108,7 +108,7 @@ class ContentDocumentApplierTest extends TestCase
         $this->elementService->findElementVersion($element, 50)->willReturn($elementVersion);
         $this->elementService->findElementtype($element)->willReturn($elementtype);
 
-        $this->applier->apply($document, $identity);
+        $this->applier->mapDocument($document, $identity);
 
         $this->assertSame('testContent', $document->get('content'));
         $this->assertSame('testTitle', $document->get('title'));

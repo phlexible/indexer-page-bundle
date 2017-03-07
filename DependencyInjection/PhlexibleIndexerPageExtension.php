@@ -30,7 +30,7 @@ class PhlexibleIndexerPageExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-        $loader->load('appliers.yml');
+        $loader->load('mapper.yml');
         $loader->load('filters.yml');
         $loader->load('voters.yml');
 

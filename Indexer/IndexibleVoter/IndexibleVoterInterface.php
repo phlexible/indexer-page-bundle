@@ -11,7 +11,7 @@
 
 namespace Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter;
 
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 
 /**
  * Indexible voter interface.
@@ -24,9 +24,9 @@ interface IndexibleVoterInterface
     const VOTE_DENY = -1;
 
     /**
-     * @param DocumentDescriptor $descriptor
+     * @param PageDocumentDescriptor $descriptor
      *
      * @return bool
      */
-    public function isIndexible(DocumentDescriptor $descriptor);
+    public function isIndexible(PageDocumentDescriptor $descriptor);
 }

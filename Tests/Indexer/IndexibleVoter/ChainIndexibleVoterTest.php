@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\IndexibleVoter;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\ChainIndexibleVoter;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
@@ -33,7 +33,7 @@ class ChainIndexibleVoterTest extends TestCase
         $node = new ContentTreeNode();
         $siteroot = new Siteroot();
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
+        $descriptor = new PageDocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $voter1 = $this->prophesize(IndexibleVoterInterface::class);
         $voter2 = $this->prophesize(IndexibleVoterInterface::class);
@@ -52,7 +52,7 @@ class ChainIndexibleVoterTest extends TestCase
         $node = new ContentTreeNode();
         $siteroot = new Siteroot();
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
+        $descriptor = new PageDocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $voter1 = $this->prophesize(IndexibleVoterInterface::class);
         $voter2 = $this->prophesize(IndexibleVoterInterface::class);
@@ -71,7 +71,7 @@ class ChainIndexibleVoterTest extends TestCase
         $node = new ContentTreeNode();
         $siteroot = new Siteroot();
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
+        $descriptor = new PageDocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $voter1 = $this->prophesize(IndexibleVoterInterface::class);
         $voter2 = $this->prophesize(IndexibleVoterInterface::class);

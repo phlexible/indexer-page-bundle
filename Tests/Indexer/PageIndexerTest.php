@@ -16,10 +16,12 @@ use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerBundle\Storage\Operation\Operations;
 use Phlexible\Bundle\IndexerBundle\Storage\StorageInterface;
 use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentIdentifierInterface;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentMapper;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper\PageDocumentMapperInterface;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageContentIdentifierInterface;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentBuilder;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\PageIndexer;
+use Phlexible\Bundle\IndexerPageBundle\Tests\PageDescriptorTrait;
 use Phlexible\Bundle\QueueBundle\Model\JobManagerInterface;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
@@ -27,6 +29,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Page indexer test.
@@ -37,10 +40,7 @@ use Psr\Log\LoggerInterface;
  */
 class PageIndexerTest extends TestCase
 {
-    /**
-     * @var DocumentFactory|ObjectProphecy
-     */
-    private $documentFactory;
+    use PageDescriptorTrait;
 
     /**
      * @var PageDocument
@@ -48,9 +48,9 @@ class PageIndexerTest extends TestCase
     private $document;
 
     /**
-     * @var PageIndexer
+     * @var PageDocumentBuilder|ObjectProphecy
      */
-    private $indexer;
+    private $builder;
 
     /**
      * @var StorageInterface|ObjectProphecy
@@ -58,12 +58,12 @@ class PageIndexerTest extends TestCase
     private $storage;
 
     /**
-     * @var DocumentMapper|ObjectProphecy
+     * @var PageDocumentMapperInterface|ObjectProphecy
      */
     private $mapper;
 
     /**
-     * @var ContentIdentifierInterface|ObjectProphecy
+     * @var PageContentIdentifierInterface|ObjectProphecy
      */
     private $identifier;
 
@@ -73,30 +73,41 @@ class PageIndexerTest extends TestCase
     private $jobManager;
 
     /**
+     * @var EventDispatcherInterface|ObjectProphecy
+     */
+    private $eventDispatcher;
+
+    /**
      * @var LoggerInterface|ObjectProphecy
      */
     private $logger;
+
+    /**
+     * @var PageIndexer
+     */
+    private $indexer;
 
     public function setUp()
     {
         $this->document = new PageDocument();
         $this->document->setIdentity(new DocumentIdentity('A'));
-        $this->documentFactory = $this->prophesize(DocumentFactory::class);
-        $this->documentFactory->factory(PageDocument::class)->willReturn($this->document);
+
+        $this->builder = $this->prophesize(PageDocumentBuilder::class);
         $this->storage = $this->prophesize(StorageInterface::class);
-        $this->mapper = $this->prophesize(DocumentMapper::class);
-        $this->identifier = $this->prophesize(ContentIdentifierInterface::class);
+        $this->mapper = $this->prophesize(PageDocumentMapperInterface::class);
+        $this->identifier = $this->prophesize(PageContentIdentifierInterface::class);
         $this->jobManager = $this->prophesize(JobManagerInterface::class);
+        $this->eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $this->logger = $this->prophesize(LoggerInterface::class);
 
         $this->storage->createOperations()->willReturn(new Operations());
 
         $this->indexer = new PageIndexer(
-            $this->documentFactory->reveal(),
+            $this->builder->reveal(),
             $this->storage->reveal(),
-            $this->mapper->reveal(),
             $this->identifier->reveal(),
             $this->jobManager->reveal(),
+            $this->eventDispatcher->reveal(),
             $this->logger->reveal()
         );
     }
@@ -122,10 +133,10 @@ class PageIndexerTest extends TestCase
     public function testAdd()
     {
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, new ContentTreeNode(), new Siteroot(), 'de');
+        $descriptor = $this->createDescriptor();
 
         $this->identifier->createDescriptorFromIdentity($identity)->willReturn($descriptor);
-        $this->mapper->mapDocument($this->document, $descriptor)->shouldBeCalled()->willReturn(true);
+        $this->builder->build($descriptor)->shouldBeCalled()->willReturn($this->document);
 
         $this->storage->execute(Argument::cetera())->shouldBeCalled();
         $this->storage->queue(Argument::cetera())->shouldNotBeCalled();
@@ -156,10 +167,10 @@ class PageIndexerTest extends TestCase
     public function testUpdate()
     {
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, new ContentTreeNode(), new Siteroot(), 'de');
+        $descriptor = $this->createDescriptor();
 
         $this->identifier->createDescriptorFromIdentity($identity)->willReturn($descriptor);
-        $this->mapper->mapDocument($this->document, $descriptor)->shouldBeCalled()->willReturn(true);
+        $this->builder->build($descriptor)->shouldBeCalled()->willReturn($this->document);
 
         $this->storage->execute(Argument::cetera())->shouldBeCalled();
         $this->storage->queue(Argument::cetera())->shouldNotBeCalled();
@@ -190,10 +201,10 @@ class PageIndexerTest extends TestCase
     public function testDelete()
     {
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, new ContentTreeNode(), new Siteroot(), 'de');
+        $descriptor = $this->createDescriptor();
 
         $this->identifier->createDescriptorFromIdentity($identity)->willReturn($descriptor);
-        $this->mapper->mapDocument($this->document, $descriptor)->shouldBeCalled()->willReturn(true);
+        $this->builder->build($descriptor)->shouldBeCalled()->willReturn($this->document);
 
         $this->storage->execute(Argument::cetera())->shouldBeCalled();
         $this->storage->queue(Argument::cetera())->shouldNotBeCalled();
@@ -223,11 +234,13 @@ class PageIndexerTest extends TestCase
 
     public function testIndexAll()
     {
-        $descriptor1 = new DocumentDescriptor(new DocumentIdentity('page_1_de'), new ContentTreeNode(), new Siteroot(), 'de');
-        $descriptor2 = new DocumentDescriptor(new DocumentIdentity('page_2_en'), new ContentTreeNode(), new Siteroot(), 'en');
+        $descriptor1 = $this->createDescriptor();
+        $descriptor2 = $this->createDescriptor();
+
         $this->identifier->findAllDescriptors()->willReturn(array($descriptor1, $descriptor2));
-        $this->mapper->mapDocument(Argument::type(PageDocument::class), $descriptor1)->shouldBeCalled()->willReturn(true);
-        $this->mapper->mapDocument(Argument::type(PageDocument::class), $descriptor2)->shouldBeCalled()->willReturn(true);
+
+        $this->builder->build($descriptor1)->shouldBeCalled()->willReturn($this->document);
+        $this->builder->build($descriptor2)->shouldBeCalled()->willReturn($this->document);
 
         $this->storage->execute(Argument::cetera())->shouldBeCalled();
         $this->storage->queue(Argument::cetera())->shouldNotBeCalled();
@@ -237,10 +250,14 @@ class PageIndexerTest extends TestCase
 
     public function testQueueAll()
     {
-        $descriptor1 = new DocumentDescriptor(new DocumentIdentity('page_1_de'), new ContentTreeNode(), new Siteroot(), 'de');
-        $descriptor2 = new DocumentDescriptor(new DocumentIdentity('page_2_en'), new ContentTreeNode(), new Siteroot(), 'en');
+        $descriptor1 = $this->createDescriptor();
+        $descriptor2 = $this->createDescriptor();
+
         $this->identifier->findAllDescriptors()->willReturn(array($descriptor1, $descriptor2));
-        $this->mapper->mapDocument(Argument::cetera())->shouldNotBeCalled();
+
+        $this->builder->build($descriptor1)->shouldNotBeCalled();
+        $this->builder->build($descriptor2)->shouldNotBeCalled();
+
         $this->storage->execute(Argument::cetera())->shouldNotBeCalled();
         $this->storage->queue(Argument::cetera())->shouldBeCalled();
 

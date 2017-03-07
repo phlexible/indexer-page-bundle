@@ -13,32 +13,32 @@ namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\DocumentApplier;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\BoostDocumentApplier;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper\BoostDocumentMapper;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Boost document applier test.
+ * Boost document mapper test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  *
- * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier\BoostDocumentApplier
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper\BoostDocumentMapper
  */
-class BoostDocumentApplierTest extends TestCase
+class BoostDocumentMapperTest extends TestCase
 {
-    public function testApplyBoost()
+    public function testMapDocument()
     {
         $document = new PageDocument();
         $node = new ContentTreeNode();
         $node->setId(123);
         $siteroot = new Siteroot();
         $siteroot->setProperty('page_indexer.boost_node_ids', '123:12');
-        $identity = new DocumentDescriptor(new DocumentIdentity('abc'), $node, $siteroot, 'de');
+        $identity = new PageDocumentDescriptor(new DocumentIdentity('abc'), $node, $siteroot, 'de');
 
-        $applier = new BoostDocumentApplier();
-        $applier->apply($document, $identity);
+        $applier = new BoostDocumentMapper();
+        $applier->mapDocument($document, $identity);
 
         $this->assertSame($document->getBoost(), 12.0);
     }

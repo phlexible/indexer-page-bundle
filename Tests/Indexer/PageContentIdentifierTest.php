@@ -13,8 +13,8 @@ namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer;
 
 use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentIdentifier;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageContentIdentifier;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\SiterootBundle\Model\SiterootManagerInterface;
@@ -24,16 +24,16 @@ use Phlexible\Bundle\TreeBundle\ContentTree\DelegatingContentTree;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Content identifier test.
+ * Page content identifier test.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  *
- * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\ContentIdentifier
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\PageContentIdentifier
  */
-class ContentIdentifierTest extends TestCase
+class PageContentIdentifierTest extends TestCase
 {
     /**
-     * @var ContentIdentifier
+     * @var PageContentIdentifier
      */
     private $identifier;
 
@@ -54,7 +54,7 @@ class ContentIdentifierTest extends TestCase
         $elementService = $this->prophesize(ElementService::class);
         $voter = $this->prophesize(IndexibleVoterInterface::class);
 
-        $this->identifier = new ContentIdentifier(
+        $this->identifier = new PageContentIdentifier(
             $this->siterootManager->reveal(),
             $this->treeManager->reveal(),
             $elementService->reveal(),
@@ -94,7 +94,7 @@ class ContentIdentifierTest extends TestCase
 
         $descriptor = $this->identifier->createDescriptorFromNode($node, 'de');
 
-        $this->assertInstanceOf(DocumentDescriptor::class, $descriptor);
+        $this->assertInstanceOf(PageDocumentDescriptor::class, $descriptor);
         $this->assertSame($node, $descriptor->getNode());
         $this->assertSame($siteroot, $descriptor->getSiteroot());
         $this->assertSame('de', $descriptor->getLanguage());
@@ -116,7 +116,7 @@ class ContentIdentifierTest extends TestCase
         $identity = new DocumentIdentity('page_123_de');
         $descriptor = $this->identifier->createDescriptorFromIdentity($identity);
 
-        $this->assertInstanceOf(DocumentDescriptor::class, $descriptor);
+        $this->assertInstanceOf(PageDocumentDescriptor::class, $descriptor);
         $this->assertSame($identity, $descriptor->getIdentity());
         $this->assertSame($node, $descriptor->getNode());
         $this->assertSame($siteroot, $descriptor->getSiteroot());

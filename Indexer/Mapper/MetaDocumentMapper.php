@@ -9,22 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier;
+namespace Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper;
 
 use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\ElementBundle\Meta\ElementMetaDataManager;
 use Phlexible\Bundle\ElementBundle\Meta\ElementMetaSetResolver;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Meta document applier.
+ * Meta document mapper.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class MetaDocumentApplier implements DocumentApplierInterface
+class MetaDocumentMapper implements PageDocumentMapperInterface
 {
     /**
      * @var ElementService
@@ -74,9 +74,9 @@ class MetaDocumentApplier implements DocumentApplierInterface
 
     /**
      * @param DocumentInterface  $document
-     * @param DocumentDescriptor $descriptor
+     * @param PageDocumentDescriptor $descriptor
      */
-    public function apply(DocumentInterface $document, DocumentDescriptor $descriptor)
+    public function mapDocument(DocumentInterface $document, PageDocumentDescriptor $descriptor)
     {
         $node = $descriptor->getNode();
         $language = $descriptor->getLanguage();

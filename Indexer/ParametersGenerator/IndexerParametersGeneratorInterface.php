@@ -11,7 +11,7 @@
 
 namespace Phlexible\Bundle\IndexerPageBundle\Indexer\ParametersGenerator;
 
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 
 /**
  * Create parameters for indexing.
@@ -21,9 +21,9 @@ use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
 interface IndexerParametersGeneratorInterface
 {
     /**
-     * @param DocumentDescriptor $identity
+     * @param PageDocumentDescriptor $identity
      *
      * @return array
      */
-    public function createParameters(DocumentDescriptor $identity);
+    public function createParameters(PageDocumentDescriptor $identity);
 }

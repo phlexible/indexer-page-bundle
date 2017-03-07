@@ -16,11 +16,11 @@ use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 
 /**
- * Document descriptor.
+ * Page document descriptor.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class DocumentDescriptor
+class PageDocumentDescriptor
 {
     /**
      * @var DocumentIdentity

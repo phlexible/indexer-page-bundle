@@ -11,7 +11,7 @@
 
 namespace Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter;
 
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 
 /**
  * Chain indexible voter.
@@ -36,7 +36,7 @@ class ChainIndexibleVoter implements IndexibleVoterInterface
     /**
      * {@inheritdoc}
      */
-    public function isIndexible(DocumentDescriptor $descriptor)
+    public function isIndexible(PageDocumentDescriptor $descriptor)
     {
         foreach ($this->voters as $voter) {
             $result = $voter->isIndexible($descriptor);

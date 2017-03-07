@@ -19,8 +19,17 @@ namespace Phlexible\Bundle\IndexerPageBundle;
 class IndexerPageEvents
 {
     /**
-     * Map Document Event
-     * Fired when a document is mapped.
+     * Fired when a page document is mapped.
      */
     const MAP_DOCUMENT = 'phlexible_indexer_page.map_document';
+
+    /**
+     * Fired before all page documents are indexed.
+     */
+    const INDEX_ALL_DOCUMENTS = 'phlexible_indexer_page.index_all_documents';
+
+    /**
+     * Fired before all page documents are queued.
+     */
+    const QUEUE_ALL_DOCUMENTS = 'phlexible_indexer_page.queue_all_documents';
 }

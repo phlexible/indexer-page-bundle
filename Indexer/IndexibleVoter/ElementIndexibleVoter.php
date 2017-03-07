@@ -13,7 +13,7 @@ namespace Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter;
 
 use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\ElementtypeBundle\Model\Elementtype;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -46,7 +46,7 @@ class ElementIndexibleVoter implements IndexibleVoterInterface
     /**
      * {@inheritdoc}
      */
-    public function isIndexible(DocumentDescriptor $descriptor)
+    public function isIndexible(PageDocumentDescriptor $descriptor)
     {
         $node = $descriptor->getNode();
         $siteroot = $descriptor->getSiteroot();

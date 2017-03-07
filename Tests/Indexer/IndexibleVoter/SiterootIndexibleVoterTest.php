@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\IndexibleVoter;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\SiterootIndexibleVoter;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
@@ -54,7 +54,7 @@ class SiterootIndexibleVoterTest extends TestCase
         $node->setId(123);
         $siteroot = new Siteroot();
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
+        $descriptor = new PageDocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $result = $this->voter->isIndexible($descriptor);
 
@@ -68,7 +68,7 @@ class SiterootIndexibleVoterTest extends TestCase
         $siteroot = new Siteroot();
         $siteroot->setProperty('page_indexer.disabled', false);
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
+        $descriptor = new PageDocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $result = $this->voter->isIndexible($descriptor);
 
@@ -82,7 +82,7 @@ class SiterootIndexibleVoterTest extends TestCase
         $siteroot = new Siteroot();
         $siteroot->setProperty('page_indexer.disabled', true);
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
+        $descriptor = new PageDocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $this->logger->info('TreeNode 123 not indexed, siteroot is disabled')->shouldBeCalled();
 

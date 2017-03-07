@@ -11,7 +11,7 @@
 
 namespace Phlexible\Bundle\IndexerPageBundle\Indexer\ParametersGenerator;
 
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 
 /**
  * Merging chaing parameters generator.
@@ -44,7 +44,7 @@ class ChainParametersGenerator implements IndexerParametersGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function createParameters(DocumentDescriptor $identity)
+    public function createParameters(PageDocumentDescriptor $identity)
     {
         $parameters = array();
 

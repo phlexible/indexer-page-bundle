@@ -16,11 +16,11 @@ use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 
 /**
- * Content identifier interface.
+ * Page content identifier interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-interface ContentIdentifierInterface
+interface PageContentIdentifierInterface
 {
     /**
      * @param DocumentIdentity $identity
@@ -33,21 +33,21 @@ interface ContentIdentifierInterface
      * @param TreeNodeInterface $node
      * @param string            $language
      *
-     * @return DocumentDescriptor
+     * @return PageDocumentDescriptor
      */
     public function createDescriptorFromNode(TreeNodeInterface $node, $language);
 
     /**
      * @param DocumentIdentity $identity
      *
-     * @return DocumentDescriptor
+     * @return PageDocumentDescriptor
      */
     public function createDescriptorFromIdentity(DocumentIdentity $identity);
 
     /**
      * Return all identifiers.
      *
-     * @return Generator|DocumentDescriptor[]
+     * @return Generator|PageDocumentDescriptor[]
      */
     public function findAllDescriptors();
 }

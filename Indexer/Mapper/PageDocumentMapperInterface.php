@@ -9,24 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPageBundle\Indexer;
+namespace Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 
 /**
- * Element document mapper interface.
+ * Page document mapper interface.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-interface DocumentMapperInterface
+interface PageDocumentMapperInterface
 {
     /**
      * Map node to document.
      *
      * @param DocumentInterface  $document
-     * @param DocumentDescriptor $descriptor
+     * @param PageDocumentDescriptor $descriptor
      *
      * @return bool
      */
-    public function mapDocument(DocumentInterface $document, DocumentDescriptor $descriptor);
+    public function mapDocument(DocumentInterface $document, PageDocumentDescriptor $descriptor);
 }

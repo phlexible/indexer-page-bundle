@@ -1,32 +1,32 @@
 services:
+    phlexible_indexer_page.page_document_builder:
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentBuilder
+        arguments:
+            - "@phlexible_indexer.document_factory"
+            - "@phlexible_indexer_page.document_mapper"
+            - "@phlexible_indexer_page.indexible_voter"
+            - "@event_dispatcher"
+            - "%phlexible_indexer_page.document_class%"
+        tags:
+            - {name: phlexible_indexer.indexer}
+            - {name: monolog.logger, channel: indexer}
+
     phlexible_indexer_page.page_indexer:
         class: Phlexible\Bundle\IndexerPageBundle\Indexer\PageIndexer
         arguments:
-            - "@phlexible_indexer.document_factory"
+            - "@phlexible_indexer_page.page_document_builder"
             - "@phlexible_indexer_page.storage"
-            - "@phlexible_indexer_page.document_mapper"
-            - "@phlexible_indexer_page.content_identifier"
+            - "@phlexible_indexer_page.page_content_identifier"
             - "@phlexible_queue.job_manager"
+            - "@event_dispatcher"
             - "@logger"
-            - "%phlexible_indexer_page.document_class%"
             - "%phlexible_indexer_page.batch_size%"
         tags:
             - {name: phlexible_indexer.indexer}
             - {name: monolog.logger, channel: indexer}
 
-    phlexible_indexer_page.document_mapper:
-        class: Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentMapper
-        public: false
-        arguments:
-            - "@phlexible_indexer_page.indexible_voter"
-            - "@phlexible_indexer_page.document_applier"
-            - "@event_dispatcher"
-            - "@logger"
-        tags:
-            - {name: monolog.logger, channel: indexer}
-
-    phlexible_indexer_page.content_identifier:
-        class: Phlexible\Bundle\IndexerPageBundle\Indexer\ContentIdentifier
+    phlexible_indexer_page.page_content_identifier:
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\PageContentIdentifier
         public: false
         arguments:
             - "@phlexible_siteroot.siteroot_manager"

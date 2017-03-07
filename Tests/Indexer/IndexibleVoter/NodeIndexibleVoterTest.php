@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\IndexibleVoter;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\NodeIndexibleVoter;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
@@ -59,7 +59,7 @@ class NodeIndexibleVoterTest extends TestCase
         $node->setTree($tree->reveal());
         $siteroot = new Siteroot();
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
+        $descriptor = new PageDocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $this->logger->info('TreeNode 123 not indexed, node not published')->shouldBeCalled();
 
@@ -79,7 +79,7 @@ class NodeIndexibleVoterTest extends TestCase
         $node->setTree($tree->reveal());
         $siteroot = new Siteroot();
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
+        $descriptor = new PageDocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $this->logger->info('TreeNode 123 not indexed, node is marked with no-index')->shouldBeCalled();
 
@@ -99,7 +99,7 @@ class NodeIndexibleVoterTest extends TestCase
         $siteroot = new Siteroot();
         $siteroot->setProperty('page_indexer.skip_node_ids', '123,234');
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
+        $descriptor = new PageDocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $this->logger->info('TreeNode 123 not indexed, node id in skip node list')->shouldBeCalled();
 
@@ -119,7 +119,7 @@ class NodeIndexibleVoterTest extends TestCase
         $node->setTree($tree->reveal());
         $siteroot = new Siteroot();
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
+        $descriptor = new PageDocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $result = $this->voter->isIndexible($descriptor);
 

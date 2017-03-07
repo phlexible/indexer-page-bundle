@@ -9,23 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier;
+namespace Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper;
 
 use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentFilter\ContentFilterInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentRenderer\ContentRendererInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\ContentTitleExtractor\ContentTitleExtractorInterface;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Content document applier.
+ * Content document mapper.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class ContentDocumentApplier implements DocumentApplierInterface
+class ContentDocumentMapper implements PageDocumentMapperInterface
 {
     /**
      * @var ElementService
@@ -83,9 +83,9 @@ class ContentDocumentApplier implements DocumentApplierInterface
 
     /**
      * @param DocumentInterface  $document
-     * @param DocumentDescriptor $descriptor
+     * @param PageDocumentDescriptor $descriptor
      */
-    public function apply(DocumentInterface $document, DocumentDescriptor $descriptor)
+    public function mapDocument(DocumentInterface $document, PageDocumentDescriptor $descriptor)
     {
         $node = $descriptor->getNode();
         $language = $descriptor->getLanguage();

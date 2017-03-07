@@ -15,7 +15,7 @@ use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\ElementBundle\Entity\Element;
 use Phlexible\Bundle\ElementtypeBundle\Model\Elementtype;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\ElementIndexibleVoter;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
@@ -68,7 +68,7 @@ class ElementIndexibleVoterTest extends TestCase
         $siteroot = new Siteroot();
         $siteroot->setProperty('page_indexer.skip_elementtype_ids', '345,456');
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
+        $descriptor = new PageDocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $this->elementService->findElement(234)->willReturn($element);
         $this->logger->info('TreeNode 123 not indexed, elementtype id in skip list')->shouldBeCalled();
@@ -90,7 +90,7 @@ class ElementIndexibleVoterTest extends TestCase
         $node->setTypeId(234);
         $siteroot = new Siteroot();
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
+        $descriptor = new PageDocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $this->elementService->findElement(234)->willReturn($element);
         $this->elementService->findElementtype($element)->willReturn($elementtype);
@@ -113,7 +113,7 @@ class ElementIndexibleVoterTest extends TestCase
         $node->setTypeId(234);
         $siteroot = new Siteroot();
         $identity = new DocumentIdentity('page_74_de');
-        $descriptor = new DocumentDescriptor($identity, $node, $siteroot, 'de');
+        $descriptor = new PageDocumentDescriptor($identity, $node, $siteroot, 'de');
 
         $this->elementService->findElement(234)->willReturn($element);
         $this->elementService->findElementtype($element)->willReturn($elementtype);

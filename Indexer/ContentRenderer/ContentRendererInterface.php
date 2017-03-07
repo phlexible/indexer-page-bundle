@@ -11,7 +11,7 @@
 
 namespace Phlexible\Bundle\IndexerPageBundle\Indexer\ContentRenderer;
 
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 
 /**
  * Content renderer interface.
@@ -23,9 +23,9 @@ interface ContentRendererInterface
     /**
      * Load a html representation of a node.
      *
-     * @param DocumentDescriptor $descriptor
+     * @param PageDocumentDescriptor $descriptor
      *
      * @return string
      */
-    public function render(DocumentDescriptor $descriptor);
+    public function render(PageDocumentDescriptor $descriptor);
 }

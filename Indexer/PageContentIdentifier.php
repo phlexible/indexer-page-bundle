@@ -19,11 +19,11 @@ use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeManagerInterface;
 use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 
 /**
- * Content identifier.
+ * Page content identifier.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class ContentIdentifier implements ContentIdentifierInterface
+class PageContentIdentifier implements PageContentIdentifierInterface
 {
     /**
      * @var SiterootManagerInterface
@@ -82,7 +82,7 @@ class ContentIdentifier implements ContentIdentifierInterface
             return null;
         }
 
-        return new DocumentDescriptor($this->createIdentity($node, $language), $node, $siteroot, $language);
+        return new PageDocumentDescriptor($this->createIdentity($node, $language), $node, $siteroot, $language);
     }
 
     /**
@@ -113,7 +113,7 @@ class ContentIdentifier implements ContentIdentifierInterface
             return null;
         }
 
-        return new DocumentDescriptor($identity, $node, $siteroot, $language);
+        return new PageDocumentDescriptor($identity, $node, $siteroot, $language);
     }
 
     /**
@@ -142,7 +142,7 @@ class ContentIdentifier implements ContentIdentifierInterface
                 $contentNode = $this->treeManager->find($siteroot->getId())->get($node->getId());
 
                 foreach ($tree->getPublishedVersions($node) as $language => $onlineVersion) {
-                    $descriptor = new DocumentDescriptor(
+                    $descriptor = new PageDocumentDescriptor(
                         $this->createIdentity($contentNode, $language),
                         $contentNode,
                         $siteroot,

@@ -9,23 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentApplier;
+namespace Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 
 /**
- * Boost document applier.
+ * Boost document mapper.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class BoostDocumentApplier implements DocumentApplierInterface
+class BoostDocumentMapper implements PageDocumentMapperInterface
 {
-    /**
-     * @param DocumentInterface  $document
-     * @param DocumentDescriptor $descriptor
-     */
-    public function apply(DocumentInterface $document, DocumentDescriptor $descriptor)
+    public function mapDocument(DocumentInterface $document, PageDocumentDescriptor $descriptor)
     {
         $node = $descriptor->getNode();
         $siteroot = $descriptor->getSiteroot();

@@ -1,0 +1,43 @@
+services:
+    phlexible_indexer_page.document_mapper:
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper\ChainDocumentMapper
+        public: false
+        arguments:
+            -
+                - "@phlexible_indexer_page.base_document_mapper"
+                - "@phlexible_indexer_page.boost_document_mapper"
+                - "@phlexible_indexer_page.meta_document_mapper"
+                - "@phlexible_indexer_page.content_document_mapper"
+
+    phlexible_indexer_page.base_document_mapper:
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper\BaseDocumentMapper
+        public: false
+
+    phlexible_indexer_page.boost_document_mapper:
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper\BoostDocumentMapper
+        public: false
+
+    phlexible_indexer_page.content_document_mapper:
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper\ContentDocumentMapper
+        public: false
+        arguments:
+            - "@phlexible_element.element_service"
+            - "@phlexible_indexer_page.content_filter"
+            - "@phlexible_indexer_page.content_title_extractor"
+            - "@phlexible_indexer_page.content_renderer"
+            - "@event_dispatcher"
+            - "@logger"
+        tags:
+            - {name: monolog.logger, channel: indexer}
+
+    phlexible_indexer_page.meta_document_mapper:
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper\MetaDocumentMapper
+        public: false
+        arguments:
+            - "@phlexible_element.element_service"
+            - "@phlexible_element.element_meta_set_resolver"
+            - "@phlexible_element.element_meta_data_manager"
+            - "@event_dispatcher"
+            - "@logger"
+        tags:
+            - {name: monolog.logger, channel: indexer}

@@ -11,14 +11,14 @@
 
 namespace Phlexible\Bundle\IndexerPageBundle\Indexer;
 
-use Phlexible\Bundle\IndexerBundle\Document\DocumentFactory;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerBundle\Indexer\IndexerInterface;
 use Phlexible\Bundle\IndexerBundle\Storage\StorageInterface;
-use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
+use Phlexible\Bundle\IndexerPageBundle\IndexerPageEvents;
 use Phlexible\Bundle\QueueBundle\Model\JobManagerInterface;
 use Phlexible\Bundle\TreeBundle\Model\TreeNodeInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Page indexer.
@@ -28,9 +28,9 @@ use Psr\Log\LoggerInterface;
 class PageIndexer implements IndexerInterface
 {
     /**
-     * @var DocumentFactory
+     * @var PageDocumentBuilder
      */
-    private $documentFactory;
+    private $builder;
 
     /**
      * @var StorageInterface
@@ -38,12 +38,7 @@ class PageIndexer implements IndexerInterface
     private $storage;
 
     /**
-     * @var DocumentMapperInterface
-     */
-    private $mapper;
-
-    /**
-     * @var ContentIdentifierInterface
+     * @var PageContentIdentifierInterface
      */
     private $identifier;
 
@@ -53,14 +48,14 @@ class PageIndexer implements IndexerInterface
     private $jobManager;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * @var LoggerInterface
      */
     private $logger;
-
-    /**
-     * @var string
-     */
-    private $documentClass;
 
     /**
      * @var int
@@ -68,32 +63,29 @@ class PageIndexer implements IndexerInterface
     private $batchSize;
 
     /**
-     * @param DocumentFactory            $documentFactory
-     * @param StorageInterface           $storage
-     * @param DocumentMapperInterface    $mapper
-     * @param ContentIdentifierInterface $identifier
-     * @param JobManagerInterface        $jobManager
-     * @param LoggerInterface            $logger
-     * @param string                     $documentClass
-     * @param int                        $batchSize
+     * @param PageDocumentBuilder            $builder
+     * @param StorageInterface               $storage
+     * @param PageContentIdentifierInterface $identifier
+     * @param JobManagerInterface            $jobManager
+     * @param EventDispatcherInterface       $eventDispatcher
+     * @param LoggerInterface                $logger
+     * @param int                            $batchSize
      */
     public function __construct(
-        DocumentFactory $documentFactory,
+        PageDocumentBuilder $builder,
         StorageInterface $storage,
-        DocumentMapperInterface $mapper,
-        ContentIdentifierInterface $identifier,
+        PageContentIdentifierInterface $identifier,
         JobManagerInterface $jobManager,
+        EventDispatcherInterface $eventDispatcher,
         LoggerInterface $logger,
-        $documentClass = PageDocument::class,
         $batchSize = 50
     ) {
-        $this->documentFactory = $documentFactory;
+        $this->builder = $builder;
         $this->storage = $storage;
-        $this->mapper = $mapper;
         $this->identifier = $identifier;
         $this->jobManager = $jobManager;
+        $this->eventDispatcher = $eventDispatcher;
         $this->logger = $logger;
-        $this->documentClass = $documentClass;
         $this->batchSize = $batchSize;
     }
 
@@ -122,14 +114,6 @@ class PageIndexer implements IndexerInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function createDocument()
-    {
-        return $this->documentFactory->factory($this->documentClass);
-    }
-
-    /**
      * @param string           $method
      * @param DocumentIdentity $identity
      */
@@ -146,9 +130,9 @@ class PageIndexer implements IndexerInterface
 
     /**
      * @param string             $method
-     * @param DocumentDescriptor $descriptor
+     * @param PageDocumentDescriptor $descriptor
      */
-    private function queueDescriptorOperation($method, DocumentDescriptor $descriptor)
+    private function queueDescriptorOperation($method, PageDocumentDescriptor $descriptor)
     {
         $method .= 'Identity';
 
@@ -170,8 +154,7 @@ class PageIndexer implements IndexerInterface
             return;
         }
 
-        $document = $this->createDocument();
-        if (!$this->mapper->mapDocument($document, $descriptor)) {
+        if (!($document = $this->builder->build($descriptor))) {
             return;
         }
 
@@ -186,12 +169,11 @@ class PageIndexer implements IndexerInterface
 
     /**
      * @param string             $method
-     * @param DocumentDescriptor $descriptor
+     * @param PageDocumentDescriptor $descriptor
      */
-    private function executeDescriptorOperation($method, DocumentDescriptor $descriptor)
+    private function executeDescriptorOperation($method, PageDocumentDescriptor $descriptor)
     {
-        $document = $this->createDocument();
-        if (!$this->mapper->mapDocument($document, $descriptor)) {
+        if (!($document = $this->builder->build($descriptor))) {
             return;
         }
 
@@ -322,19 +304,19 @@ class PageIndexer implements IndexerInterface
     public function indexAll()
     {
         $descriptors = $this->identifier->findAllDescriptors();
+        $operations = $this->storage->createOperations();
 
         $handled = 0;
         $batch = 0;
 
-        $operations = $this->storage->createOperations();
+        $this->eventDispatcher->dispatch(IndexerPageEvents::INDEX_ALL_DOCUMENTS);
 
         foreach ($descriptors as $descriptor) {
             ++$handled;
 
             $this->logger->info("indexAll add {$descriptor->getNode()->getId()} {$descriptor->getLanguage()}");
 
-            $document = $this->createDocument();
-            if (!$this->mapper->mapDocument($document, $descriptor)) {
+            if (!($document = $this->builder->build($descriptor))) {
                 $this->logger->warning("indexAll skipping {$descriptor->getNode()->getId()} {$descriptor->getLanguage()}");
                 continue;
             }
@@ -370,12 +352,13 @@ class PageIndexer implements IndexerInterface
     public function queueAll()
     {
         $descriptors = $this->identifier->findAllDescriptors();
+        $operations = $this->storage->createOperations();
 
         $handled = 0;
         $batch = 0;
         $total = count($descriptors);
 
-        $operations = $this->storage->createOperations();
+        $this->eventDispatcher->dispatch(IndexerPageEvents::QUEUE_ALL_DOCUMENTS);
 
         foreach ($descriptors as $descriptor) {
             ++$handled;

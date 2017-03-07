@@ -11,7 +11,7 @@
 
 namespace Phlexible\Bundle\IndexerPageBundle\Indexer\ParametersGenerator;
 
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 
 /**
  * Locale parameters generator.
@@ -24,7 +24,7 @@ class LocaleParametersGenerator implements IndexerParametersGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function createParameters(DocumentDescriptor $identity)
+    public function createParameters(PageDocumentDescriptor $identity)
     {
         return ['_locale' => $identity->getLanguage()];
     }

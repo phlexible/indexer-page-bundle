@@ -12,7 +12,7 @@
 namespace Phlexible\Bundle\IndexerPageBundle\Event;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -28,15 +28,15 @@ class MapDocumentEvent extends Event
     private $document;
 
     /**
-     * @var DocumentDescriptor
+     * @var PageDocumentDescriptor
      */
     private $descriptor;
 
     /**
      * @param DocumentInterface  $document
-     * @param DocumentDescriptor $descriptor
+     * @param PageDocumentDescriptor $descriptor
      */
-    public function __construct(DocumentInterface $document, DocumentDescriptor $descriptor)
+    public function __construct(DocumentInterface $document, PageDocumentDescriptor $descriptor)
     {
         $this->document = $document;
         $this->descriptor = $descriptor;
@@ -51,7 +51,7 @@ class MapDocumentEvent extends Event
     }
 
     /**
-     * @return DocumentDescriptor
+     * @return PageDocumentDescriptor
      */
     public function getDescriptor()
     {
