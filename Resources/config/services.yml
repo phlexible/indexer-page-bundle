@@ -65,6 +65,29 @@ services:
         class: Phlexible\Bundle\IndexerPageBundle\Indexer\ContentTitleExtractor\ContentTitleExtractor
         public: false
 
+    # commands
+    phlexible_indexer_page.command.add_all:
+        class: Phlexible\Bundle\IndexerPageBundle\Command\AddAllCommand
+        arguments:
+            - "@phlexible_indexer_page.page_indexer"
+            - "@doctrine.orm.default_connection"
+        tags:
+            - {name: console.command}
+
+    phlexible_indexer_page.command.add:
+        class: Phlexible\Bundle\IndexerPageBundle\Command\AddAllCommand
+        arguments:
+            - "@phlexible_indexer_page.page_indexer"
+        tags:
+            - {name: console.command}
+
+    phlexible_indexer_page.command.delete:
+        class: Phlexible\Bundle\IndexerPageBundle\Command\AddAllCommand
+        arguments:
+            - "@phlexible_indexer_page.page_indexer"
+        tags:
+            - {name: console.command}
+
     # event listeners
     phlexible_indexer_page.listener.node:
         class: Phlexible\Bundle\IndexerPageBundle\EventListener\NodeListener

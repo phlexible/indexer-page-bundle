@@ -12,7 +12,8 @@
 namespace Phlexible\Bundle\IndexerPageBundle\Command;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageIndexer;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,8 +23,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class AddCommand extends ContainerAwareCommand
+class AddCommand extends Command
 {
+    private $indexer;
+
+    public function __construct(PageIndexer $indexer)
+    {
+        $this->indexer = $indexer;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -47,16 +55,15 @@ class AddCommand extends ContainerAwareCommand
         $treeId = $input->getArgument('treeId');
         $language = $input->getArgument('language');
 
-        $indexer = $this->getContainer()->get('phlexible_indexer_page.page_indexer');
-        $storage = $indexer->getStorage();
+        $storage = $this->indexer->getStorage();
 
-        $output->writeln('Indexer: '.get_class($indexer));
+        $output->writeln('Indexer: '.get_class($this->indexer));
         $output->writeln('  Storage: '.get_class($storage));
         $output->writeln('    DSN: '.$storage->getConnectionString());
 
         $identity = new DocumentIdentity("page_{$treeId}_{$language}");
 
-        if (!$indexer->add($identity)) {
+        if (!$this->indexer->add($identity)) {
             $output->writeln("<error>Document {$identity->getIdentifier()} could not be loaded.</error>");
 
             return 1;

@@ -11,7 +11,9 @@
 
 namespace Phlexible\Bundle\IndexerPageBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\ORM\EntityManagerInterface;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageIndexer;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,8 +23,18 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class AddAllCommand extends ContainerAwareCommand
+class AddAllCommand extends Command
 {
+    private $indexer;
+
+    private $entityManager;
+
+    public function __construct(PageIndexer $indexer, EntityManagerInterface $entityManager)
+    {
+        $this->indexer = $indexer;
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -40,22 +52,20 @@ class AddAllCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $indexer = $this->getContainer()->get('phlexible_indexer_page.page_indexer');
-        $storage = $indexer->getStorage();
+        $storage = $this->indexer->getStorage();
 
-        $output->writeln('Indexer: '.get_class($indexer));
+        $output->writeln('Indexer: '.get_class($this->indexer));
         $output->writeln('  Storage: '.get_class($storage));
         $output->writeln('    DSN: '.$storage->getConnectionString());
 
         $viaQueue = $input->getOption('queue');
 
         if ($viaQueue) {
-            $result = $indexer->queueAll();
+            $result = $this->indexer->queueAll();
         } else {
-            $this->getContainer()->get('doctrine.orm.default_entity_manager')->getConnection()->getConfiguration()
-                ->setSQLLogger(null);
+            $this->entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
 
-            $result = $indexer->indexAll();
+            $result = $this->indexer->indexAll();
         }
 
         if (!$result) {
