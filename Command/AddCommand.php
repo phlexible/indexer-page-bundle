@@ -29,6 +29,8 @@ class AddCommand extends Command
 
     public function __construct(PageIndexer $indexer)
     {
+        parent::__construct();
+
         $this->indexer = $indexer;
     }
 

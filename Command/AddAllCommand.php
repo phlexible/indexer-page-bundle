@@ -11,7 +11,6 @@
 
 namespace Phlexible\Bundle\IndexerPageBundle\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\PageIndexer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,12 +26,11 @@ class AddAllCommand extends Command
 {
     private $indexer;
 
-    private $entityManager;
-
-    public function __construct(PageIndexer $indexer, EntityManagerInterface $entityManager)
+    public function __construct(PageIndexer $indexer)
     {
+        parent::__construct();
+
         $this->indexer = $indexer;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -63,8 +61,6 @@ class AddAllCommand extends Command
         if ($viaQueue) {
             $result = $this->indexer->queueAll();
         } else {
-            $this->entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
-
             $result = $this->indexer->indexAll();
         }
 

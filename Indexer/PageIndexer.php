@@ -257,6 +257,8 @@ class PageIndexer implements IndexerInterface
      */
     public function deleteNode(TreeNodeInterface $node, $language, $viaQueue = false)
     {
+        $this->logger->debug("deleteNode {$node->getId()} {$language}");
+
         $descriptor = $this->identifier->createDescriptorFromNode($node, $language);
 
         if ($viaQueue) {
