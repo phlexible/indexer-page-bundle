@@ -70,7 +70,6 @@ services:
         class: Phlexible\Bundle\IndexerPageBundle\Command\AddAllCommand
         arguments:
             - "@phlexible_indexer_page.page_indexer"
-            - "@doctrine.orm.default_connection"
         tags:
             - {name: console.command}
 
