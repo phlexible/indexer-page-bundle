@@ -11,7 +11,6 @@
 
 namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer;
 
-use Phlexible\Bundle\IndexerBundle\Document\DocumentFactory;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerBundle\Storage\Operation\Operations;
 use Phlexible\Bundle\IndexerBundle\Storage\StorageInterface;
@@ -19,12 +18,9 @@ use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper\PageDocumentMapperInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\PageContentIdentifierInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentBuilder;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\PageIndexer;
 use Phlexible\Bundle\IndexerPageBundle\Tests\PageDescriptorTrait;
 use Phlexible\Bundle\QueueBundle\Model\JobManagerInterface;
-use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
-use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;

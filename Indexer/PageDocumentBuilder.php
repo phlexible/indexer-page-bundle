@@ -11,24 +11,24 @@
 
 namespace Phlexible\Bundle\IndexerPageBundle\Indexer;
 
-use Phlexible\Bundle\IndexerBundle\Document\DocumentFactory;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
+use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
 use Phlexible\Bundle\IndexerPageBundle\Event\MapDocumentEvent;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper\PageDocumentMapperInterface;
 use Phlexible\Bundle\IndexerPageBundle\IndexerPageEvents;
-use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Page document builder.
  *
  * @author Phillip Look <pl@brainbits.net>
+ * @author Stephan Wentz <sw@brainbits.net>
  */
 class PageDocumentBuilder
 {
     /**
-     * @var DocumentFactory
+     * @var PageDocumentFactory
      */
     private $documentFactory;
 
@@ -48,35 +48,27 @@ class PageDocumentBuilder
     private $dispatcher;
 
     /**
-     * @var string
-     */
-    private $documentClass;
-
-    /**
-     * @param DocumentFactory             $documentFactory
+     * @param PageDocumentFactory         $documentFactory
      * @param PageDocumentMapperInterface $mapper
      * @param IndexibleVoterInterface     $indexibleVoter
      * @param EventDispatcherInterface    $dispatcher
-     * @param string                      $documentClass
      */
     public function __construct(
-        DocumentFactory $documentFactory,
+        PageDocumentFactory $documentFactory,
         PageDocumentMapperInterface $mapper,
         IndexibleVoterInterface $indexibleVoter,
-        EventDispatcherInterface $dispatcher,
-        $documentClass = PageDocument::class
+        EventDispatcherInterface $dispatcher
     ) {
         $this->documentFactory = $documentFactory;
         $this->mapper = $mapper;
         $this->indexibleVoter = $indexibleVoter;
         $this->dispatcher = $dispatcher;
-        $this->documentClass = $documentClass;
     }
 
     /**
      * @param PageDocumentDescriptor $descriptor
      *
-     * @return null|DocumentInterface
+     * @return null|PageDocument
      */
     public function build(PageDocumentDescriptor $descriptor)
     {
@@ -84,7 +76,7 @@ class PageDocumentBuilder
             return null;
         }
 
-        $document = $this->documentFactory->factory($this->documentClass);
+        $document = $this->createDocument();
 
         $this->mapper->mapDocument($document, $descriptor);
 
@@ -92,5 +84,13 @@ class PageDocumentBuilder
         $this->dispatcher->dispatch(IndexerPageEvents::MAP_DOCUMENT, $event);
 
         return $document;
+    }
+
+    /**
+     * @return PageDocument
+     */
+    public function createDocument()
+    {
+        return $this->documentFactory->createDocument();
     }
 }

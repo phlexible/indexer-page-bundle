@@ -1,15 +1,17 @@
 services:
+    phlexible_indexer_page.page_document_factory:
+        class: Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentFactory
+        arguments:
+            - "@phlexible_indexer.document_factory"
+            - "%phlexible_indexer_page.document_class%"
+
     phlexible_indexer_page.page_document_builder:
         class: Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentBuilder
         arguments:
-            - "@phlexible_indexer.document_factory"
+            - "@phlexible_indexer_page.page_document_factory"
             - "@phlexible_indexer_page.document_mapper"
             - "@phlexible_indexer_page.indexible_voter"
             - "@event_dispatcher"
-            - "%phlexible_indexer_page.document_class%"
-        tags:
-            - {name: phlexible_indexer.indexer}
-            - {name: monolog.logger, channel: indexer}
 
     phlexible_indexer_page.page_indexer:
         class: Phlexible\Bundle\IndexerPageBundle\Indexer\PageIndexer
@@ -82,6 +84,13 @@ services:
 
     phlexible_indexer_page.command.delete:
         class: Phlexible\Bundle\IndexerPageBundle\Command\AddAllCommand
+        arguments:
+            - "@phlexible_indexer_page.page_indexer"
+        tags:
+            - {name: console.command}
+
+    phlexible_indexer_page.command.find:
+        class: Phlexible\Bundle\IndexerPageBundle\Command\FindCommand
         arguments:
             - "@phlexible_indexer_page.page_indexer"
         tags:

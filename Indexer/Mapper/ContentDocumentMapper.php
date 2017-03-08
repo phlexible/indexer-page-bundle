@@ -81,10 +81,6 @@ class ContentDocumentMapper implements PageDocumentMapperInterface
         $this->logger = $logger;
     }
 
-    /**
-     * @param DocumentInterface  $document
-     * @param PageDocumentDescriptor $descriptor
-     */
     public function mapDocument(DocumentInterface $document, PageDocumentDescriptor $descriptor)
     {
         $node = $descriptor->getNode();
@@ -112,7 +108,7 @@ class ContentDocumentMapper implements PageDocumentMapperInterface
 
         $document->set('title', $title);
         $document->set('content', $content);
-        $document->set('elementtypeId', $elementtype->getId());
+        $document->set('elementtype_id', $elementtype->getId());
         $document->set('elementtype', $elementtype->getUniqueId());
     }
 }

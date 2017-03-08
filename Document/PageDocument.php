@@ -33,15 +33,15 @@ class PageDocument extends Document
                 'content' => array('type' => self::TYPE_STRING, 'copyTo' => array('autocomplete', 'didYouMean')),
                 'meta' => array('type' => self::TYPE_TEXT, 'stored' => true),
                 'language' => array('type' => self::TYPE_STRING),
-                'nodeId' => array('type' => self::TYPE_INTEGER),
-                'typeId' => array('type' => self::TYPE_INTEGER),
-                'elementtypeId' => array('type' => self::TYPE_STRING),
+                'node_id' => array('type' => self::TYPE_INTEGER),
+                'type_id' => array('type' => self::TYPE_INTEGER),
+                'elementtype_id' => array('type' => self::TYPE_STRING),
                 'elementtype' => array('type' => self::TYPE_STRING),
-                'siterootId' => array('type' => self::TYPE_STRING, 'indexed' => false),
+                'siteroot_id' => array('type' => self::TYPE_STRING, 'indexed' => false),
                 'siteroot' => array('type' => self::TYPE_STRING),
                 'navigation' => array('type' => self::TYPE_BOOLEAN),
                 'autocomplete' => array('type' => self::TYPE_STRING, 'analyzer' => 'autocomplete', 'stored' => true, 'indexed' => true),
-                'didYouMean' => array('type' => self::TYPE_STRING, 'analyzer' => 'didYouMean', 'stored' => true, 'indexed' => true),
+                'did_you_mean' => array('type' => self::TYPE_STRING, 'analyzer' => 'didYouMean', 'stored' => true, 'indexed' => true),
             )
         );
     }

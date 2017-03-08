@@ -49,7 +49,5 @@ class ChainDocumentMapper implements PageDocumentMapperInterface
         foreach ($this->mappers as $mapper) {
             $mapper->mapDocument($document, $descriptor);
         }
-
-        return;
     }
 }

@@ -25,9 +25,9 @@ class BaseDocumentMapper implements PageDocumentMapperInterface
     {
         $document->setIdentity($descriptor->getIdentity());
         $document->set('language', $descriptor->getLanguage());
-        $document->set('nodeId', $descriptor->getNode()->getId());
-        $document->set('typeId', $descriptor->getNode()->getTypeId());
-        $document->set('siterootId', $descriptor->getSiteroot()->getId());
+        $document->set('node_id', $descriptor->getNode()->getId());
+        $document->set('type_id', $descriptor->getNode()->getTypeId());
+        $document->set('siteroot_id', $descriptor->getSiteroot()->getId());
         $document->set('navigation', $descriptor->getNode()->getInNavigation() ? true : false);
     }
 

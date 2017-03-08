@@ -26,8 +26,6 @@ interface PageDocumentMapperInterface
      *
      * @param DocumentInterface  $document
      * @param PageDocumentDescriptor $descriptor
-     *
-     * @return bool
      */
     public function mapDocument(DocumentInterface $document, PageDocumentDescriptor $descriptor);
 }

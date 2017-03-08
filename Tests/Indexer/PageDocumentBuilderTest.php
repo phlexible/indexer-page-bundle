@@ -19,6 +19,7 @@ use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\IndexibleVoterInte
 use Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper\PageDocumentMapperInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentBuilder;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentFactory;
 use Phlexible\Bundle\IndexerPageBundle\IndexerPageEvents;
 use Phlexible\Bundle\IndexerPageBundle\Tests\PageDescriptorTrait;
 use PHPUnit\Framework\TestCase;
@@ -48,7 +49,7 @@ class PageDocumentBuilderTest extends TestCase
     private $descriptor;
 
     /**
-     * @var DocumentFactory|ObjectProphecy
+     * @var PageDocumentFactory|ObjectProphecy
      */
     private $documentFactory;
 
@@ -79,8 +80,8 @@ class PageDocumentBuilderTest extends TestCase
 
         $this->descriptor = $this->createDescriptor();
 
-        $this->documentFactory = $this->prophesize(DocumentFactory::class);
-        $this->documentFactory->factory(PageDocument::class)->willReturn($this->document);
+        $this->documentFactory = $this->prophesize(PageDocumentFactory::class);
+        $this->documentFactory->createDocument()->willReturn($this->document);
         $this->mapper = $this->prophesize(PageDocumentMapperInterface::class);
         $this->voter = $this->prophesize(IndexibleVoterInterface::class);
         $this->eventDispatcher = $this->prophesize(EventDispatcherInterface::class);

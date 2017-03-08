@@ -12,7 +12,6 @@
 namespace Phlexible\Bundle\IndexerPageBundle\Indexer;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Phlexible\Bundle\IndexerBundle\Indexer\IndexerInterface;
 use Phlexible\Bundle\IndexerBundle\Storage\StorageInterface;
 use Phlexible\Bundle\IndexerPageBundle\IndexerPageEvents;
 use Phlexible\Bundle\QueueBundle\Model\JobManagerInterface;
@@ -25,7 +24,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */
-class PageIndexer implements IndexerInterface
+class PageIndexer implements PageIndexerInterface
 {
     /**
      * @var PageDocumentBuilder
@@ -108,11 +107,34 @@ class PageIndexer implements IndexerInterface
     /**
      * {@inheritdoc}
      */
+    public function createDocument()
+    {
+        return $this->builder->createDocument();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function supports(DocumentIdentity $identity)
     {
         return $this->identifier->validateIdentity($identity);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function find(DocumentIdentity $identity)
+    {
+        return $this->storage->find($identity);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count()
+    {
+        return $this->storage->countType($this->createDocument()->getName());
+    }
     /**
      * @param string           $method
      * @param DocumentIdentity $identity
@@ -185,6 +207,7 @@ class PageIndexer implements IndexerInterface
 
         $this->storage->execute($operations);
     }
+
 
     /**
      * @param TreeNodeInterface $node

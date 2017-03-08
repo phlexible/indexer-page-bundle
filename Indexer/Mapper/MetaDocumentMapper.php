@@ -72,10 +72,6 @@ class MetaDocumentMapper implements PageDocumentMapperInterface
         $this->logger = $logger;
     }
 
-    /**
-     * @param DocumentInterface  $document
-     * @param PageDocumentDescriptor $descriptor
-     */
     public function mapDocument(DocumentInterface $document, PageDocumentDescriptor $descriptor)
     {
         $node = $descriptor->getNode();
