@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\DocumentApplier;
+namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\Mapper;
 
 use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\ElementBundle\Entity\Element;

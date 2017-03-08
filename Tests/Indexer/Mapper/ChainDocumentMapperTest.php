@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\DocumentApplier;
+namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\Mapper;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
@@ -25,9 +25,9 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Stephan Wentz <sw@brainbits.net>
  *
- * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper\ChainDocumentApplier
+ * @covers \Phlexible\Bundle\IndexerPageBundle\Indexer\Mapper\ChainDocumentMapper
  */
-class ChainDocumentApplierTest extends TestCase
+class ChainDocumentMapperTest extends TestCase
 {
     public function testMapDocument()
     {
