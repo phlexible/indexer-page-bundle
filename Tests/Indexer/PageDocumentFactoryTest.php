@@ -14,13 +14,8 @@ namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentFactory;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
 use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
-use Phlexible\Bundle\IndexerPageBundle\Event\MapDocumentEvent;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentFactory;
-use Phlexible\Bundle\IndexerPageBundle\IndexerPageEvents;
-use Phlexible\Bundle\IndexerPageBundle\Tests\PageDescriptorTrait;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**

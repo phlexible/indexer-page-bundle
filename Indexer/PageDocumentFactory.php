@@ -12,7 +12,6 @@
 namespace Phlexible\Bundle\IndexerPageBundle\Indexer;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentFactory;
-use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
 use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
 
 /**
@@ -33,8 +32,8 @@ class PageDocumentFactory
     private $documentClass;
 
     /**
-     * @param DocumentFactory             $documentFactory
-     * @param string                      $documentClass
+     * @param DocumentFactory $documentFactory
+     * @param string          $documentClass
      */
     public function __construct(
         DocumentFactory $documentFactory,

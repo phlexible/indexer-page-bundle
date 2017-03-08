@@ -42,9 +42,9 @@ class BaseDocumentMapperTest extends TestCase
         $applier->mapDocument($document, $identity);
 
         $this->assertSame($document->get('language'), 'de');
-        $this->assertSame($document->get('nodeId'), 123);
-        $this->assertSame($document->get('typeId'), 234);
-        $this->assertSame($document->get('siterootId'), 345);
+        $this->assertSame($document->get('node_id'), 123);
+        $this->assertSame($document->get('type_id'), 234);
+        $this->assertSame($document->get('siteroot_id'), 345);
         $this->assertSame($document->get('navigation'), true);
     }
 }

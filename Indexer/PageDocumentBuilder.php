@@ -11,7 +11,6 @@
 
 namespace Phlexible\Bundle\IndexerPageBundle\Indexer;
 
-use Phlexible\Bundle\IndexerBundle\Document\DocumentInterface;
 use Phlexible\Bundle\IndexerPageBundle\Document\PageDocument;
 use Phlexible\Bundle\IndexerPageBundle\Event\MapDocumentEvent;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;

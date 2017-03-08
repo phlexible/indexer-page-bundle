@@ -151,7 +151,7 @@ class PageIndexer implements PageIndexerInterface
     }
 
     /**
-     * @param string             $method
+     * @param string                 $method
      * @param PageDocumentDescriptor $descriptor
      */
     private function queueDescriptorOperation($method, PageDocumentDescriptor $descriptor)
@@ -190,7 +190,7 @@ class PageIndexer implements PageIndexerInterface
     }
 
     /**
-     * @param string             $method
+     * @param string                 $method
      * @param PageDocumentDescriptor $descriptor
      */
     private function executeDescriptorOperation($method, PageDocumentDescriptor $descriptor)
@@ -207,7 +207,6 @@ class PageIndexer implements PageIndexerInterface
 
         $this->storage->execute($operations);
     }
-
 
     /**
      * @param TreeNodeInterface $node

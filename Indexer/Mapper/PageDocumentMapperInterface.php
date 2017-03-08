@@ -24,7 +24,7 @@ interface PageDocumentMapperInterface
     /**
      * Map node to document.
      *
-     * @param DocumentInterface  $document
+     * @param DocumentInterface      $document
      * @param PageDocumentDescriptor $descriptor
      */
     public function mapDocument(DocumentInterface $document, PageDocumentDescriptor $descriptor);

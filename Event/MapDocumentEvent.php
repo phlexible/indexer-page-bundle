@@ -33,7 +33,7 @@ class MapDocumentEvent extends Event
     private $descriptor;
 
     /**
-     * @param DocumentInterface  $document
+     * @param DocumentInterface      $document
      * @param PageDocumentDescriptor $descriptor
      */
     public function __construct(DocumentInterface $document, PageDocumentDescriptor $descriptor)

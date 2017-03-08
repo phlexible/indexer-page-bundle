@@ -13,9 +13,9 @@ namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer;
 
 use Phlexible\Bundle\ElementBundle\ElementService;
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\PageContentIdentifier;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\IndexibleVoterInterface;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\SiterootBundle\Model\SiterootManagerInterface;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeManagerInterface;

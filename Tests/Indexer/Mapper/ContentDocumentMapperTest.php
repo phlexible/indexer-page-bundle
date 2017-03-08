@@ -112,7 +112,7 @@ class ContentDocumentMapperTest extends TestCase
 
         $this->assertSame('testContent', $document->get('content'));
         $this->assertSame('testTitle', $document->get('title'));
-        $this->assertSame('345', $document->get('elementtypeId'));
+        $this->assertSame('345', $document->get('elementtype_id'));
         $this->assertSame('testElementtype', $document->get('elementtype'));
     }
 }

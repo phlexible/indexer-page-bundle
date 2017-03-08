@@ -30,5 +30,4 @@ class BaseDocumentMapper implements PageDocumentMapperInterface
         $document->set('siteroot_id', $descriptor->getSiteroot()->getId());
         $document->set('navigation', $descriptor->getNode()->getInNavigation() ? true : false);
     }
-
 }
