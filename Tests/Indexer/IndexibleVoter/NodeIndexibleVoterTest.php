@@ -12,8 +12,8 @@
 namespace Phlexible\Bundle\IndexerPageBundle\Tests\Indexer\IndexibleVoter;
 
 use Phlexible\Bundle\IndexerBundle\Document\DocumentIdentity;
-use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\IndexibleVoter\NodeIndexibleVoter;
+use Phlexible\Bundle\IndexerPageBundle\Indexer\PageDocumentDescriptor;
 use Phlexible\Bundle\SiterootBundle\Entity\Siteroot;
 use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 use Phlexible\Bundle\TreeBundle\ContentTree\DelegatingContentTree;
