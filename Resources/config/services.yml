@@ -55,6 +55,7 @@ services:
             - "@router.request_context"
             - "@request_stack"
             - "@phlexible_element_renderer.configurator"
+            - "@phlexible_tree.content_tree_manager"
             - "@templating"
             - "@logger"
             - "@phlexible_indexer_page.parameters_generator"

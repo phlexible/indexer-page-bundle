@@ -15,6 +15,8 @@ use Phlexible\Bundle\ElementRendererBundle\Configurator\Configuration;
 use Phlexible\Bundle\ElementRendererBundle\Configurator\ConfiguratorInterface;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\DocumentDescriptor;
 use Phlexible\Bundle\IndexerPageBundle\Indexer\ParametersGenerator\IndexerParametersGeneratorInterface;
+use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeManagerInterface;
+use Phlexible\Bundle\TreeBundle\ContentTree\ContentTreeNode;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,6 +52,11 @@ class ContentRenderer implements ContentRendererInterface
     private $configurator;
 
     /**
+     * @var ContentTreeManagerInterface
+     */
+    private $contentTreeManager;
+
+    /**
      * @var EngineInterface
      */
     private $templating;
@@ -69,6 +76,7 @@ class ContentRenderer implements ContentRendererInterface
      * @param RequestContext                      $requestContext
      * @param RequestStack                        $requestStack
      * @param ConfiguratorInterface               $configurator
+     * @param ContentTreeManagerInterface         $contentTreeManager
      * @param EngineInterface                     $templating
      * @param LoggerInterface                     $logger
      * @param IndexerParametersGeneratorInterface $indexerParametersGenerator
@@ -78,6 +86,7 @@ class ContentRenderer implements ContentRendererInterface
         RequestContext $requestContext,
         RequestStack $requestStack,
         ConfiguratorInterface $configurator,
+        ContentTreeManagerInterface $contentTreeManager,
         EngineInterface $templating,
         LoggerInterface $logger,
         IndexerParametersGeneratorInterface $indexerParametersGenerator
@@ -86,6 +95,7 @@ class ContentRenderer implements ContentRendererInterface
         $this->requestContext = $requestContext;
         $this->requestStack = $requestStack;
         $this->configurator = $configurator;
+        $this->contentTreeManager = $contentTreeManager;
         $this->templating = $templating;
         $this->logger = $logger;
         $this->indexerParametersGenerator = $indexerParametersGenerator;
@@ -100,6 +110,10 @@ class ContentRenderer implements ContentRendererInterface
         $siteroot = $descriptor->getSiteroot();
         $language = $descriptor->getLanguage();
         $parameters = $this->indexerParametersGenerator->createParameters($descriptor);
+
+        if (!$node instanceof ContentTreeNode) {
+            $node = $this->contentTreeManager->find($node->getTree()->getSiterootId())->get($node->getId());
+        }
 
         try {
             ob_start();
