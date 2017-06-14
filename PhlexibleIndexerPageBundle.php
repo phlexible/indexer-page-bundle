@@ -11,6 +11,7 @@
 
 namespace Phlexible\Bundle\IndexerPageBundle;
 
+use Phlexible\Bundle\IndexerPageBundle\DependencyInjection\Compiler\AddIndexibleVoterPass;
 use Phlexible\Bundle\IndexerPageBundle\DependencyInjection\Compiler\AddParametersGeneratorPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -27,5 +28,6 @@ class PhlexibleIndexerPageBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new AddParametersGeneratorPass());
+        $container->addCompilerPass(new AddIndexibleVoterPass());
     }
 }
